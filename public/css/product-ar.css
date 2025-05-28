@@ -1,0 +1,26 @@
+.product-badge {
+	left: 20px;
+	right: auto;
+}
+
+.current-price {
+	margin-left: 10px;
+}
+
+.section-title h2::after {
+	right: 25%;
+}
+
+.slider-prev {
+	right: 0;
+	left: auto;
+}
+
+.slider-next {
+	left: 0;
+	right: auto;
+}
+
+.review-form-title::after {
+	right: 0;
+}

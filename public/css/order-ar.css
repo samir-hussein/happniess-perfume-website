@@ -1,0 +1,21 @@
+.section-title {
+	text-align: right;
+}
+
+.section-title::after {
+	right: 0;
+}
+
+.order-item-img {
+	margin-left: 20px;
+	margin-right: 0;
+}
+
+.tracking-detail-icon {
+	margin-right: 0;
+	margin-left: 15px;
+}
+
+.tracking-progress-bar {
+	right: 0;
+}
