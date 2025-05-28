@@ -144,7 +144,6 @@
             </div>
         </div>
     </div>
-
     <!-- Products Section -->
     <section class="products">
         <div class="container">
