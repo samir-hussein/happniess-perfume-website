@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $product->{'name_' . app()->getLocale()})
+@section('title', $product->name_en . ' - ' . $product->name_ar)
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/product.css') }}">
