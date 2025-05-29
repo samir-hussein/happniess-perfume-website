@@ -5,7 +5,7 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>{{ __('Discover Your Signature Scent') }}</h1>
+                <h1>{{ __('Discover Your Signature Scent With Happniess Perfume') }}</h1>
                 <p>{{ __('Experience luxury fragrances crafted with the finest ingredients to elevate your everyday moments.') }}
                 </p>
             </div>

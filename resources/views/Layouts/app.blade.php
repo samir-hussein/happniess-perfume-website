@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Happiness Perfume - عطور السعادة')</title>
+    <title>@yield('title', 'Happniess Perfume - عطور السعادة')</title>
 
     <link rel="icon" type="image/png" href="{{ asset('favicon-96x96.png') }}" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}" />
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}" />
-    <meta name="apple-mobile-web-app-title" content="Happiness Perfume" />
+    <meta name="apple-mobile-web-app-title" content="Happniess Perfume" />
     <link rel="manifest" href="{{ asset('site.webmanifest') }}" />
     <meta name="author" content="Samir Hussein">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="@yield('description', 'Happiness Perfume is a premium fragrance brand offering unique and luxurious scents for every occasion. Discover our collection of fine fragrances and elevate your daily moments with our signature perfumes.')">
+    <meta name="description" content="@yield('description', 'Happniess Perfume is a premium fragrance brand offering unique and luxurious scents for every occasion. Discover our collection of fine fragrances and elevate your daily moments.')">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
