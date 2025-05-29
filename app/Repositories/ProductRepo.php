@@ -9,153 +9,153 @@ use Illuminate\Support\Facades\DB;
 
 class ProductRepo extends BaseRepository implements IProductRepo
 {
-	public function __construct(Product $product)
-	{
-		parent::__construct($product);
-	}
+    public function __construct(Product $product)
+    {
+        parent::__construct($product);
+    }
 
-	public function search(int $page, int $limit, string|null $search, array|null $categories, array|null $tags, string|null $price, string|null $sort, string|null $size)
-	{
-		$query = $this->model->query();
+    public function search(int $page, int $limit, string|null $search, array|null $categories, array|null $tags, string|null $price, string|null $sort, string|null $size)
+    {
+        $query = $this->model->query();
 
-		if ($search) {
-			$query->where("name_" . app()->getLocale(), "like", "%{$search}%");
-		}
+        if ($search) {
+            $query->where("name_" . app()->getLocale(), "like", "%{$search}%");
+        }
 
-		if ($categories && $categories !== []) {
-			$query->whereIn("category_id", $categories);
-		}
+        if ($categories && $categories !== []) {
+            $query->whereIn("category_id", $categories);
+        }
 
-		if ($tags && $tags !== []) {
-			$query->whereIn("tag_" . app()->getLocale(), $tags);
-		}
+        if ($tags && $tags !== []) {
+            $query->whereIn("tag_" . app()->getLocale(), $tags);
+        }
 
-		if ($size && $size !== "any" && $size !== "") {
-			$query->whereHas("sizes", function ($q) use ($size) {
-				$q->where("size", $size);
-			});
-		}
+        if ($size && $size !== "any" && $size !== "") {
+            $query->whereHas("sizes", function ($q) use ($size) {
+                $q->where("size", $size);
+            });
+        }
 
-		// Apply price filter
-		if ($price) {
-			$query->whereHas("sizes", function ($q) use ($price, $size) {
-				$q->where("price", "<=", $price);
+        // Apply price filter
+        if ($price) {
+            $query->whereHas("sizes", function ($q) use ($price, $size) {
+                $q->where("price", "<=", $price);
 
-				if ($size && $size !== "any" && $size !== "") {
-					$q->where("size", $size);
-				}
-			});
-		}
+                if ($size && $size !== "any" && $size !== "") {
+                    $q->where("size", $size);
+                }
+            });
+        }
 
-		// Apply sorting based on the sort parameter
-		if ($sort && $sort !== "") {
-			switch ($sort) {
-				case 'asc':
-					// Sort by minimum price considering size filter
-					if ($size && $size !== "any" && $size !== "") {
-						$query->select('products.*')
-							->addSelect(DB::raw("(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id AND product_sizes.size = {$size}) as min_price"))
-							->orderBy('min_price', 'asc');
-					} else {
-						$query->select('products.*')
-							->addSelect(DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'))
-							->orderBy('min_price', 'asc');
-					}
-					break;
-				case 'desc':
-					// Sort by minimum price considering size filter
-					if ($size && $size !== "any" && $size !== "") {
-						$query->select('products.*')
-							->addSelect(DB::raw("(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id AND product_sizes.size = {$size}) as min_price"))
-							->orderBy('min_price', 'desc');
-					} else {
-						$query->select('products.*')
-							->addSelect(DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'))
-							->orderBy('min_price', 'desc');
-					}
-					break;
-				default:
-					$query->latest("id");
-					break;
-			}
-		} else {
-			$query->latest("id");
-		}
+        // Apply sorting based on the sort parameter
+        if ($sort && $sort !== "") {
+            switch ($sort) {
+                case 'asc':
+                    // Sort by minimum price considering size filter
+                    if ($size && $size !== "any" && $size !== "") {
+                        $query->select('products.*')
+                            ->addSelect(DB::raw("(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id AND product_sizes.size = {$size}) as min_price"))
+                            ->orderBy('min_price', 'asc');
+                    } else {
+                        $query->select('products.*')
+                            ->addSelect(DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'))
+                            ->orderBy('min_price', 'asc');
+                    }
+                    break;
+                case 'desc':
+                    // Sort by minimum price considering size filter
+                    if ($size && $size !== "any" && $size !== "") {
+                        $query->select('products.*')
+                            ->addSelect(DB::raw("(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id AND product_sizes.size = {$size}) as min_price"))
+                            ->orderBy('min_price', 'desc');
+                    } else {
+                        $query->select('products.*')
+                            ->addSelect(DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'))
+                            ->orderBy('min_price', 'desc');
+                    }
+                    break;
+                default:
+                    $query->latest("id");
+                    break;
+            }
+        } else {
+            $query->latest("id");
+        }
 
-		// Load the sizes relationship with appropriate ordering
-		$sizesQuery = function ($q) use ($price, $size) {
-			if ($price) {
-				$q->where("price", "<=", $price);
-			}
-			if ($size && $size !== "any" && $size !== "") {
-				$q->where("size", $size);
-			}
-			$q->orderBy("price", "asc");
-		};
+        // Load the sizes relationship with appropriate ordering
+        $sizesQuery = function ($q) use ($price, $size) {
+            if ($price) {
+                $q->where("price", "<=", $price);
+            }
+            if ($size && $size !== "any" && $size !== "") {
+                $q->where("size", $size);
+            }
+            $q->orderBy("price", "asc");
+        };
 
-		return $query->with(["sizes" => $sizesQuery])->paginate($limit, ['*'], 'page', $page);
-	}
+        return $query->with(["sizes" => $sizesQuery])->paginate($limit, ['*'], 'page', $page);
+    }
 
-	public function pagination(int $page, int $limit, array $productIds = [])
-	{
-		$query = $this->model->query();
+    public function pagination(int $page, int $limit, array $productIds = [])
+    {
+        $query = $this->model->query();
 
-		if ($productIds && $productIds != []) {
-			$query->whereIn("id", $productIds);
-		}
+        if ($productIds && $productIds != []) {
+            $query->whereIn("id", $productIds);
+        }
 
-		return $query->with(["sizes" => function ($q) {
-			$q->orderBy("price", "asc");
-		}])->latest("id")->paginate($limit, ['*'], 'page', $page);
-	}
+        return $query->with(["sizes" => function ($q) {
+            $q->orderBy("price", "asc");
+        }])->latest("id")->paginate($limit, ['*'], 'page', $page);
+    }
 
-	public function find(int $id, string|null $size)
-	{
-		$query = $this->model->query();
+    public function find(int $id, string|null $size)
+    {
+        $query = $this->model->query();
 
-		$query->where("id", $id);
+        $query->where("id", $id);
 
-		if ($size && $size !== "any" && $size !== "") {
-			$query->whereHas("sizes", function ($q) use ($size) {
-				$q->where("size", $size);
-			});
-		} else {
-			abort(404);
-		}
+        if ($size && $size !== "any" && $size !== "") {
+            $query->whereHas("sizes", function ($q) use ($size) {
+                $q->where("size", $size);
+            });
+        } else {
+            abort(404);
+        }
 
-		$product = $query->with(["category", "sizes"])->first();
+        $product = $query->with(["category", "sizes"])->first();
 
-		if (!$product) {
-			abort(404);
-		}
+        if (!$product) {
+            abort(404);
+        }
 
-		return $product;
-	}
+        return $product;
+    }
 
-	public function tags()
-	{
-		return $this->model->select("tag_" . app()->getLocale())
-			->distinct()
-			->get()
-			->pluck("tag_" . app()->getLocale())
-			->toArray();
-	}
+    public function tags()
+    {
+        return $this->model->select("tag_" . app()->getLocale())
+            ->distinct()
+            ->get()
+            ->pluck("tag_" . app()->getLocale())
+            ->toArray();
+    }
 
-	public function relatedProducts(int $id)
-	{
-		$currentProduct = $this->model->find($id);
-		return $this->model->where("id", "!=", $id)->where("category_id", $currentProduct->category_id)->inRandomOrder()->with(["sizes" => function ($q) {
-			$q->orderBy("price", "asc");
-		}])->limit(8)->get();
-	}
+    public function relatedProducts(int $id)
+    {
+        $currentProduct = $this->model->find($id);
+        return $this->model->where("id", "!=", $id)->where("category_id", $currentProduct->category_id)->inRandomOrder()->with(["sizes" => function ($q) {
+            $q->orderBy("price", "asc");
+        }])->limit(8)->get();
+    }
 
-	public function getProductsForCart(array $ids)
-	{
-		return $this->model->select("id", "discount_amount", "discount_type", "name_" . app()->getLocale() . " as name", "main_image")->whereIn("id", $ids)->with(["sizes"])->get();
-	}
+    public function getProductsForCart(array $ids)
+    {
+        return $this->model->select("id", "discount_amount", "discount_type", "name_" . app()->getLocale() . " as name", "main_image")->whereIn("id", $ids)->with(["sizes"])->get();
+    }
 
-	public function newVisit(int $productId)
-	{
-		return $this->model->find($productId)->increment("views");
-	}
+    public function newVisit(int $productId)
+    {
+        return $this->model->find($productId)?->increment("views");
+    }
 }
