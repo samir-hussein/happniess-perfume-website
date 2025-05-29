@@ -3,8 +3,8 @@
     <div class="container">
         <div class="footer-content">
             <div class="footer-column">
-                <h3>{{ __('Happiness Perfume') }}</h3>
-                <p>{{ __('Creating fragrances that evoke joy and lasting memories. Our perfumes are crafted with the finest ingredients to bring happiness to your everyday life.') }}
+                <h3>{{ __('Happniess Perfume') }}</h3>
+                <p>{{ __('Creating fragrances that evoke joy and lasting memories. Our perfumes are crafted with the finest ingredients to bring Happniess to your everyday life.') }}
                 </p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/share/1PVPUd4v2x/" target="_blank"><i
@@ -47,7 +47,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p dir="ltr">&copy; 2025 Happiness Perfume. All Rights Reserved. Designed & Developed by <a
+            <p dir="ltr">&copy; 2025 Happniess Perfume. All Rights Reserved. Designed & Developed by <a
                     target="_blank" href="https://wa.me/+201144435326">Samir Hussein</a> .</p>
         </div>
     </div>

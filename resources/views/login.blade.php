@@ -16,7 +16,7 @@
                 </div>
                 <div class="login-form">
                     <h2>{{ __('Sign In') }}</h2>
-                    <p>{{ __('Welcome back to Happiness Perfume. Please enter your details.') }}</p>
+                    <p>{{ __('Welcome back to Happniess Perfume. Please enter your details.') }}</p>
 
                     <form id="loginForm" action="{{ route('auth.login') }}" method="POST">
                         @csrf
