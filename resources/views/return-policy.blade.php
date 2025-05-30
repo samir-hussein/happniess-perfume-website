@@ -47,7 +47,7 @@
 
             <div class="contact-info">
                 <i class="fab fa-whatsapp"></i>
-                <span><a target="_blank" href="https://wa.me/+201011796422">01011796422</a></span>
+                <span><a target="_blank" rel="noopener noreferrer" href="https://wa.me/+201011796422">01011796422</a></span>
             </div>
             <div class="contact-info">
                 <i class="fas fa-clock"></i>
