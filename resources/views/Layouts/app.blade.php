@@ -17,6 +17,22 @@
     <meta name="robots" content="index, follow">
     <meta name="description" content="@yield('description', 'Happniess Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments.')">
 
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://happniess-perfume.com/" />
+    <meta property="og:title" content="Happniess Perfume | عطور السعادة" />
+    <meta property="og:description"
+        content="Happniess Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments." />
+    <meta property="og:image" content="{{ asset('images/meta.jpg') }}" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://happniess-perfume.com/" />
+    <meta property="twitter:title" content="Happniess Perfume | عطور السعادة" />
+    <meta property="twitter:description"
+        content="Happniess Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments." />
+    <meta property="twitter:image" content="{{ asset('images/meta.jpg') }}" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Parisienne&family=Dancing+Script:wght@700&family=Tajawal:wght@400;500;700&family=Montserrat:wght@300;400;500&display=swap"
