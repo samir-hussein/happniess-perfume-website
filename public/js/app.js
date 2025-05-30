@@ -354,12 +354,12 @@ function handleCartDataView(data)
 				cartItem.innerHTML = `
 					<div class="cart-item">
 			<div class="cart-item-img">
-			<a href="/${locale}/product/${item.product.id}?size=${item.size.size}">
+			<a href="/${locale}/product/${item.product.id}/size/${item.size.size}">
 				<img src="${item.product.main_image}" alt="${item.product.name}">
 			</a>
 			</div>
 			<div class="cart-item-details">
-			<a href="/${locale}/product/${item.product.id}?size=${item.size.size}">
+			<a href="/${locale}/product/${item.product.id}/size/${item.size.size}">
 				<div class="cart-item-title">${item.product.name}</div>
 				</a>
 				<div class="cart-item-size">${item.size.size} ${window.translations.ml}</div>

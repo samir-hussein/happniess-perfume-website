@@ -109,7 +109,7 @@ class ProductRepo extends BaseRepository implements IProductRepo
         }])->latest("id")->paginate($limit, ['*'], 'page', $page);
     }
 
-    public function find(int $id, string|null $size)
+    public function find(int $id, int|null $size)
     {
         $query = $this->model->query();
 

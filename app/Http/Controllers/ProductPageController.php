@@ -10,10 +10,10 @@ class ProductPageController extends Controller
 {
     public function __construct(private IProductService $productService, private IFavoriteService $favoriteService) {}
 
-    public function index(Request $request, string $locale, int $id)
+    public function index(Request $request, string $locale, int $id, int $size)
     {
         return view('product', [
-            "product" => $this->productService->find($id, $request->all()),
+            "product" => $this->productService->find($id, $size),
             "relatedProducts" => $this->productService->relatedProducts($id),
             "favorites" => request()->user() ? $this->favoriteService->getFavoritesByClientId(request()->user()->id) : [],
         ]);

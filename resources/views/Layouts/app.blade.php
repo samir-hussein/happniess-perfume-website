@@ -15,7 +15,7 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}" />
     <meta name="author" content="Samir Hussein">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="@yield('description', 'Happniess Perfume is a premium fragrance brand offering unique and luxurious scents for every occasion. Discover our collection of fine fragrances and elevate your daily moments.')">
+    <meta name="description" content="@yield('description', 'Happniess Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments.')">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
