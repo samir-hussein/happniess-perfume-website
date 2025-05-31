@@ -54,10 +54,6 @@
                         @endif
                     </div>
 
-                    <p class="product-description">
-                        {!! $product->{'description_' . app()->getLocale()} !!}
-                    </p>
-
                     <div class="size-options">
                         <h3 class="size-title">{{ __('Select Size') }}:</h3>
                         <div class="size-buttons">
@@ -77,6 +73,10 @@
                             data-id="{{ $product->id }}" data-size="{{ request()->size }}"><i
                                 class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
                     </div>
+
+                    <p class="product-description">
+                        {!! $product->{'description_' . app()->getLocale()} !!}
+                    </p>
                 </div>
             </div>
 
