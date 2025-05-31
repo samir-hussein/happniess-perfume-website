@@ -55,7 +55,7 @@
                     </div>
 
                     <p class="product-description">
-                        {{ $product->{'description_' . app()->getLocale()} }}
+                        {!! $product->{'description_' . app()->getLocale()} !!}
                     </p>
 
                     <div class="size-options">

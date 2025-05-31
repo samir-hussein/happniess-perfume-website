@@ -22,7 +22,7 @@
 	margin-bottom: 15px;
 	cursor: pointer;
 	transition: transform 0.3s;
-	background-color: rgb(246, 244, 244);
+	background-color: var(--ivory-white);
 }
 
 .main-image:hover {
@@ -43,7 +43,7 @@
 	cursor: pointer;
 	transition: all 0.3s;
 	border: 2px solid transparent;
-	background-color: rgb(246, 244, 244);
+	background-color: var(--ivory-white);
 }
 
 .thumbnail:hover,
@@ -101,7 +101,7 @@
 
 .product-description {
 	margin: 25px 0;
-	line-height: 1.8;
+	white-space: pre-line;
 	color: #555;
 }
 
