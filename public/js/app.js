@@ -347,10 +347,16 @@ function handleCheckoutDataView(data)
 	const subtotal = document.getElementById('subtotal');
 	subtotal.textContent = data.total + ' ' + window.translations.egp;
 	subtotal.dataset.value = data.totalAsNumber;
-	let shippingElement = document.getElementById('shipping').dataset.value;
+	const shipping = document.getElementById('shipping');
+	if(shipping.dataset.value && data.shippingCost != shipping.dataset.value){
+		data.shippingCost = shipping.dataset.value;
+	}else{
+		shipping.textContent = data.shippingCost + ' ' + window.translations.egp;
+		shipping.dataset.value = data.shippingCost;
+	}
 	let discountElement = document.getElementById('discount-amount-value').dataset.value;
 	const total = document.getElementById('total');
-	total.textContent = formatNumber(parseFloat(data.totalAsNumber) + parseFloat(shippingElement) - parseFloat(discountElement)) + ' ' + window.translations.egp;
+	total.textContent = formatNumber(parseFloat(data.totalAsNumber) + parseFloat(data.shippingCost) - parseFloat(discountElement)) + ' ' + window.translations.egp;
 }
 
 function formatNumber(num) {

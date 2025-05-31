@@ -137,8 +137,10 @@
                         <div class="shipping-methods">
                             @foreach ($shippingMethods as $shippingMethod)
                                 <div class="shipping-method">
-                                    <input data-cost="{{ $shippingMethod->cost }}" type="radio"
-                                        id="{{ str_replace([' ', '&'], '', $shippingMethod->name_en) }}" disabled>
+                                    <input data-cost="{{ $shippingMethod->cost }}"
+                                        data-minimum_order_amount="{{ $shippingMethod->minimum_order_amount }}"
+                                        type="radio" id="{{ str_replace([' ', '&'], '', $shippingMethod->name_en) }}"
+                                        disabled>
                                     <div class="shipping-method-details">
                                         <div class="shipping-method-header">
                                             <label
@@ -176,7 +178,7 @@
 
                     <div class="order-item">
                         <span>{{ __('Shipping') }}</span>
-                        <span id="shipping" data-value="0">0 {{ __('EGP') }}</span>
+                        <span id="shipping" data-value="">0 {{ __('EGP') }}</span>
                     </div>
 
                     <div class="order-total">
@@ -301,7 +303,7 @@
             const cairoGizaGovernorates = ['cairo', 'giza'];
             const remoteAreasGovernorates = ['matruh', 'new_valley', 'north_sinai', 'south_sinai', 'red_sea'];
 
-            chooseShippingMethod(governorateSelect.value);
+            // chooseShippingMethod(governorateSelect.value);
 
             // Governorate change handler
             governorateSelect.addEventListener('change', function() {
@@ -328,20 +330,41 @@
                 if (cairoGizaGovernorates.includes(selectedGovernorate)) {
                     cairoGizaShipping.disabled = false;
                     cairoGizaShipping.checked = true;
-                    updateShippingCost(cairoGizaShipping.dataset.cost);
+                    if (cairoGizaShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
+                            'subtotal').dataset.value) >= parseFloat(cairoGizaShipping.dataset
+                            .minimum_order_amount)) {
+                        updateShippingCost(0);
+                    } else {
+                        updateShippingCost(cairoGizaShipping.dataset.cost);
+                    }
                 } else if (remoteAreasGovernorates.includes(selectedGovernorate)) {
                     remoteAreasShipping.disabled = false;
                     remoteAreasShipping.checked = true;
-                    updateShippingCost(remoteAreasShipping.dataset.cost);
+                    if (remoteAreasShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
+                            'subtotal').dataset.value) >= parseFloat(remoteAreasShipping.dataset
+                            .minimum_order_amount)) {
+                        updateShippingCost(0);
+                    } else {
+                        updateShippingCost(remoteAreasShipping.dataset.cost);
+                    }
                 } else {
                     otherGovernoratesShipping.disabled = false;
                     otherGovernoratesShipping.checked = true;
-                    updateShippingCost(otherGovernoratesShipping.dataset.cost);
+                    if (otherGovernoratesShipping.dataset.minimum_order_amount && parseFloat(document
+                            .getElementById(
+                                'subtotal').dataset.value) >= parseFloat(otherGovernoratesShipping.dataset
+                            .minimum_order_amount)) {
+                        updateShippingCost(0);
+                    } else {
+                        updateShippingCost(otherGovernoratesShipping.dataset.cost);
+                    }
                 }
             }
 
             // Update shipping cost and totals
             function updateShippingCost(cost) {
+                console.log(cost);
+
                 const discountElement = document.getElementById('discount-amount-value');
                 const subtotal = document.getElementById('subtotal').dataset.value;
                 const shippingElement = document.getElementById('shipping');

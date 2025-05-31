@@ -2,8 +2,10 @@
 
 namespace App\Handlers;
 
-use App\Interfaces\IProductRepo;
 use App\Interfaces\ICartRepo;
+use App\Models\ShippingMethod;
+use App\Interfaces\IProductRepo;
+use Illuminate\Support\Facades\Auth;
 
 class GetCartProductsHandler
 {
@@ -63,11 +65,18 @@ class GetCartProductsHandler
 				$removedSizes = [];
 			}
 
+			$shippingCost = 0;
+			if ($userId) {
+				$shippingCost = ShippingMethod::calculateShipping(Auth::user()->city, $cartProductsTotal);
+			}
+
+
 			return [
 				"products" => $cartProducts,
 				"total" => number_format($cartProductsTotal, 2, '.', ','),
 				"totalAsNumber" => $cartProductsTotal,
 				"removedSizes" => $removedSizes,
+				"shippingCost" => $shippingCost,
 			];
 		}
 
@@ -76,6 +85,7 @@ class GetCartProductsHandler
 			"total" => 0,
 			"totalAsNumber" => 0,
 			"removedSizes" => [],
+			"shippingCost" => 0,
 		];
 	}
 }
