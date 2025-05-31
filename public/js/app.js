@@ -159,9 +159,10 @@ function updateLoggedUserCartCount() {
 	})
 	.then(response => response.json())
 	.then(data => {
+		let count = parseInt(data, 10) || 0;
 		let cartCount = document.querySelector('.cart-count');
-		cartCount.textContent = data;
-		cartCount.style.display = data > 0 ? 'flex' : 'none';
+		cartCount.textContent = count;
+		cartCount.style.display = count > 0 ? 'flex' : 'none';
 	})
 	.catch(error => console.error(error));
 }
