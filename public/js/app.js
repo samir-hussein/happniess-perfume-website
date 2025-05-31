@@ -285,6 +285,16 @@ function getLoggedUserCartProducts(){
 
 function getLocalStorageCartProducts(){
 	// Guest user
+	let cartData = localStorage.getItem('cart');
+
+	if(cartData == null || cartData.length == 0 || cartData == '[]'){
+		cartData = [];
+
+		handleCartDataView({products: cartData, total: 0});
+		updateCartCount();
+		return;
+	}
+
 	fetch('/cart', {
 		method: 'POST',
 		headers: {
@@ -293,7 +303,7 @@ function getLocalStorageCartProducts(){
 			'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 		},
 		body: JSON.stringify({
-			products: JSON.parse(localStorage.getItem('cart')),
+			products: JSON.parse(cartData),
 		})
 	})
 	.then(response => response.json())
@@ -302,7 +312,7 @@ function getLocalStorageCartProducts(){
 
 		if(data.removedSizes.length > 0) {
 			data.removedSizes.forEach(size => {
-				let cart = JSON.parse(localStorage.getItem('cart')) || [];
+				let cart = cartData || [];
 				cart = cart.filter(item => !(item.product_id == size.product_id && item.size == size.size));
 				localStorage.setItem('cart', JSON.stringify(cart));
 				updateCartCount();
