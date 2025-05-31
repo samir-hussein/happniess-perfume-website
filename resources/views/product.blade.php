@@ -68,7 +68,7 @@
 
                     <div class="product-actions">
                         <button class="add-to-cart" data-id="{{ $product->id }}" data-size="{{ request()->size }}"
-                            onclick="addToCart(this)">{{ __('Add to Cart') }}</button>
+                            onclick="addToCart(this)"><i class="fas fa-cart-plus"></i></button>
                         <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
                             data-id="{{ $product->id }}" data-size="{{ request()->size }}"><i
                                 class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>

@@ -416,6 +416,11 @@ header {
 	color: var(--royal-gold);
 }
 
+.size{
+	font-size: 14px;
+	color: var(--deep-bronze);
+}
+
 /* Search Bar */
 .search-container {
 	margin: 40px auto;
@@ -879,7 +884,8 @@ header {
 
 .add-to-cart {
 	background-color: var(--royal-gold);
-	color: var(--charcoal-black);
+	color: var(--ivory-white);
+	font-size: 20px;
 }
 
 .add-to-cart:hover {
@@ -890,6 +896,7 @@ header {
 	background-color: transparent;
 	border: 1px solid var(--deep-bronze);
 	color: var(--deep-bronze);
+	font-size: 20px;
 }
 
 .add-to-fav.favorited {

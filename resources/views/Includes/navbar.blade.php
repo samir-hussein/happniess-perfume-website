@@ -26,8 +26,14 @@
                 <a href="{{ route('order.index', app()->getLocale()) }}">{{ __('My Orders') }}</a>
 
                 <div>
-                    <a
-                        href="{{ url((request()->segment(1) === 'en' ? 'ar' : 'en') . '/' . request()->segment(2) . '/' . request()->segment(3)) }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}">
+                    @php
+                        $segments = request()->segments();
+                        $segments[0] = request()->segment(1) === 'en' ? 'ar' : 'en';
+                        $url =
+                            url(implode('/', $segments)) .
+                            (request()->getQueryString() ? '?' . request()->getQueryString() : '');
+                    @endphp
+                    <a href="{{ $url }}">
                         <i class="fas fa-globe"></i>
                         @if (app()->getLocale() === 'en')
                             {{ config('app.locales.ar') }}
