@@ -44,6 +44,8 @@ use App\Interfaces\IPromotionalCodeRepo;
 use App\Repositories\ShippingMethodRepo;
 use App\Repositories\PromotionalCodeRepo;
 use App\Interfaces\IShippingMethodService;
+use App\Interfaces\IFirebaseService;
+use App\Services\FirebaseService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -72,6 +74,12 @@ class AppServiceProvider extends ServiceProvider
 		$this->app->bind(IOrderService::class, OrderService::class);
 		$this->app->bind(IOrderLogRepo::class, OrderLogRepo::class);
 		$this->app->bind(IOrderItemsRepo::class, OrderItemsRepo::class);
+		$this->app->bind(IFirebaseService::class, FirebaseService::class);
+		
+		// Register Firebase Facade
+		$this->app->singleton('firebase', function ($app) {
+			return $app->make(IFirebaseService::class);
+		});
 	}
 
 	/**

@@ -2,10 +2,13 @@
 
 namespace App\Handlers;
 
+use App\Models\FCMToken;
+use App\Facades\Firebase;
 use App\Interfaces\ICartRepo;
 use App\Interfaces\IOrderRepo;
 use App\Models\ShippingMethod;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Handlers\ApplyCouponHandler;
 use Illuminate\Support\Facades\Auth;
 use App\Handlers\GetCartProductsHandler;
@@ -92,6 +95,21 @@ class PlaceOrderHandler
         } catch (\Throwable $th) {
             DB::rollBack();
             throw new \Exception($th->getMessage());
+        }
+
+        // send notification
+        $payload = [
+            'title' => "New Order",
+            'message' => "New order has been placed by " . request()->user()->name . " at " . now()->format('Y-m-d H:i:s') . " with order number " . $order->order_number . " and total price " . $order->total_price . " EGP",
+            'url' => env("PANEL_URL") . "/orders/" . $order->id
+        ];
+
+        $tokens = FCMToken::get()->pluck('token')->toArray();
+
+        try {
+            Firebase::sendNotification($tokens, $payload);
+        } catch (\Throwable $th) {
+            Log::info($th->getMessage() . " : " . $th->getTraceAsString());
         }
 
         // return order data
