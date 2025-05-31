@@ -388,12 +388,15 @@ function handleCartDataView(data)
 			cartTotal.textContent = data.total + " " + window.translations.egp;
 			const checkoutBtn = document.querySelector('.checkout-btn');
 			const cartTotalDiv = document.querySelector('.cart-total');
+			const browseBtn = document.getElementById('browseBtn');
 			if(data.products.length > 0){
 				checkoutBtn.style.display = 'block';
 				cartTotalDiv.style.display = 'flex';
+				browseBtn.style.display = 'none';
 			}else{
 				checkoutBtn.style.display = 'none';
 				cartTotalDiv.style.display = 'none';
+				browseBtn.style.display = 'block';
 			}
 }
 

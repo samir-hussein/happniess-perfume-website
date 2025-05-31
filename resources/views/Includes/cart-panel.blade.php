@@ -15,4 +15,7 @@
 
     <a href="{{ route('checkout', app()->getLocale()) }}" class="checkout-btn"
         style="display: none;">{{ __('Proceed to Checkout') }}</a>
+
+    <a href="{{ route('home', app()->getLocale()) }}" class="checkout-btn" id="browseBtn"
+        style="display: none">{{ __('Browse Products') }}</a>
 </div>
