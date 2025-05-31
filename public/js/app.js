@@ -136,6 +136,10 @@ function addToCartLoggedUser(e) {
 			quantity: 1,
 		})
 	})
+	.then(response => response.json())
+	.then(data => {
+		// update cart count
+	})
 	.catch(error => console.error(error));
 }
 
