@@ -100,7 +100,6 @@ function addToCart(e) {
 		// Guest user
 		addToCartLocalStorage(e);
 	}
-	updateCartCount();
 	showToast(window.translations.product_added_to_cart, 'success');
 }
 
@@ -117,6 +116,7 @@ function addToCartLocalStorage(e) {
 	}
 
 	localStorage.setItem('cart', JSON.stringify(cart));
+	updateCartCount();
 }
 
 function addToCartLoggedUser(e) {
@@ -139,6 +139,7 @@ function addToCartLoggedUser(e) {
 	.then(response => response.json())
 	.then(data => {
 		// update cart count
+		updateCartCount();
 	})
 	.catch(error => console.error(error));
 }
