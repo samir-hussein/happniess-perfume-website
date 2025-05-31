@@ -73,12 +73,12 @@
                             data-id="{{ $product->id }}" data-size="{{ request()->size }}"><i
                                 class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
                     </div>
-
-                    <p class="product-description">
-                        {!! $product->{'description_' . app()->getLocale()} !!}
-                    </p>
                 </div>
             </div>
+
+            <p class="product-description">
+                {!! $product->{'description_' . app()->getLocale()} !!}
+            </p>
 
             <!-- Review Form -->
             {{-- <div class="review-form-container">
