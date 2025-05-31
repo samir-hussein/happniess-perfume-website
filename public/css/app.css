@@ -886,6 +886,9 @@ header {
 	background-color: var(--royal-gold);
 	color: var(--ivory-white);
 	font-size: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .add-to-cart:hover {
