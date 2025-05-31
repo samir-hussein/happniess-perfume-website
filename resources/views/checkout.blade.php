@@ -304,6 +304,7 @@
             const remoteAreasGovernorates = ['matruh', 'new_valley', 'north_sinai', 'south_sinai', 'red_sea'];
 
             // chooseShippingMethod(governorateSelect.value);
+            chooseShippingMethod(governorateSelect.value, true);
 
             // Governorate change handler
             governorateSelect.addEventListener('change', function() {
@@ -311,7 +312,7 @@
                 chooseShippingMethod(selectedGovernorate);
             });
 
-            function chooseShippingMethod(selectedGovernorate) {
+            function chooseShippingMethod(selectedGovernorate, withoutCost = false) {
                 // Reset all shipping methods
                 cairoGizaShipping.checked = false;
                 otherGovernoratesShipping.checked = false;
@@ -322,7 +323,7 @@
                 remoteAreasShipping.disabled = true;
 
                 if (!selectedGovernorate) {
-                    updateShippingCost(0);
+                    if (!withoutCost) updateShippingCost(0);
                     return;
                 };
 
@@ -330,33 +331,39 @@
                 if (cairoGizaGovernorates.includes(selectedGovernorate)) {
                     cairoGizaShipping.disabled = false;
                     cairoGizaShipping.checked = true;
-                    if (cairoGizaShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
-                            'subtotal').dataset.value) >= parseFloat(cairoGizaShipping.dataset
-                            .minimum_order_amount)) {
-                        updateShippingCost(0);
-                    } else {
-                        updateShippingCost(cairoGizaShipping.dataset.cost);
+                    if (!withoutCost) {
+                        if (cairoGizaShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
+                                'subtotal').dataset.value) >= parseFloat(cairoGizaShipping.dataset
+                                .minimum_order_amount)) {
+                            updateShippingCost(0);
+                        } else {
+                            updateShippingCost(cairoGizaShipping.dataset.cost);
+                        }
                     }
                 } else if (remoteAreasGovernorates.includes(selectedGovernorate)) {
                     remoteAreasShipping.disabled = false;
                     remoteAreasShipping.checked = true;
-                    if (remoteAreasShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
-                            'subtotal').dataset.value) >= parseFloat(remoteAreasShipping.dataset
-                            .minimum_order_amount)) {
-                        updateShippingCost(0);
-                    } else {
-                        updateShippingCost(remoteAreasShipping.dataset.cost);
+                    if (!withoutCost) {
+                        if (remoteAreasShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
+                                'subtotal').dataset.value) >= parseFloat(remoteAreasShipping.dataset
+                                .minimum_order_amount)) {
+                            updateShippingCost(0);
+                        } else {
+                            updateShippingCost(remoteAreasShipping.dataset.cost);
+                        }
                     }
                 } else {
                     otherGovernoratesShipping.disabled = false;
                     otherGovernoratesShipping.checked = true;
-                    if (otherGovernoratesShipping.dataset.minimum_order_amount && parseFloat(document
-                            .getElementById(
-                                'subtotal').dataset.value) >= parseFloat(otherGovernoratesShipping.dataset
-                            .minimum_order_amount)) {
-                        updateShippingCost(0);
-                    } else {
-                        updateShippingCost(otherGovernoratesShipping.dataset.cost);
+                    if (!withoutCost) {
+                        if (otherGovernoratesShipping.dataset.minimum_order_amount && parseFloat(document
+                                .getElementById(
+                                    'subtotal').dataset.value) >= parseFloat(otherGovernoratesShipping.dataset
+                                .minimum_order_amount)) {
+                            updateShippingCost(0);
+                        } else {
+                            updateShippingCost(otherGovernoratesShipping.dataset.cost);
+                        }
                     }
                 }
             }
