@@ -60,7 +60,6 @@ favButtons.forEach(button => {
 		}
 
 		addToFavorites(this);
-		updateFavoriteCount();
 	});
 });
 
@@ -87,6 +86,7 @@ function addToFavorites(button) {
 			if (window.location.pathname.split('/').pop() === 'favorite') {
 				window.location.reload();
 			}
+			updateFavoriteCount();
 		}
 	})
 	.catch(error => console.error(error));
