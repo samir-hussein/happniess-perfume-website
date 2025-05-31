@@ -58,7 +58,7 @@
                         <h3 class="size-title">{{ __('Select Size') }}:</h3>
                         <div class="size-buttons">
                             @foreach ($product->sizes as $size)
-                                <a href="?size={{ $size->size }}"
+                                <a href="{{ route('product', ['locale' => app()->getLocale(), 'id' => $product->id, 'size' => $size->size]) }}"
                                     class="size-btn {{ $size->size == (int) request()->size ? 'active' : '' }}"
                                     data-size="{{ $size->size }}" data-price="{{ $size->price }}">{{ $size->size }}
                                     {{ __('ml') }}</a>
