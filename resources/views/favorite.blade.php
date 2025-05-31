@@ -65,9 +65,11 @@
                             <div class="product-info">
                                 <a
                                     href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-                                    <h3>{{ $product->{'name_' . app()->getLocale()} }}</h3>
+                                    <h3 dir="auto">{{ $product->{'name_' . app()->getLocale()} }} -
+                                        <span class="size">{{ $product->sizes->first()->size }}
+                                            {{ __('ml') }}</span>
+                                    </h3>
                                 </a>
-                                <p>{{ $product->sizes->first()->size }} {{ __('ml') }}</p>
                                 @if ($product->discount_amount > 0)
                                     <div class="product-price">
                                         <span class="discounted-price">{{ $product->sizes->first()->price }}
@@ -81,8 +83,8 @@
                                 @endif
                                 <div class="product-actions">
                                     <button class="add-to-cart" data-id="{{ $product->id }}"
-                                        data-size="{{ $product->sizes->first()->size }}"
-                                        onclick="addToCart(this)">{{ __('Add to Cart') }}</button>
+                                        data-size="{{ $product->sizes->first()->size }}" onclick="addToCart(this)"><i
+                                            class="fas fa-cart-plus"></i></button>
                                     <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
                                         data-id="{{ $product->id }}" data-size="{{ $product->sizes->first()->size }}"><i
                                             class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
