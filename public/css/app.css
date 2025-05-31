@@ -1288,4 +1288,8 @@ footer {
 	.filter-options {
 		flex-direction: column;
 	}
+
+	.product-card{
+		box-shadow: none;
+	}
 }
