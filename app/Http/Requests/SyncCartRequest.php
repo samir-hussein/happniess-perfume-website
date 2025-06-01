@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Exception;
 
 class SyncCartRequest extends FormRequest
 {
@@ -16,16 +15,26 @@ class SyncCartRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        if (count($this->products ?? []) > 100) {
+            $validator = \Illuminate\Support\Facades\Validator::make([], []);
+            $validator->errors()->add('products', "You can't add more than 100 products to the cart");
+            $this->failedValidation($validator);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        if (count($this->products ?? []) > 100) {
-            throw new Exception("You can't add more than 100 products to the cart");
-        }
-
         return [
             "products" => "required|array|max:100",
             "products.*.product_id" => "required|exists:products,id",
