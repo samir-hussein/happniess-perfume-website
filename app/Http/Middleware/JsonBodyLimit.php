@@ -8,20 +8,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class JsonBodyLimit
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next): Response
-    {
-        if ($request->isJson()) {
-            $raw = file_get_contents('php://input');
-            if (strlen($raw) > 512) {
-                return response()->json(['message' => 'JSON too large'], 413);
-            }
-        }
+	/**
+	 * Handle an incoming request.
+	 *
+	 * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+	 */
+	public function handle(Request $request, Closure $next): Response
+	{
+		$contentLength = $request->header('Content-Length');
+		$contentType = $request->header('Content-Type');
 
-        return $next($request);
-    }
+		if ($contentType === 'application/json' && $contentLength > 512) {
+			return response()->json(['message' => 'JSON too large'], 413);
+		}
+
+		return $next($request);
+	}
 }
