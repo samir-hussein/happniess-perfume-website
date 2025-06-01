@@ -12,7 +12,7 @@ use App\Http\Controllers\ProductPageController;
 use App\Http\Controllers\ShippingPolicyController;
 
 Route::get('/', [HomePageController::class, "index"])->middleware('local')->name("home");
-Route::post('/cart', [CartController::class, "getCartProducts"])->name("cart")->middleware(['throttle:100,1', 'json-body-limit']);
+Route::post('/cart', [CartController::class, "getCartProducts"])->name("cart")->middleware(['json-body-limit', 'throttle:100,1']);
 
 // Route to redirect to Google's OAuth page
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
@@ -72,5 +72,5 @@ Route::middleware('auth')->group(function () {
         Route::post('/favorite/add', [FavoriteController::class, "addToFavorite"])->name("favorite.add");
     });
 
-    Route::post('/cart/sync', [CartController::class, "syncCart"])->name("cart.sync")->middleware(['throttle:2,1', 'json-body-limit']);
+    Route::post('/cart/sync', [CartController::class, "syncCart"])->name("cart.sync")->middleware(['json-body-limit', 'throttle:2,1']);
 });
