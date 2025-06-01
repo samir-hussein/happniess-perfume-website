@@ -21,6 +21,12 @@ class SyncCartRequest extends FormRequest
 	 */
 	public function rules(): array
 	{
+		if (count($this->products ?? []) > 100) {
+			throw new \Illuminate\Validation\ValidationException([
+				"products" => "You can't add more than 100 products to the cart",
+			]);
+		}
+
 		return [
 			"products" => "required|array|max:100",
 			"products.*.product_id" => "required|exists:products,id",
