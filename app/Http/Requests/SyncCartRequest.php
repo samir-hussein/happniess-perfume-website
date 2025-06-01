@@ -21,7 +21,7 @@ class SyncCartRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if (count($this->products ?? []) > 100) {
+        if (isset($this->products[100])) {
             $validator = \Illuminate\Support\Facades\Validator::make([], []);
             $validator->errors()->add('products', "You can't add more than 100 products");
             $this->failedValidation($validator);
