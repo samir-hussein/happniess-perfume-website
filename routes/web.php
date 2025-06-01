@@ -12,7 +12,7 @@ use App\Http\Controllers\ProductPageController;
 use App\Http\Controllers\ShippingPolicyController;
 
 Route::get('/', [HomePageController::class, "index"])->middleware('local')->name("home");
-Route::post('/cart', [CartController::class, "getCartProducts"])->name("cart")->middleware('throttle:100,1');
+Route::post('/cart', [CartController::class, "getCartProducts"])->name("cart")->middleware(['throttle:100,1', 'json-body-limit']);
 
 // Route to redirect to Google's OAuth page
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
