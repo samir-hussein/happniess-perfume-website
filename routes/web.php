@@ -32,7 +32,7 @@ Route::middleware(['local', 'guest'])->prefix('{locale}')->group(function () {
     })->name('register');
 });
 
-Route::middleware('guest')->group(function () {
+Route::middleware(['guest', 'throttle:6,10'])->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 });
@@ -49,21 +49,27 @@ Route::middleware(['local'])->prefix('{locale}')->group(function () {
 Route::middleware(['local', 'auth'])->prefix('{locale}')->group(function () {
     Route::get('/favorite', [FavoriteController::class, "index"])->name("favorite");
     Route::get('/checkout', [CheckOutController::class, "index"])->name("checkout");
-    Route::post('/checkout/apply-coupon', [CheckOutController::class, "applyCoupon"])->name("checkout.apply-coupon");
-    Route::post('/checkout/place-order', [CheckOutController::class, "placeOrder"])->name("checkout.place-order");
     Route::get('/order-confirmation', [CheckOutController::class, "orderConfirmation"])->name("order-confirmation");
     Route::get('/order', [OrderController::class, "index"])->name("order.index");
     Route::get('/order/logs/{orderId}', [OrderController::class, "getOrderLogs"])->name("order.logs");
-    Route::put('/order/cancel/{orderId}', [OrderController::class, "cancelOrder"])->name("order.cancel");
-    Route::post('/order/reorder/{orderId}', [OrderController::class, "reorder"])->name("order.reorder");
+
+    Route::middleware('throttle:10,10')->group(function () {
+        Route::post('/checkout/apply-coupon', [CheckOutController::class, "applyCoupon"])->name("checkout.apply-coupon");
+        Route::post('/checkout/place-order', [CheckOutController::class, "placeOrder"])->name("checkout.place-order");
+        Route::post('/order/reorder/{orderId}', [OrderController::class, "reorder"])->name("order.reorder");
+        Route::put('/order/cancel/{orderId}', [OrderController::class, "cancelOrder"])->name("order.cancel");
+    });
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('/cart/add', [CartController::class, "addToCart"])->name("cart.add");
     Route::get('/cart/count', [CartController::class, "getCartCount"])->name("cart.count");
-    Route::delete('/cart/remove', [CartController::class, "removeFromCart"])->name("cart.remove");
-    Route::post('/cart/update', [CartController::class, "updateCartQuantity"])->name("cart.update");
-    Route::post('/cart/sync', [CartController::class, "syncCart"])->name("cart.sync");
-    Route::post('/favorite/add', [FavoriteController::class, "addToFavorite"])->name("favorite.add");
     Route::get('/favorite/count', [FavoriteController::class, "getFavoritesCount"])->name("favorite.count");
+
+    Route::middleware('throttle:50,10')->group(function () {
+        Route::post('/cart/add', [CartController::class, "addToCart"])->name("cart.add");
+        Route::delete('/cart/remove', [CartController::class, "removeFromCart"])->name("cart.remove");
+        Route::post('/cart/update', [CartController::class, "updateCartQuantity"])->name("cart.update");
+        Route::post('/cart/sync', [CartController::class, "syncCart"])->name("cart.sync");
+        Route::post('/favorite/add', [FavoriteController::class, "addToFavorite"])->name("favorite.add");
+    });
 });

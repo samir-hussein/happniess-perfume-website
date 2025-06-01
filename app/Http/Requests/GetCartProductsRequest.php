@@ -23,10 +23,10 @@ class GetCartProductsRequest extends FormRequest
     {
         return [
             "user_id" => "exists:clients,id|required_without:products",
-            "products" => "array|required_without:user_id",
+            "products" => "array|required_without:user_id|max:100",
             "products.*.product_id" => "required|exists:products,id",
             "products.*.size" => "required|exists:product_sizes,size",
-            "products.*.quantity" => "required|numeric|min:1",
+            "products.*.quantity" => "required|numeric|min:1|max:100",
         ];
     }
 
@@ -37,6 +37,8 @@ class GetCartProductsRequest extends FormRequest
             "products.*.product_id.exists" => "Product not found",
             "products.*.size.exists" => "Size not found",
             "products.*.quantity.min" => "Quantity must be at least 1",
+            "products.*.quantity.max" => "Quantity must be at most 100",
+            "products.max" => "You can't add more than 100 products to the cart",
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Handlers;
 use App\Interfaces\ICartRepo;
 use App\Models\ShippingMethod;
 use App\Interfaces\IProductRepo;
+use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Auth;
 
 class GetCartProductsHandler
@@ -16,6 +17,10 @@ class GetCartProductsHandler
 		$removedSizes = [];
 
 		if ($userId) {
+			if ($userId != Auth::user()->id) {
+				throw new GeneralException("You are not authorized to access this cart");
+			}
+
 			$data = $this->cartRepo->getCartProductsByClientId($userId)->toArray();
 		}
 

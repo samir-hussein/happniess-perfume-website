@@ -7,6 +7,7 @@ use App\Facades\Firebase;
 use App\Interfaces\IOrderRepo;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\GeneralException;
+use Illuminate\Support\Facades\Auth;
 
 class CancelOrderHandler
 {
@@ -15,6 +16,10 @@ class CancelOrderHandler
 	public function __invoke(int $orderId)
 	{
 		$order = $this->orderRepo->getById($orderId);
+
+		if ($order->client_id != Auth::user()->id) {
+			throw new GeneralException("You are not authorized to cancel this order");
+		}
 
 		if ($order->order_status != 'pending') {
 			throw new GeneralException("You can't cancel this order");
