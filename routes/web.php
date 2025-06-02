@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart/count', [CartController::class, "getCartCount"])->name("cart.count");
     Route::get('/favorite/count', [FavoriteController::class, "getFavoritesCount"])->name("favorite.count");
 
-    Route::middleware('throttle:50,10')->group(function () {
+    Route::middleware('throttle:60,10')->group(function () {
         Route::post('/cart/add', [CartController::class, "addToCart"])->name("cart.add");
         Route::delete('/cart/remove', [CartController::class, "removeFromCart"])->name("cart.remove");
         Route::post('/cart/update', [CartController::class, "updateCartQuantity"])->name("cart.update");
