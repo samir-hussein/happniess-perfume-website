@@ -1,4 +1,4 @@
-LimitRequestBody 300
+LimitRequestBody 5
 
 <IfModule mod_rewrite.c>
 	<IfModule mod_negotiation.c>
