@@ -53,7 +53,7 @@ Route::middleware(['local', 'auth'])->prefix('{locale}')->group(function () {
     Route::get('/order', [OrderController::class, "index"])->name("order.index");
     Route::get('/order/logs/{orderId}', [OrderController::class, "getOrderLogs"])->name("order.logs");
 
-    Route::middleware('throttle:10,10')->group(function () {
+    Route::middleware('throttle:60,10')->group(function () {
         Route::post('/checkout/apply-coupon', [CheckOutController::class, "applyCoupon"])->name("checkout.apply-coupon");
         Route::post('/checkout/place-order', [CheckOutController::class, "placeOrder"])->name("checkout.place-order");
         Route::post('/order/reorder/{orderId}', [OrderController::class, "reorder"])->name("order.reorder");
