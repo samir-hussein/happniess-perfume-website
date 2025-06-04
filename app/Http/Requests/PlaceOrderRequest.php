@@ -37,7 +37,6 @@ class PlaceOrderRequest extends FormRequest
 				Rule::unique('clients', 'phone')->ignore(request()->user()->id),
 				'regex:/^01[0125][0-9]{8}$/',
 			],
-
 		];
 	}
 

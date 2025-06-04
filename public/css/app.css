@@ -416,6 +416,18 @@ header {
 	color: var(--royal-gold);
 }
 
+.browse-btn{
+	display: none;
+	padding-top: 40px;
+}
+
+.browse-btn p{
+	font-size: 18px;
+	color: var(--deep-bronze);
+	text-align: center;
+	margin-bottom: 20px;
+}
+
 .size{
 	font-size: 14px;
 	color: var(--deep-bronze);

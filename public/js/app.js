@@ -386,8 +386,8 @@ function handleCartDataView(data)
 				</a>
 				<div class="cart-item-size">${item.size.size} ${window.translations.ml}</div>
 				<div class="cart-item-price-container">
-				<div class="cart-item-price">${item.size.priceAfterDiscount} ${window.translations.egp}</div>
-				${item.size.priceAfterDiscount != item.size.price ? `<div class="cart-item-priceAfterDiscount">${item.size.price} ${window.translations.egp}</div>` : ''}
+				<div class="cart-item-price">${formatNumber(item.size.priceAfterDiscount)} ${window.translations.egp}</div>
+				${item.size.priceAfterDiscount != item.size.price ? `<div class="cart-item-priceAfterDiscount">${formatNumber(item.size.price)} ${window.translations.egp}</div>` : ''}
 				</div>
 				<div class="cart-item-quantity">
 					<div class="quantity-btn minus" data-id="${item.product.id}" data-size="${item.size.size}" onclick="updateCartQuantity(this)">-</div>
