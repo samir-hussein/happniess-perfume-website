@@ -23,19 +23,19 @@
             }
 
             .product-info h3 {
-                font-size: 12px;
+                font-size: 14px;
             }
 
             .size {
-                font-size: 10px;
-            }
-
-            .product-price {
                 font-size: 12px;
             }
 
+            .product-price {
+                font-size: 14px;
+            }
+
             .discounted-price {
-                font-size: 9px;
+                font-size: 11px;
             }
         }
     </style>
