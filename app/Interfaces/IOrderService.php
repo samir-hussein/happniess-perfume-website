@@ -11,4 +11,6 @@ interface IOrderService
 	public function getOrderLogs(int $orderId);
 	public function cancelOrder(int $orderId);
 	public function reorder(int $orderId);
+	public function getInvoice(int $orderId);
+	public function checkPaymentStatus(int $orderId);
 }

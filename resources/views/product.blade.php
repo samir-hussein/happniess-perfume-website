@@ -67,6 +67,12 @@
                     </div>
 
                     <div class="product-actions">
+                        <form
+                            action="{{ route('buy.now', ['locale' => app()->getLocale(), 'product_id' => $product->id, 'size' => request()->size]) }}"
+                            method="POST">
+                            @csrf
+                            <button type="submit" class="buy-now">{{ __('Buy Now') }}</button>
+                        </form>
                         <button class="add-to-cart" data-id="{{ $product->id }}" data-size="{{ request()->size }}"
                             onclick="addToCart(this)"><i class="fas fa-cart-plus"></i></button>
                         <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"

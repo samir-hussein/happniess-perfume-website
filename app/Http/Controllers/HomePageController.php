@@ -23,4 +23,19 @@ class HomePageController extends Controller
             "favorites" => request()->user() ? $this->favoriteService->getFavoritesByClientId(request()->user()->id) : [],
         ]);
     }
+
+    public function products(Request $request)
+    {
+        $data = $request->all();
+        $data["limit"] = 16;
+        return view("products", [
+            "products" => $this->productService->getAll($data),
+            "categories" => $this->categoryService->getAll(),
+            "minPrice" => $this->productService->minmumPrice(),
+            "maxPrice" => $this->productService->maximumPrice(),
+            "tags" => $this->productService->tags(),
+            "sizes" => $this->productService->sizes(),
+            "favorites" => request()->user() ? $this->favoriteService->getFavoritesByClientId(request()->user()->id) : [],
+        ]);
+    }
 }

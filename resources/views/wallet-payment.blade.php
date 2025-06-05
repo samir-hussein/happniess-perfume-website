@@ -71,7 +71,7 @@
         .confirmation-icon {
             font-size: 80px;
             color: var(--royal-gold);
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         .confirmation-message {
@@ -79,14 +79,14 @@
             margin: 0 auto;
         }
 
-        .confirmation-message h1 {
+        h1 {
             font-size: 36px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: var(--deep-bronze);
         }
 
-        .confirmation-message p {
-            margin-bottom: 30px;
+        p {
+            margin-bottom: 10px;
             font-size: 18px;
         }
 
@@ -111,6 +111,25 @@
             justify-content: space-between;
             margin-bottom: 15px;
         }
+
+        .spinner {
+            display: none;
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top-color: #3498db;
+            /* You can change this color */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 50px auto;
+            /* Center horizontally */
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -120,20 +139,25 @@
     <!-- Confirmation Content -->
     <div class="container">
         <div class="confirmation-container">
+            <h1>{{ __('Mobile Wallet Payment') }}</h1>
+            <p>{{ __('Scan the QR code with your mobile wallet app') }}
+            </p>
+            <p>{{ __('This page will automatically check for payment confirmation.') }}</p>
             <div class="confirmation-icon">
-                <i class="fas fa-check-circle"></i>
+                <div id="qrcode-image"></div>
+                <div class="spinner" id="payment-spinner"></div>
             </div>
 
             <div class="confirmation-message">
-                <h1>{{ __('Thank You for Your Order!') }}</h1>
-                <p>{{ __('Your order has been placed successfully. Please take this page screenshot and keep it for your records') }}
-                </p>
-
                 <div class="order-details">
                     <h3>{{ __('Order Information') }}</h3>
                     <div class="order-detail">
                         <span>{{ __('Order Number') }}:</span>
                         <span id="order-number">{{ $order->order_number }}</span>
+                    </div>
+                    <div class="order-detail">
+                        <span>{{ __('Reference Number') }}:</span>
+                        <span id="payment-method">{{ $order->reference_number }}</span>
                     </div>
                     <div class="order-detail">
                         <span>{{ __('Date') }}:</span>
@@ -143,16 +167,55 @@
                         <span>{{ __('Total') }}:</span>
                         <span id="order-total">{{ $order->total_price }} {{ __('EGP') }}</span>
                     </div>
-                    <div class="order-detail">
-                        <span>{{ __('Payment Method') }}:</span>
-                        <span id="payment-method">{{ __($order->payment_method) }}</span>
-                    </div>
                 </div>
 
-                <a href="{{ route('products', app()->getLocale()) }}" class="btn">{{ __('Continue Shopping') }}</a>
+                <a href="{{ route('payment-failed', ['locale' => app()->getLocale(), 'order' => encrypt(json_encode($order))]) }}"
+                    class="btn">{{ __('Cancel') }}</a>
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+    <script>
+        const meezaQrCode =
+            "{{ $order->payment_link }}"; // full string
+        QRCode.toDataURL(meezaQrCode, {
+            width: 200
+        }, function(err, url) {
+            document.getElementById('qrcode-image').innerHTML = '<img src="' + url + '" alt="Meeza QR Code">';
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkPaymentStatus = async () => {
+                try {
+                    const response = await fetch(
+                        "{{ route('check.payment.status', ['orderId' => $order->order_id]) }}");
+                    const data = await response.json();
+
+                    if (data.success) {
+                        document.getElementById("qrcode-image").style.display = 'none';
+                        document.getElementById('payment-spinner').style.display = 'block';
+
+                        // Redirect to order confirmation
+                        setTimeout(() => {
+                            window.location.href = data.redirect_url;
+                        }, 2000);
+                    } else {
+                        // Check again after 5 seconds
+                        setTimeout(checkPaymentStatus, 5000);
+                    }
+                } catch (error) {
+                    // Continue checking despite errors
+                    setTimeout(checkPaymentStatus, 5000);
+                }
+            }
+
+            // Start checking payment status
+            setTimeout(checkPaymentStatus, 3000);
+        });
+    </script>
 </body>
 
 </html>

@@ -20,7 +20,12 @@ class Order extends Model
 		'transaction_id',
 		'order_status',
 		'city',
-		'address'
+		'address',
+		'invoice_key',
+		'invoice_id',
+		'reference_number',
+		'paid_at',
+		'payment_link'
 	];
 
 	protected static function booted()

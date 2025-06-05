@@ -18,7 +18,7 @@
 
     <div id="browseBtn" class="browse-btn">
         <p>{{ __('There are no products in your cart') }}</p>
-        <a href="{{ route('home', app()->getLocale()) }}" class="checkout-btn">{{ __('Browse Products') }}</a>
+        <a href="{{ route('products', app()->getLocale()) }}" class="checkout-btn">{{ __('Browse Products') }}</a>
     </div>
 
 </div>

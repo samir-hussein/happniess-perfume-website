@@ -108,6 +108,10 @@
                             <div class="order-total-value">{{ $order->sub_total_price }} {{ __('EGP') }}</div>
                         </div>
                         <div class="order-actions">
+                            @if ($order->payment_link)
+                                <a href="{{ route('order.invoice', $order->id) }}" rel="noopener noreferrer"
+                                    class="order-btn order-btn-primary" target="_blank">{{ __('Invoice') }}</a>
+                            @endif
                             @if ($order->order_status != 'cancelled')
                                 <button class="order-btn order-btn-primary track-order-btn"
                                     data-order="{{ $order->id }}">{{ __('Track Order') }}</button>
@@ -207,7 +211,7 @@
                     <p class="no-orders-text">
                         {{ __('You haven\'t placed any orders with us yet. Start exploring our exquisite fragrance collection to find your perfect scent.') }}
                     </p>
-                    <a href="{{ route('home', app()->getLocale()) }}" class="no-orders-btn">{{ __('Shop Now') }}</a>
+                    <a href="{{ route('products', app()->getLocale()) }}" class="no-orders-btn">{{ __('Shop Now') }}</a>
                 </div>
             @endif
         </div>

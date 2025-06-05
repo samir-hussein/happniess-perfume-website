@@ -21,6 +21,7 @@
                 <ul class="footer-links">
                     <li><a href="{{ route('home', app()->getLocale()) }}">{{ __('Home') }}</a></li>
                     <li><a href="{{ route('order.index', app()->getLocale()) }}">{{ __('My Orders') }}</a></li>
+                    <li><a href="{{ route('products', app()->getLocale()) }}">{{ __('Products') }}</a></li>
                     <li><a href="{{ route('favorite', app()->getLocale()) }}">{{ __('Favorites') }}</a></li>
                 </ul>
             </div>

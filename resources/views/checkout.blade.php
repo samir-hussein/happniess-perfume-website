@@ -12,6 +12,11 @@
             .order-item p {
                 text-align: right;
             }
+
+            .approve-replacement-policy input[type="checkbox"] {
+                margin-left: 10px;
+                margin-right: 0px;
+            }
         </style>
     @endif
 @endsection
@@ -200,45 +205,40 @@
                         <h3>{{ __('Payment Method') }}</h3>
                         <div class="payment-options">
                             <!-- Credit Card Option -->
-                            {{-- <div class="payment-option selected" data-payment="credit-card">
-							<input type="radio" id="credit-card" name="payment" checked>
-							<div class="payment-content">
-								<div class="payment-icon">
-									<i class="far fa-credit-card"></i>
-								</div>
-								<div class="payment-details">
-									<label for="credit-card">{{ __('Credit/Debit Card') }}</label>
-									<div class="card-icons">
-										<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
-											alt="Visa">
-										<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"
-											alt="Mastercard">
-									</div>
-								</div>
-							</div>
-						</div> --}}
+                            <div class="payment-option" data-payment="card">
+                                <input type="radio" id="card" name="payment" value="card">
+                                <div class="payment-content">
+                                    <div class="payment-icon">
+                                        <i class="far fa-credit-card"></i>
+                                    </div>
+                                    <div class="payment-details">
+                                        <label for="card">{{ __('Credit/Debit Card') }}</label>
+                                        <div class="card-icons">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
+                                                alt="Visa">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"
+                                                alt="Mastercard">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Mobile Wallet Option -->
-                            {{-- <div class="payment-option" data-payment="wallet">
-							<input type="radio" id="wallet" name="payment">
-							<div class="payment-content">
-								<div class="payment-icon">
-									<i class="fas fa-wallet"></i>
-								</div>
-								<div class="payment-details">
-									<label for="wallet">{{ __('Mobile Wallet') }}</label>
-									<div class="wallet-options">
-										<span>{{ __('Vodafone Cash') }}</span>
-										<span>{{ __('Orange Money') }}</span>
-										<span>{{ __('Etisalat Cash') }}</span>
-									</div>
-								</div>
-							</div>
-						</div> --}}
+                            <div class="payment-option" data-payment="wallet">
+                                <input type="radio" id="wallet" name="payment" value="wallet">
+                                <div class="payment-content">
+                                    <div class="payment-icon">
+                                        <i class="fas fa-wallet"></i>
+                                    </div>
+                                    <div class="payment-details">
+                                        <label for="wallet">{{ __('Mobile Wallet') }}</label>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Cash on Delivery Option -->
-                            <div class="payment-option selected" data-payment="cash">
-                                <input type="radio" id="cash" name="payment" checked value="cash_on_delivery">
+                            <div class="payment-option" data-payment="cash">
+                                <input type="radio" id="cash" name="payment" value="cash_on_delivery">
                                 <div class="payment-content">
                                     <div class="payment-icon">
                                         <i class="fas fa-money-bill-wave"></i>
@@ -250,33 +250,18 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Credit Card Form -->
-                        <div class="payment-form" id="credit-card-form" style="display: none;">
-                            <!-- Card Number - Full Width -->
-                            <div class="form-group full-width">
-                                <label for="card-number">{{ __('Card Number') }}</label>
-                                <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19">
-                            </div>
-
-                            <!-- Name on Card - Full Width -->
-                            <div class="form-group full-width">
-                                <label for="card-name">{{ __('Name on Card') }}</label>
-                                <input type="text" id="card-name" placeholder="John Doe">
-                            </div>
-
-                            <!-- Expiry Date and CVV - Same Row -->
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="card-expiry">{{ __('Expiry Date') }}</label>
-                                    <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5">
-                                </div>
-                                <div class="form-group">
-                                    <label for="card-cvv">{{ __('CVV') }}</label>
-                                    <input type="text" id="card-cvv" placeholder="123" maxlength="4">
-                                </div>
-                            </div>
-                        </div>
+                    <!-- approve replacement policy -->
+                    <div class="approve-replacement-policy">
+                        <input type="checkbox" id="approve-replacement-policy" required
+                            name="approve_replacement_policy">
+                        <label for="approve-replacement-policy">{{ __('I agree to the') }}
+                            <a href="{{ route('return-policy', app()->getLocale()) }}" rel="noopener noreferrer"
+                                target="_blank">{{ __('Return Policy') }}</a> &
+                            <a href="{{ route('shipping-policy', app()->getLocale()) }}" rel="noopener noreferrer"
+                                target="_blank">{{ __('Shipping Policy') }}</a>
+                        </label>
                     </div>
 
                     <button type="submit" class="place-order-btn">{{ __('Place Order') }}</button>
@@ -370,8 +355,6 @@
 
             // Update shipping cost and totals
             function updateShippingCost(cost) {
-                console.log(cost);
-
                 const discountElement = document.getElementById('discount-amount-value');
                 const subtotal = document.getElementById('subtotal').dataset.value;
                 const shippingElement = document.getElementById('shipping');
@@ -406,11 +389,6 @@
                     document.querySelectorAll('.payment-form').forEach(form => {
                         form.style.display = 'none';
                     });
-
-                    // Show relevant payment form if needed
-                    if (radioInput.id === 'credit-card') {
-                        document.getElementById('credit-card-form').style.display = 'block';
-                    }
                 });
             });
 

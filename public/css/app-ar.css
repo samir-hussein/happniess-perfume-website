@@ -1,5 +1,5 @@
 * {
-    font-family: 'Tajawal', 'Playfair Display', serif;
+	font-family: 'Tajawal', 'Playfair Display', serif;
 }
 
 .logo span {
@@ -26,6 +26,7 @@
 .cart-panel {
 	left: -400px;
 	right: auto;
+	transition: left 0.3s ease;
 }
 
 .cart-panel.active {

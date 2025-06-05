@@ -45,7 +45,7 @@
                         <i class="far fa-heart"></i>
                         <h3>{{ __('Your favorites list is empty') }}</h3>
                         <p>{{ __('You haven\'t added any items to your favorites yet.') }}</p>
-                        <a href="{{ route('home', app()->getLocale()) }}" class="btn">{{ __('Browse Products') }}</a>
+                        <a href="{{ route('products', app()->getLocale()) }}" class="btn">{{ __('Browse Products') }}</a>
                     </div>
                 </div>
             @else

@@ -207,22 +207,42 @@ flex: 1;
 
 /* Add these styles to your existing CSS */
 .order-summary-line {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .discount-line {
-    color: var(--royal-gold); /* Green color for discount */
-    font-weight: 500;
+	color: var(--royal-gold); /* Green color for discount */
+	font-weight: 500;
+}
+
+.approve-replacement-policy{
+	margin-bottom: 20px;
+	margin-top: 20px;
+	display: flex;
+	align-items: center;
+}
+
+.approve-replacement-policy input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+	accent-color: var(--royal-gold);
+	border-radius: 50%;
+}
+
+.approve-replacement-policy label {
+	font-size: 18px;
+	color: var(--deep-bronze);
 }
 
 #discount-description {
-    font-size: 0.9em;
-    color: var(--deep-bronze);
-    font-style: italic;
+	font-size: 0.9em;
+	color: var(--deep-bronze);
+	font-style: italic;
 }
 
 .payment-details label {

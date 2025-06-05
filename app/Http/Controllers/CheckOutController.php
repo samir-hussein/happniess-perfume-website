@@ -42,6 +42,17 @@ class CheckOutController extends Controller
 		try {
 			$result = $this->checkoutService->placeOrder($request->validated());
 
+			if (isset($result['order']['payment_link'])) {
+				if (str_contains($result['order']['payment_link'], 'http')) {
+					return redirect($result['order']['payment_link']);
+				}
+
+				return redirect()->route('wallet-payment', [
+					'order' => encrypt(json_encode($result['order'])),
+					'locale' => app()->getLocale()
+				]);
+			}
+
 			return redirect()->route('order-confirmation', [
 				'order' => encrypt(json_encode($result['order'])),
 				'locale' => app()->getLocale()
@@ -64,6 +75,23 @@ class CheckOutController extends Controller
 		}
 
 		return view('order-confirmation', [
+			'order' => $order,
+		]);
+	}
+
+	public function paymentFailed()
+	{
+		if (!request('order')) {
+			return redirect()->route('home', app()->getLocale());
+		}
+
+		try {
+			$order = json_decode(decrypt(request('order')));
+		} catch (\Exception $e) {
+			return redirect()->route('home', app()->getLocale());
+		}
+
+		return view('payment-failed', [
 			'order' => $order,
 		]);
 	}

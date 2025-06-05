@@ -18,12 +18,23 @@
                     <div class="dropdown-content">
                         @foreach ($categories as $category)
                             <a
-                                href="{{ route('home', app()->getLocale()) }}?categories={{ $category->id }}">{{ $category->{'name_' . app()->getLocale()} }}</a>
+                                href="{{ route('products', app()->getLocale()) }}?categories={{ $category->id }}">{{ $category->{'name_' . app()->getLocale()} }}</a>
                         @endforeach
                     </div>
                 </div>
 
+                <a href="{{ route('products', app()->getLocale()) }}">{{ __('Products') }}</a>
+
                 <a href="{{ route('order.index', app()->getLocale()) }}">{{ __('My Orders') }}</a>
+
+                <a class="for-mobile-show"
+                    href="{{ route('favorite', app()->getLocale()) }}">{{ __('Favorites') }}</a>
+                @guest
+                    <a class="for-mobile-show" href="{{ route('login', app()->getLocale()) }}">{{ __('Sign In') }}</a>
+                @endguest
+                @auth
+                    <a class="for-mobile-show" href="{{ route('auth.logout') }}">{{ __('Sign Out') }}</a>
+                @endauth
 
                 <div>
                     @php
@@ -45,26 +56,27 @@
             </div>
 
             <div class="nav-icons">
-                <div style="position: relative;">
-                    <a href="{{ route('favorite', app()->getLocale()) }}">
-                        <i class="fas fa-heart"></i>
-                        <span class="favorite-count" style="display: none;">0</span>
-                    </a>
-                </div>
                 <div style="position: relative;" id="cart-icon">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count" style="display: none;">0</span>
                 </div>
 
+                <div style="position: relative;" class="for-mobile-hide">
+                    <a href="{{ route('favorite', app()->getLocale()) }}">
+                        <i class="fas fa-heart"></i>
+                        <span class="favorite-count" style="display: none;">0</span>
+                    </a>
+                </div>
+
                 @guest
-                    <div>
+                    <div class="for-mobile-hide">
                         <a href="{{ route('login', app()->getLocale()) }}">
                             <i class="fas fa-user"></i>
                         </a>
                     </div>
                 @endguest
                 @auth
-                    <div>
+                    <div class="for-mobile-hide">
                         <a href="{{ route('auth.logout') }}">
                             <i
                                 class="fas fa-{{ app()->getLocale() === 'ar' ? 'sign-out-alt fa-flip-horizontal' : 'sign-out-alt' }}"></i>

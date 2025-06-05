@@ -133,7 +133,7 @@
 .size-btn.active {
 	background-color: var(--royal-gold);
 	border-color: var(--royal-gold);
-	color: var(--charcoal-black);
+	color: var(--ivory-white);
 }
 
 .product-actions {
@@ -160,6 +160,26 @@
 
 .add-to-cart:hover {
 	background-color: var(--golden-shadow);
+}
+
+.buy-now {
+	padding: 12px 30px;
+	background-color: var(--charcoal-black);
+	color: var(--ivory-white);
+	font-size: 20px;
+	border: none;
+	border-radius: 5px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.buy-now:hover {
+	background-color: var(--royal-gold);
 }
 
 .add-to-fav {
