@@ -375,11 +375,6 @@ opacity: 1;
 
 /* Responsive adjustments */
 @media (max-width: 576px) {
-.payment-content {
-flex-direction: column;
-align-items: flex-start;
-}
-
 .payment-icon {
 margin-bottom: 10px;
 }

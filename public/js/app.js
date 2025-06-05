@@ -261,7 +261,7 @@ function getCartProducts() {
 
 function getLoggedUserCartProducts(){
 	// User is logged in
-	fetch('/cart', {
+	fetch('/' + locale + '/cart', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

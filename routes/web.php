@@ -14,7 +14,7 @@ use App\Http\Controllers\WalletPaymentController;
 use App\Http\Controllers\ShippingPolicyController;
 
 Route::get('/', [HomePageController::class, "index"])->middleware('local')->name("home");
-Route::post('/cart', [CartController::class, "getCartProducts"])->name("cart")->middleware('throttle:100,1');
+Route::post('{locale}/cart', [CartController::class, "getCartProducts"])->name("cart")->middleware(['local', 'throttle:100,1']);
 
 // Route to redirect to Google's OAuth page
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
@@ -81,11 +81,3 @@ Route::middleware('auth')->group(function () {
         Route::post('/cart/sync', [CartController::class, "syncCart"])->name("cart.sync");
     });
 });
-
-Route::get("{locale}/test", function () {
-    $invoice_key = "bAwH4KILny8HFFY";
-    $invoice_id = 5072688;
-    $payment_method = "Mobile Wallet";
-    $api_key = "3d1cd636569d72fccc110321ed0b9a54ac320e22521fc60330";
-    dd(env("FAWATERK_API_KEY") == $api_key);
-})->name("test");

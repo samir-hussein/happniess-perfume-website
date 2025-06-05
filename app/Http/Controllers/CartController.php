@@ -14,7 +14,7 @@ class CartController extends Controller
 {
     public function __construct(private ICartService $cartService) {}
 
-    public function getCartProducts(GetCartProductsRequest $request)
+    public function getCartProducts(string $locale, GetCartProductsRequest $request)
     {
         return response()->json($this->cartService->getCartProducts($request->validated()));
     }
