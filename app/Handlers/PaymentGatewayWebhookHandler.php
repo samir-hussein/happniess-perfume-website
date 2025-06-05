@@ -20,21 +20,19 @@ class PaymentGatewayWebhookHandler
             ], 400);
         }
 
-        if ($data['payment_method'] == "Mobile Wallet") {
-            if (env("FAWATERK_API_KEY") != $data['api_key']) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Invalid api key',
-                ], 400);
-            }
-        } else {
-            if (!PaymentGateway::verifyPayment($data['invoice_id'], $data['invoice_key'], $data['payment_method'], $data['hashKey'])) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Invalid payment',
-                ], 400);
-            }
+        if (env("FAWATERK_API_KEY") != $data['api_key']) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid api key',
+            ], 400);
         }
+
+        // if (!PaymentGateway::verifyPayment($data['invoice_id'], $data['invoice_key'], $data['payment_method'], $data['hashKey'])) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Invalid payment',
+        //     ], 400);
+        // }
 
         if ($data['invoice_status'] == 'paid') {
             $invoiceDetails = PaymentGateway::getInvoiceDetails($data['invoice_id']);
