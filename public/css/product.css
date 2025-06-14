@@ -162,6 +162,38 @@
 	background-color: var(--golden-shadow);
 }
 
+.add-to-cart-related {
+	background-color: var(--royal-gold);
+	color: var(--ivory-white);
+	font-size: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.add-to-cart-related:hover {
+	background-color: var(--golden-shadow);
+}
+
+.add-to-fav-related {
+	background-color: transparent;
+	border: 1px solid var(--deep-bronze);
+	color: var(--deep-bronze);
+	font-size: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.add-to-fav-related.favorited {
+	color: var(--royal-gold);
+	border-color: var(--royal-gold);
+}
+
+.add-to-fav-related:hover {
+	background-color: var(--warm-beige);
+}
+
 .buy-now {
 	padding: 12px 30px;
 	background-color: var(--charcoal-black);

@@ -32,6 +32,6 @@ class FavoriteService implements IFavoriteService
         if (count($productIds) == 0) {
             return collect();
         }
-        return $this->productRepo->pagination(request("page", 1), request("limit", 9), $productIds);
+        return $this->productRepo->pagination(request("page", 1), request("limit", 12), $productIds);
     }
 }

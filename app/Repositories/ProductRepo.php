@@ -146,7 +146,7 @@ class ProductRepo extends BaseRepository implements IProductRepo
         $currentProduct = $this->model->find($id);
         return $this->model->where("id", "!=", $id)->where("category_id", $currentProduct->category_id)->inRandomOrder()->with(["sizes" => function ($q) {
             $q->orderBy("price", "asc");
-        }])->limit(8)->get();
+        }])->limit(4)->get();
     }
 
     public function getProductsForCart(array $ids)

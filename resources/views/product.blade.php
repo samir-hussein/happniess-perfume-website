@@ -232,58 +232,107 @@
                         <h2>{{ __('Related Products') }}</h2>
                     </div>
 
-                    <div class="related-slider">
-                        @if (app()->getLocale() == 'ar')
-                            <div class="slider-nav slider-prev">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                        @else
-                            <div class="slider-nav slider-next">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                        @endif
+                    {{-- <div class="related-slider">
+						@if (app()->getLocale() == 'ar')
+							<div class="slider-nav slider-prev">
+								<i class="fas fa-chevron-right"></i>
+							</div>
+						@else
+							<div class="slider-nav slider-next">
+								<i class="fas fa-chevron-right"></i>
+							</div>
+						@endif
 
-                        <div class="related-slider-container" id="relatedSlider">
-                            @foreach ($relatedProducts as $product)
-                                <div class="related-product-card">
-                                    <div class="related-product-img">
-                                        <a
-                                            href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-                                            <img src="{{ $product->main_image }}"
-                                                alt="{{ $product->{'name_' . app()->getLocale()} }}" loading="lazy"
-                                                width="270" height="250">
-                                        </a>
-                                    </div>
-                                    <div class="related-product-info">
-                                        <a
-                                            href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-                                            <h3>{{ $product->{'name_' . app()->getLocale()} }}</h3>
-                                        </a>
-                                        <span>{{ $product->sizes->first()->size }} {{ __('ml') }}</span>
-                                        @if ($product->discount_amount > 0)
-                                            <div class="related-product-price">
-                                                <span>{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
-                                                <span class="discounted-price">{{ $product->priceAfterDiscount }}
-                                                    {{ __('EGP') }}</span>
-                                            </div>
-                                        @else
-                                            <div class="related-product-price">{{ $product->sizes->first()->price }}
-                                                {{ __('EGP') }}</div>
-                                        @endif
+						<div class="related-slider-container" id="relatedSlider">
+							@foreach ($relatedProducts as $product)
+								<div class="related-product-card">
+									<div class="related-product-img">
+										<a
+											href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
+											<img src="{{ $product->main_image }}"
+												alt="{{ $product->{'name_' . app()->getLocale()} }}" loading="lazy"
+												width="270" height="250">
+										</a>
+									</div>
+									<div class="related-product-info">
+										<a
+											href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
+											<h3>{{ $product->{'name_' . app()->getLocale()} }}</h3>
+										</a>
+										<span>{{ $product->sizes->first()->size }} {{ __('ml') }}</span>
+										@if ($product->discount_amount > 0)
+											<div class="related-product-price">
+												<span>{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
+												<span class="discounted-price">{{ $product->priceAfterDiscount }}
+													{{ __('EGP') }}</span>
+											</div>
+										@else
+											<div class="related-product-price">{{ $product->sizes->first()->price }}
+												{{ __('EGP') }}</div>
+										@endif
+									</div>
+								</div>
+							@endforeach
+						</div>
+
+						@if (app()->getLocale() == 'ar')
+							<div class="slider-nav slider-next">
+								<i class="fas fa-chevron-left"></i>
+							</div>
+						@else
+							<div class="slider-nav slider-prev">
+								<i class="fas fa-chevron-left"></i>
+							</div>
+						@endif
+					</div> --}}
+
+                    <div class="product-grid" id="productGrid">
+                        @foreach ($relatedProducts as $product)
+                            <div class="product-card" data-id="{{ $product->id }}"
+                                data-category="{{ $product->category->name }}" data-price="{{ $product->price }}">
+                                @if ($product->tag_ar)
+                                    <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                                @endif
+                                <div class="product-img">
+                                    <a
+                                        href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
+                                        <img src="{{ $product->main_image }}" alt="{{ $product->name_en }}" loading="lazy"
+                                            width="100" height="300">
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <a
+                                        href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
+                                        <h3 dir="auto">{{ $product->{'name_' . app()->getLocale()} }} -
+                                            <span class="size">{{ $product->sizes->first()->size }}
+                                                {{ __('ml') }}</span>
+                                        </h3>
+                                    </a>
+                                    @if ($product->discount_amount > 0)
+                                        <div class="product-price">
+                                            <span class="discounted-price">{{ $product->sizes->first()->price }}
+                                                {{ __('EGP') }}</span>
+                                            <span>{{ $product->priceAfterDiscount }}
+                                                {{ __('EGP') }}</span>
+                                        </div>
+                                    @else
+                                        <div class="product-price">{{ $product->sizes->first()->price }}
+                                            {{ __('EGP') }}
+                                        </div>
+                                    @endif
+                                    <div class="product-actions">
+                                        <button class="add-to-cart-related" data-id="{{ $product->id }}"
+                                            data-size="{{ $product->sizes->first()->size }}" onclick="addToCart(this)"><i
+                                                class="fas fa-cart-plus"></i></button>
+                                        <button
+                                            class="add-to-fav-related {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
+                                            data-id="{{ $product->id }}"
+                                            data-size="{{ $product->sizes->first()->size }}"><i
+                                                class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
-
-                        @if (app()->getLocale() == 'ar')
-                            <div class="slider-nav slider-next">
-                                <i class="fas fa-chevron-left"></i>
                             </div>
-                        @else
-                            <div class="slider-nav slider-prev">
-                                <i class="fas fa-chevron-left"></i>
-                            </div>
-                        @endif
+                        @endforeach
                     </div>
                 </section>
             @endif

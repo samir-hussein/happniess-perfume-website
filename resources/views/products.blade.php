@@ -2,45 +2,6 @@
 
 @section('title', 'Happniess Perfume | عطور السعادة')
 
-@section('styles')
-    <style>
-        .product-grid {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        .product-badge {
-            font-size: 10px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .product-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .product-img {
-                height: 200px;
-            }
-
-            .product-info h3 {
-                font-size: 14px;
-            }
-
-            .size {
-                font-size: 12px;
-            }
-
-            .product-price {
-                font-size: 14px;
-            }
-
-            .discounted-price {
-                font-size: 11px;
-            }
-        }
-    </style>
-@endsection
-
 @section('content')
     <!-- Search Bar -->
     <div class="container">
@@ -225,6 +186,7 @@
                             </div>
                         </div>
                     @endforeach
+                </div>
             @endif
         </div>
 
