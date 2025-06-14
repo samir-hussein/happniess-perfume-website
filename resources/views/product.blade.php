@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', $product->name_en . ' - ' . $product->name_ar)
+@if (app()->getLocale() === 'ar')
+    @section('title', $product->name_ar . ' - ' . __('عطور السعادة'))
+@else
+    @section('title', $product->name_en . ' - ' . __('Happiness Perfume'))
+@endif
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/product.css') }}">
