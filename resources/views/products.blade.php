@@ -274,8 +274,8 @@
         mobileFilterToggle.addEventListener('click', function() {
             filterSection.classList.toggle('active');
             this.innerHTML = filterSection.classList.contains('active') ?
-                '<i class="fas fa-times"></i> Close Filters' :
-                '<i class="fas fa-filter"></i> Filter Products';
+                '<i class="fas fa-times"></i> {{ __('Close Filters') }}' :
+                '<i class="fas fa-filter"></i> {{ __('Filter Products') }}';
         });
 
         // Toggle dropdowns

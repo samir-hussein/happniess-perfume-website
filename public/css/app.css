@@ -697,10 +697,11 @@ header {
 	width: 100%;
 	padding: 15px;
 	background-color: var(--royal-gold);
-	color: var(--charcoal-black);
+	color: var(--ivory-white);
 	border: none;
 	border-radius: 6px;
 	font-weight: 600;
+	font-size: 20px;
 	cursor: pointer;
 	margin: 20px auto;
 	justify-content: center;
