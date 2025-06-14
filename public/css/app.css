@@ -676,10 +676,11 @@ header {
 .apply-btn {
 	padding: 12px 25px;
 	background-color: var(--royal-gold);
-	color: var(--charcoal-black);
+	color: var(--ivory-white);
 	border: none;
 	border-radius: 6px;
 	font-weight: 600;
+	font-size: 18px;
 	cursor: pointer;
 	transition: background-color 0.3s;
 	display: flex;
@@ -701,7 +702,7 @@ header {
 	border: none;
 	border-radius: 6px;
 	font-weight: 600;
-	font-size: 20px;
+	font-size: 18px;
 	cursor: pointer;
 	margin: 20px auto;
 	justify-content: center;
