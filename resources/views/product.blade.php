@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @if (app()->getLocale() === 'ar')
-    @section('title', $product->name_ar . ' - ' . __('عطور السعادة'))
+    @section('title', $product->name_ar . ' - عطور السعادة')
 @else
-    @section('title', $product->name_en . ' - ' . __('Happiness Perfume'))
+    @section('title', $product->name_en . ' - Happiness Perfume')
 @endif
 
 @section('styles')
@@ -24,18 +24,18 @@
                     @if ($product->tag_ar)
                         <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
                     @endif
-                    <img src="{{ $product->main_image }}" alt="{{ $product->name_en }}" class="main-image" id="mainImage"
-                        loading="lazy">
+                    <img src="{{ $product->main_image }}" alt="{{ $product->name_en . ' - Happiness Perfume' }}"
+                        class="main-image" id="mainImage" loading="lazy">
 
                     <div class="thumbnail-container">
                         @foreach ($product->allImages as $image)
                             @if ($loop->first)
-                                <img src="{{ $image }}" alt="{{ $product->name_en }}" class="thumbnail active"
-                                    data-image="{{ $image }}" loading="lazy">
+                                <img src="{{ $image }}" alt="{{ $product->name_en . ' - Happiness Perfume' }}"
+                                    class="thumbnail active" data-image="{{ $image }}" loading="lazy">
                             @else
                                 @if ($image)
-                                    <img src="{{ $image }}" alt="{{ $product->name_en }}" class="thumbnail"
-                                        data-image="{{ $image }}" loading="lazy">
+                                    <img src="{{ $image }}" alt="{{ $product->name_en . ' - Happiness Perfume' }}"
+                                        class="thumbnail" data-image="{{ $image }}" loading="lazy">
                                 @endif
                             @endif
                         @endforeach
@@ -300,7 +300,8 @@
                                 <div class="product-img">
                                     <a
                                         href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-                                        <img src="{{ $product->main_image }}" alt="{{ $product->name_en }}" loading="lazy"
+                                        <img src="{{ $product->main_image }}"
+                                            alt="{{ $product->name_en . ' - Happiness Perfume' }}" loading="lazy"
                                             width="100" height="300">
                                     </a>
                                 </div>

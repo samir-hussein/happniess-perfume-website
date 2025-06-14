@@ -59,7 +59,8 @@
                             <div class="product-img">
                                 <a
                                     href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-                                    <img src="{{ $product->main_image }}" alt="{{ $product->name_en }}" loading="lazy">
+                                    <img src="{{ $product->main_image }}"
+                                        alt="{{ $product->name_en . ' - Happiness Perfume' }}" loading="lazy">
                                 </a>
                             </div>
                             <div class="product-info">
