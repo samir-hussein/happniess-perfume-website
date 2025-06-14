@@ -14,7 +14,7 @@
 
         <div class="policy-section">
             <h2>{{ __('Our Return Policy') }}</h2>
-            <p>{{ __('At Happniess Perfume, we stand behind the quality of our products. The perfume will not be returned nor exchanged unless there is an issue with the atomizer or a leak in the perfume. You may return most items within 7 days of delivery for an exchange.') }}
+            <p>{{ __('At Happiness Perfume, we stand behind the quality of our products. The perfume will not be returned nor exchanged unless there is an issue with the atomizer or a leak in the perfume. You may return most items within 7 days of delivery for an exchange.') }}
             </p>
         </div>
 

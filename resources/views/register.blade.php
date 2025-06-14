@@ -16,7 +16,7 @@
                 </div>
                 <div class="signup-form">
                     <h2>{{ __('Create Account') }}</h2>
-                    <p>{{ __('Welcome to Happniess Perfume. Please fill in your details.') }}</p>
+                    <p>{{ __('Welcome to Happiness Perfume. Please fill in your details.') }}</p>
 
                     <form id="signupForm" action="{{ route('auth.register') }}" method="POST">
                         @csrf

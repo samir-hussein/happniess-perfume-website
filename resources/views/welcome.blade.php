@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Happniess Perfume | عطور السعادة')
+@section('title', 'Happiness Perfume | عطور السعادة')
 
 @section('content')
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>{{ __('Discover Your Signature Scent With Happniess Perfume') }}</h1>
+                <h1>{{ __('Discover Your Signature Scent With Happiness Perfume') }}</h1>
                 <p>{{ __('Experience luxury fragrances crafted with the finest ingredients to elevate your everyday moments.') }}
                 </p>
             </div>

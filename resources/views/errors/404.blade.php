@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Page Not Found | Happniess Perfume | عطور السعادة')
+@section('title', 'Page Not Found | Happiness Perfume | عطور السعادة')
 
 @section('content')
     <div class="error-page">

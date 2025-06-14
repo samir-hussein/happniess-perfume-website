@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Happniess Perfume | عطور السعادة')
+@section('title', 'Happiness Perfume | عطور السعادة')
 
 @section('content')
     <!-- Search Bar -->

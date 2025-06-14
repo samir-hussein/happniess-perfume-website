@@ -5,32 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Happniess Perfume | عطور السعادة')</title>
+    <title>@yield('title', 'Happiness Perfume | عطور السعادة')</title>
 
     <link rel="icon" type="image/png" href="{{ asset('favicon-96x96.png') }}" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}" />
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}" />
-    <meta name="apple-mobile-web-app-title" content='Happniess Perfume | عطور السعادة' />
+    <meta name="apple-mobile-web-app-title" content='Happiness Perfume | عطور السعادة' />
     <link rel="manifest" href="{{ asset('site.webmanifest') }}" />
     <meta name="author" content="Samir Hussein">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="@yield('description', 'Happniess Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments.')">
+    <meta name="description" content="@yield('description', 'Happiness Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments.')">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://happniess-perfume.com/" />
-    <meta property="og:title" content="Happniess Perfume | عطور السعادة" />
+    <meta property="og:url" content="https://Happiness-perfume.com/" />
+    <meta property="og:title" content="Happiness Perfume | عطور السعادة" />
     <meta property="og:description"
-        content="Happniess Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments." />
+        content="Happiness Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments." />
     <meta property="og:image" content="{{ asset('images/meta.jpg') }}" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://happniess-perfume.com/" />
-    <meta property="twitter:title" content="Happniess Perfume | عطور السعادة" />
+    <meta property="twitter:url" content="https://Happiness-perfume.com/" />
+    <meta property="twitter:title" content="Happiness Perfume | عطور السعادة" />
     <meta property="twitter:description"
-        content="Happniess Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments." />
+        content="Happiness Perfume offers premium, luxurious scents for every occasion. Explore our fine fragrances and elevate your everyday moments." />
     <meta property="twitter:image" content="{{ asset('images/meta.jpg') }}" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

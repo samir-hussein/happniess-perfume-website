@@ -30,7 +30,7 @@
     <main class="shipping-policy-container">
         <div class="policy-header">
             <h1>{{ __('Shipping Policy') }}</h1>
-            <p>{{ __('We deliver Happniess right to your doorstep') }}</p>
+            <p>{{ __('We deliver Happiness right to your doorstep') }}</p>
         </div>
 
         <div class="policy-section">

@@ -6,7 +6,7 @@
                 <i class="fas fa-bars"></i>
             </div>
 
-            <a href="{{ route('home', app()->getLocale()) }}" class="logo">Happniess<span>Perfume</span></a>
+            <a href="{{ route('home', app()->getLocale()) }}" class="logo">Happiness<span>Perfume</span></a>
 
             <div class="nav-links">
                 <a href="{{ route('home', app()->getLocale()) }}">{{ __('Home') }}</a>
