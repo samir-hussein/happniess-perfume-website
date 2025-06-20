@@ -683,8 +683,6 @@ chatInput.addEventListener("keypress", function (e) {
 	if (e.key === "Enter" && !e.shiftKey) {
 		e.preventDefault();
 		sendMessage();
-		// Clear input
-		chatInput.value = "";
 	}
 });
 
@@ -715,7 +713,7 @@ function initPusher(chatId) {
 	var channel = pusher.subscribe('private-chat.' + chatId);
 
 	channel.bind('message', function(data) {
-        newMessage(data.message);
+		newMessage(data.message);
 		if(data.message.sender == 'admin' && data.message.read == false){
 			pulseDot.classList.remove("pulse-hide");
 		}
@@ -732,6 +730,9 @@ function sendMessage() {
 	if (!message) {
 		return;
 	}
+
+	// Clear input
+	chatInput.value = "";
 
 	fetch("/send-message", {
 			method: "POST",
