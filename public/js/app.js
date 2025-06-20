@@ -295,7 +295,7 @@ function getLocalStorageCartProducts(){
 		return;
 	}
 
-	fetch('/cart', {
+	fetch('/' + locale +'/cart', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
