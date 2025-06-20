@@ -21,7 +21,7 @@ class MessageRepo extends BaseRepository implements IMessageRepo
             'content' => $message,
             'type' => 'text',
             'sender' => 'client',
-            'sender_name' => Auth::user()?->name ?? 'Guest-' . request()->ip(),
+            'sender_name' => Auth::user()?->name ?? 'Guest-' . request()->cookie('chat_id'),
             'read' => false,
         ]);
     }

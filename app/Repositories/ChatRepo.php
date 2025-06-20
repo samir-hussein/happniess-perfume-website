@@ -6,6 +6,7 @@ use App\Interfaces\IChatRepo;
 use App\Models\Chat;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Exceptions\GeneralException;
 
 class ChatRepo extends BaseRepository implements IChatRepo
 {
@@ -26,10 +27,14 @@ class ChatRepo extends BaseRepository implements IChatRepo
 			]);
 		}
 
+		if (!request()->cookie('chat_id')) {
+			throw new GeneralException('Chat ID not found');
+		}
+
 		return $this->model->firstOrCreate([
-			'client_ip' => request()->ip(),
+			'client_ip' => request()->cookie('chat_id'),
 		], [
-			'client_ip' => request()->ip(),
+			'client_ip' => request()->cookie('chat_id'),
 		]);
 	}
 
@@ -44,7 +49,7 @@ class ChatRepo extends BaseRepository implements IChatRepo
 		}
 
 		return $this->model->where([
-			'client_ip' => request()->ip(),
+			'client_ip' => request()->cookie('chat_id'),
 		])->first();
 	}
 }

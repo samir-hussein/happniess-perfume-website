@@ -119,7 +119,7 @@ class AppServiceProvider extends ServiceProvider
             if ($user) {
                 $chat = Chat::where('client_id', $user->id)->with('messages')->first();
             } else {
-                $chat = Chat::where('client_ip', request()->ip())->with('messages')->first();
+                $chat = Chat::where('client_ip', request()->cookie('chat_id'))->with('messages')->first();
             }
 
             if ($chat) {

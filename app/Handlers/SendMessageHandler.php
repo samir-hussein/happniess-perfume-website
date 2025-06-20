@@ -29,7 +29,7 @@ class SendMessageHandler
 
         // send notification
         $payload = [
-            'title' => "New Message From " . (request()->user()?->name ?? "Guest-" . request()->ip()),
+            'title' => "New Message From " . (request()->user()?->name ?? "Guest-" . request()->cookie('chat_id')),
             'message' => $message->content,
             'url' => env("PANEL_URL") . "/messages"
         ];

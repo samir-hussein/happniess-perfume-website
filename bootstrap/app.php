@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\AssignGuestChatId;
 
 return Application::configure(basePath: dirname(__DIR__))
 	->withRouting(
@@ -13,8 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
 	)
 	->withMiddleware(function (Middleware $middleware) {
 		$middleware->alias([
-			'local' => \App\Http\Middleware\SetLocale::class
+			'local' => \App\Http\Middleware\SetLocale::class,
 		]);
+
+		$middleware->append(AssignGuestChatId::class);
 
 		$middleware->redirectGuestsTo(function () {
 			return route('login', ['locale' => app()->getLocale()]);

@@ -50,7 +50,7 @@ class PusherController extends Controller
                 ], 403);
             }
         } else {
-            if ($chat->client_ip !== $request->ip()) {
+            if ($chat->client_ip !== request()->cookie('chat_id')) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Unauthorized',
