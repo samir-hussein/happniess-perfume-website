@@ -2,24 +2,30 @@
 
 namespace App\Providers;
 
+use App\Models\Chat;
 use App\Interfaces\ICartRepo;
+use App\Interfaces\IChatRepo;
 use App\Services\AuthService;
 use App\Services\CartService;
 use App\Interfaces\IOrderRepo;
 use App\Repositories\CartRepo;
+use App\Repositories\ChatRepo;
 use App\Services\OrderService;
 use App\Interfaces\IClientRepo;
 use App\Interfaces\IRepository;
 use App\Repositories\OrderRepo;
 use App\Interfaces\IAuthService;
 use App\Interfaces\ICartService;
+use App\Interfaces\IMessageRepo;
 use App\Interfaces\IProductRepo;
 use App\Repositories\ClientRepo;
+use App\Services\MessageService;
 use App\Services\ProductService;
 use App\Interfaces\ICategoryRepo;
 use App\Interfaces\IFavoriteRepo;
 use App\Interfaces\IOrderLogRepo;
 use App\Interfaces\IOrderService;
+use App\Repositories\MessageRepo;
 use App\Repositories\ProductRepo;
 use App\Services\CategoryService;
 use App\Services\CheckoutService;
@@ -28,6 +34,7 @@ use App\Services\FirebaseService;
 use App\Repositories\CategoryRepo;
 use App\Repositories\FavoriteRepo;
 use App\Repositories\OrderLogRepo;
+use App\Interfaces\IMessageService;
 use App\Interfaces\IOrderItemsRepo;
 use App\Interfaces\IPaymentService;
 use App\Interfaces\IProductService;
@@ -38,6 +45,7 @@ use App\Interfaces\IFirebaseService;
 use App\Interfaces\IProductSizeRepo;
 use App\Repositories\BaseRepository;
 use App\Repositories\OrderItemsRepo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Repositories\ProductSizeRepo;
 use App\Interfaces\IShippingMethodRepo;
@@ -78,6 +86,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IOrderItemsRepo::class, OrderItemsRepo::class);
         $this->app->bind(IFirebaseService::class, FirebaseService::class);
         $this->app->bind(IPaymentService::class, PaymentGatewayService::class);
+        $this->app->bind(IMessageService::class, MessageService::class);
+        $this->app->bind(IMessageRepo::class, MessageRepo::class);
+        $this->app->bind(IChatRepo::class, ChatRepo::class);
 
         // Register PaymentGateway Facade
         $this->app->singleton('PaymentGateway', function ($app) {
@@ -97,6 +108,32 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('Includes.navbar', function ($view) {
             $view->with('categories', $this->app->make(ICategoryService::class)->getAll());
+        });
+
+        View::composer(['layouts.app', 'Includes.chat'], function ($view) {
+            $user = Auth::user();
+
+            $chat = null;
+            $chatId = null;
+
+            if ($user) {
+                $chat = Chat::where('client_id', $user->id)->with('messages')->first();
+            } else {
+                $chat = Chat::where('client_ip', request()->ip())->with('messages')->first();
+            }
+
+            if ($chat) {
+                $chatId = $chat->id;
+            }
+
+            // Set for each view accordingly
+            if ($view->getName() === 'layouts.app') {
+                $view->with('chatId', $chatId);
+            }
+
+            if ($view->getName() === 'Includes.chat') {
+                $view->with('chat', $chat);
+            }
         });
     }
 }

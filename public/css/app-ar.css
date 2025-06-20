@@ -128,3 +128,27 @@
 		right: auto;
 	}
 }
+
+.luxury-chat {
+	right: auto;
+	left: 30px;
+}
+
+.pulse-dot {
+	right: auto;
+	left: 5px;
+}
+
+.chat-container {
+	right: auto;
+	left: 0;
+}
+
+.input-container textarea {
+	padding: 12px 15px 12px 50px;
+}
+
+.input-actions {
+	right: auto;
+	left: 5px;
+}

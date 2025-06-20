@@ -65,6 +65,30 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int|null $client_id
+ * @property string|null $client_ip
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Client|null $client
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Message> $messages
+ * @property-read int|null $messages_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Chat newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Chat newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Chat query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Chat whereClientId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Chat whereClientIp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Chat whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Chat whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Chat whereUpdatedAt($value)
+ */
+	class Chat extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $name
  * @property string $email
  * @property string|null $phone
@@ -145,6 +169,39 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $chat_id
+ * @property string $content
+ * @property string $type
+ * @property string $sender
+ * @property string $sender_name
+ * @property int|null $admin_id
+ * @property int $read
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User|null $admin
+ * @property-read \App\Models\Chat $chat
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereChatId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereRead($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereSender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereSenderName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereUpdatedAt($value)
+ */
+	class Message extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $order_number
  * @property int $client_id
  * @property string|null $promotional_code
@@ -161,6 +218,7 @@ namespace App\Models{
  * @property string|null $invoice_id
  * @property string|null $reference_number
  * @property string|null $paid_at
+ * @property string|null $payment_link
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Client $client
@@ -182,6 +240,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereOrderNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereOrderStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order wherePaidAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Order wherePaymentLink($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order wherePaymentMethod($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order wherePaymentStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order wherePromotionalCode($value)

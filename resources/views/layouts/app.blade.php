@@ -84,6 +84,10 @@
 
     @include('Includes.footer')
 
+    @include('Includes.chat')
+
+    <input type="hidden" id="chat-id" value="{{ $chatId }}">
+
     <script>
         window.authUser = @json(Auth::check() ? Auth::user() : null);
         window.translations = {
@@ -98,7 +102,10 @@
         };
     </script>
 
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
     <script src="{{ asset('js/app.js') }}"></script>
+
     @yield('scripts')
 </body>
 
