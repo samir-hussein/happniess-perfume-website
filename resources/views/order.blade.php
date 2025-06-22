@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/order.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/order.css') }}?v={{ filemtime(public_path('css/order.css')) }}">
 
     @if (app()->getLocale() === 'ar')
-        <link rel="stylesheet" href="{{ asset('css/order-ar.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/order-ar.css') }}?v={{ filemtime(public_path('css/order-ar.css')) }}">
     @endif
 @endsection
 
@@ -32,7 +32,8 @@
             </div>
 
             <div class="order-tabs">
-                <div class="order-tab {{ request()->status == null ? 'active' : '' }}" data-value="">{{ __('All Orders') }}
+                <div class="order-tab {{ request()->status == null ? 'active' : '' }}" data-value="">
+                    {{ __('All Orders') }}
                     <span class="order-tab-count">{{ $ordersCount['all'] }}</span>
                 </div>
                 <div class="order-tab {{ request()->status == 'pending' ? 'active' : '' }}" data-value="pending">

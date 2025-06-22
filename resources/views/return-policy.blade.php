@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/return-policy.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('css/return-policy.css') }}?v={{ filemtime(public_path('css/return-policy.css')) }}">
 @endsection
 
 @section('content')

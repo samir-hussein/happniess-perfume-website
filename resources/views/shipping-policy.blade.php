@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/shipping.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/shipping.css') }}?v={{ filemtime(public_path('css/shipping.css')) }}">
 
     @if (app()->getLocale() === 'ar')
         <style>

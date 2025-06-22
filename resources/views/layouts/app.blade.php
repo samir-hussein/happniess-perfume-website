@@ -38,10 +38,10 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Parisienne&family=Dancing+Script:wght@700&family=Tajawal:wght@400;500;700&family=Montserrat:wght@300;400;500&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
 
     @if (app()->getLocale() === 'ar')
-        <link rel="stylesheet" href="{{ asset('css/app-ar.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app-ar.css') }}?v={{ filemtime(public_path('css/app-ar.css')) }}">
     @endif
     @yield('styles')
 </head>
@@ -107,7 +107,7 @@
 
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js?v=' . filemtime(public_path('js/app.js'))) }}"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

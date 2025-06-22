@@ -7,10 +7,10 @@
 @endif
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/product.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/product.css') }}?v={{ filemtime(public_path('css/product.css')) }}">
 
     @if (app()->getLocale() === 'ar')
-        <link rel="stylesheet" href="{{ asset('css/product-ar.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/product-ar.css') }}?v={{ filemtime(public_path('css/product-ar.css')) }}">
     @endif
 @endsection
 
