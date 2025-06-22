@@ -1732,8 +1732,8 @@ footer {
   }
 
   .announcement-container {
-	background-color: #000;
-	color: #fff;
+	background-color: var(--deep-bronze);
+	color: var(--ivory-white);
 	padding: 8px 0;
 	overflow: hidden;
 	position: fixed;
