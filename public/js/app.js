@@ -663,13 +663,26 @@ function newMessage(messageData) {
 		// Create user message
 		const userMsg = document.createElement("div");
 		userMsg.className = sender == "client" ? "message user" : "message bot";
-		userMsg.innerHTML = `
-				<div class="avatar">${sender == "client" ? "You" : "HP"}</div>
-				<div class="bubble">
-				  <p>${message}</p>
-				  <span class="time">${time}</span>
-				</div>
-			  `;
+
+		const avatar = document.createElement("div");
+		avatar.className = "avatar";
+		avatar.textContent = sender == "client" ? "You" : "HP";
+		userMsg.appendChild(avatar);
+
+		const bubble = document.createElement("div");
+		bubble.className = "bubble";
+
+		const p = document.createElement("p");
+		p.textContent = message;
+		bubble.appendChild(p);
+
+		const span = document.createElement("span");
+		span.className = "time";
+		span.textContent = time;
+		bubble.appendChild(span);
+
+		userMsg.appendChild(bubble);
+
 		messageContainer.appendChild(userMsg);
 
 		// Scroll to bottom
