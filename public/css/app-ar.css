@@ -152,3 +152,18 @@
 	right: auto;
 	left: 5px;
 }
+
+.announcement-item i {
+	margin-right: 0;
+	margin-left: 8px;
+}
+
+@keyframes scroll-announcement {
+	0% {
+		transform: translateX(-100%);
+	}
+
+	100% {
+		transform: translateX(100%);
+	}
+}

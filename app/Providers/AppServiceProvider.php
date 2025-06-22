@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Chat;
+use App\Models\Announcement;
 use App\Interfaces\ICartRepo;
 use App\Interfaces\IChatRepo;
 use App\Services\AuthService;
@@ -108,6 +109,10 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('Includes.navbar', function ($view) {
             $view->with('categories', $this->app->make(ICategoryService::class)->getAll());
+        });
+
+        View::composer('Includes.announcement', function ($view) {
+            $view->with('announcements', Announcement::latest()->get());
         });
 
         View::composer(['layouts.app', 'Includes.chat'], function ($view) {

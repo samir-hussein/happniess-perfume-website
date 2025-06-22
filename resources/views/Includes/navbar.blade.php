@@ -1,5 +1,5 @@
 <!-- Header & Navigation -->
-<header>
+<header class="fixed-header">
     <div class="container">
         <nav class="navbar">
             <div class="menu-toggle">

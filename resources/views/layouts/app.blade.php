@@ -47,8 +47,11 @@
 </head>
 
 <body>
-    @include('Includes.navbar')
 
+    <!-- Announcement Bar -->
+    @include('Includes.announcement')
+
+    @include('Includes.navbar')
     <!-- Cart Side Panel -->
     @include('Includes.cart-panel')
 
@@ -105,6 +108,50 @@
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if announcement bar exists
+            const announcementBar = document.querySelector('.announcement-container');
+            const fixedHeader = document.querySelector('.fixed-header');
+
+            if (announcementBar) {
+                // If announcement bar exists, position navbar below it
+                const announcementHeight = announcementBar.offsetHeight;
+                fixedHeader.style.top = announcementHeight + 'px';
+
+                // Update the body padding to account for both fixed elements
+                const navbarHeight = fixedHeader.offsetHeight;
+                document.body.style.paddingTop = (announcementHeight + navbarHeight) + 'px';
+            } else {
+                // If no announcement bar, position navbar at the top
+                fixedHeader.style.top = '0';
+
+                // Update the body padding to account for just the navbar
+                const navbarHeight = fixedHeader.offsetHeight;
+                document.body.style.paddingTop = navbarHeight + 'px';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.querySelector('.announcement-wrapper');
+
+            // Clone announcement items to create a seamless loop
+            if (wrapper) {
+                const items = wrapper.querySelectorAll('.announcement-item');
+                items.forEach(item => {
+                    const clone = item.cloneNode(true);
+                    wrapper.appendChild(clone);
+                });
+
+                // Adjust animation speed based on content length
+                const contentWidth = wrapper.scrollWidth / 2;
+                const animationDuration = Math.max(contentWidth / 50,
+                    10); // Minimum 10s, otherwise proportional to content
+                wrapper.style.animationDuration = animationDuration + 's';
+            }
+        });
+    </script>
 
     @yield('scripts')
 </body>
