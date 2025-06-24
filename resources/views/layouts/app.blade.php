@@ -140,13 +140,13 @@
             if (wrapper) {
                 const items = wrapper.querySelectorAll('.announcement-item');
                 items.forEach(item => {
-                    const clone = item.cloneNode(true);
+                    let clone = item.cloneNode(true);
                     wrapper.appendChild(clone);
                 });
 
                 // Adjust animation speed based on content length
                 const contentWidth = wrapper.scrollWidth / 2;
-                const animationDuration = Math.max(contentWidth / 50,
+                const animationDuration = Math.max(contentWidth / 35,
                     10); // Minimum 10s, otherwise proportional to content
                 wrapper.style.animationDuration = animationDuration + 's';
             }
