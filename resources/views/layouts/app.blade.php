@@ -140,7 +140,7 @@
             if (wrapper) {
                 const items = wrapper.querySelectorAll('.announcement-item');
                 items.forEach(item => {
-                    let clone = item.cloneNode(true);
+                    const clone = item.cloneNode(true);
                     wrapper.appendChild(clone);
                 });
 
