@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\ProductSize;
 
 class AddToCartRequest extends FormRequest
 {
@@ -24,7 +25,21 @@ class AddToCartRequest extends FormRequest
         return [
             "product_id" => "required|exists:products,id",
             "size" => "required|exists:product_sizes,size,product_id," . $this->product_id,
-            "quantity" => "required|numeric|min:1|max:100",
+            "quantity" => [
+                "required",
+                "numeric",
+                "min:1",
+                function ($attribute, $value, $fail) {
+                    $productSize = ProductSize::where('product_id', $this->product_id)
+                        ->where('size', $this->size)
+                        ->first();
+                    if (!$productSize) {
+                        $fail('Invalid product size.');
+                    } elseif ($value > $productSize->quantity) {
+                        $fail('The requested quantity exceeds available stock (' . $productSize->quantity . ').');
+                    }
+                },
+            ],
         ];
     }
 

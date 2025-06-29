@@ -21,8 +21,12 @@
         <div class="container">
             <div class="product-container">
                 <div class="product-gallery">
-                    @if ($product->tag_ar)
-                        <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                    @if ($product->sizes->where('size', request()->size)->first()->quantity == 0)
+                        <div class="product-badge">{{ __('Out of Stock') }}</div>
+                    @else
+                        @if ($product->tag_ar)
+                            <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                        @endif
                     @endif
                     <img src="{{ $product->main_image }}" alt="{{ $product->name_en . ' - Happiness Perfume' }}"
                         class="main-image" id="mainImage" loading="lazy">
@@ -70,18 +74,20 @@
                         </div>
                     </div>
 
-                    <div class="product-actions">
-                        <form
-                            action="{{ route('buy.now', ['locale' => app()->getLocale(), 'product_id' => $product->id, 'size' => request()->size]) }}"
-                            method="POST">
-                            @csrf
-                            <button type="submit" class="buy-now">{{ __('Buy Now') }}</button>
-                        </form>
-                        <button class="add-to-cart" data-id="{{ $product->id }}" data-size="{{ request()->size }}"
-                            onclick="addToCart(this)"><i class="fas fa-cart-plus"></i></button>
+                    <div class="product-actions single-product-actions">
                         <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
                             data-id="{{ $product->id }}" data-size="{{ request()->size }}"><i
                                 class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
+                        @if ($product->sizes->where('size', request()->size)->first()->quantity > 0)
+                            <form
+                                action="{{ route('buy.now', ['locale' => app()->getLocale(), 'product_id' => $product->id, 'size' => request()->size]) }}"
+                                method="POST">
+                                @csrf
+                                <button type="submit" class="buy-now">{{ __('Buy Now') }}</button>
+                            </form>
+                            <button class="add-to-cart" data-id="{{ $product->id }}" data-size="{{ request()->size }}"
+                                onclick="addToCart(this)"><i class="fas fa-cart-plus"></i></button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -294,8 +300,12 @@
                         @foreach ($relatedProducts as $product)
                             <div class="product-card" data-id="{{ $product->id }}"
                                 data-category="{{ $product->category->name }}" data-price="{{ $product->price }}">
-                                @if ($product->tag_ar)
-                                    <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                                @if ($product->sizes->first()->quantity == 0)
+                                    <div class="product-badge">{{ __('Out of Stock') }}</div>
+                                @else
+                                    @if ($product->tag_ar)
+                                        <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                                    @endif
                                 @endif
                                 <div class="product-img">
                                     <a
@@ -326,9 +336,11 @@
                                         </div>
                                     @endif
                                     <div class="product-actions">
-                                        <button class="add-to-cart-related" data-id="{{ $product->id }}"
-                                            data-size="{{ $product->sizes->first()->size }}" onclick="addToCart(this)"><i
-                                                class="fas fa-cart-plus"></i></button>
+                                        @if ($product->sizes->first()->quantity > 0)
+                                            <button class="add-to-cart-related" data-id="{{ $product->id }}"
+                                                data-size="{{ $product->sizes->first()->size }}"
+                                                onclick="addToCart(this)"><i class="fas fa-cart-plus"></i></button>
+                                        @endif
                                         <button
                                             class="add-to-fav-related {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
                                             data-id="{{ $product->id }}"

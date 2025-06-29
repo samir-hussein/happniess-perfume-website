@@ -33,9 +33,14 @@
                     @foreach ($products as $product)
                         <div class="product-card" data-id="{{ $product->id }}"
                             data-category="{{ $product->category->name }}" data-price="{{ $product->price }}">
-                            @if ($product->tag_ar)
-                                <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                            @if ($product->sizes->first()->quantity == 0)
+                                <div class="product-badge">{{ __('Out of Stock') }}</div>
+                            @else
+                                @if ($product->tag_ar)
+                                    <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                                @endif
                             @endif
+
                             <div class="product-img">
                                 <a
                                     href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
@@ -64,9 +69,11 @@
                                     </div>
                                 @endif
                                 <div class="product-actions">
-                                    <button class="add-to-cart" data-id="{{ $product->id }}"
-                                        data-size="{{ $product->sizes->first()->size }}" onclick="addToCart(this)"><i
-                                            class="fas fa-cart-plus"></i></button>
+                                    @if ($product->sizes->first()->quantity > 0)
+                                        <button class="add-to-cart" data-id="{{ $product->id }}"
+                                            data-size="{{ $product->sizes->first()->size }}" onclick="addToCart(this)"><i
+                                                class="fas fa-cart-plus"></i></button>
+                                    @endif
                                     <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
                                         data-id="{{ $product->id }}" data-size="{{ $product->sizes->first()->size }}"><i
                                             class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>

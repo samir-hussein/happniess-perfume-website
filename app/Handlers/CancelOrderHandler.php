@@ -8,6 +8,7 @@ use App\Interfaces\IOrderRepo;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CancelOrderHandler
 {
@@ -26,6 +27,14 @@ class CancelOrderHandler
 		}
 
 		$this->orderRepo->cancelOrder($orderId);
+
+		// update product quantities
+		foreach ($order->orderItems as $orderItem) {
+			DB::table('product_sizes')
+				->where('product_id', $orderItem->product_id)
+				->where('size', $orderItem->size)
+				->increment('quantity', $orderItem->quantity);
+		}
 
 		// send notification
 		$payload = [

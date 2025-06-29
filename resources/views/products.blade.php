@@ -25,7 +25,7 @@
         <div class="filter-section" id="filterSection">
             <div class="filter-header">
                 <h3 class="filter-title"><i class="fas fa-sliders-h"></i> {{ __('Refine Your Selection') }}</h3>
-                <a href="{{ route('home', app()->getLocale()) }}" class="reset-filters">
+                <a href="{{ route('products', app()->getLocale()) }}" class="reset-filters">
                     <i class="fas fa-undo"></i>
                     <span>{{ __('Reset All') }}</span>
                 </a>
@@ -145,8 +145,12 @@
                     @foreach ($products as $product)
                         <div class="product-card" data-id="{{ $product->id }}"
                             data-category="{{ $product->category->name }}" data-price="{{ $product->price }}">
-                            @if ($product->tag_ar)
-                                <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                            @if ($product->sizes->first()->quantity == 0)
+                                <div class="product-badge">{{ __('Out of Stock') }}</div>
+                            @else
+                                @if ($product->tag_ar)
+                                    <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                                @endif
                             @endif
                             <div class="product-img">
                                 <a
@@ -176,9 +180,11 @@
                                     </div>
                                 @endif
                                 <div class="product-actions">
-                                    <button class="add-to-cart" data-id="{{ $product->id }}"
-                                        data-size="{{ $product->sizes->first()->size }}" onclick="addToCart(this)"><i
-                                            class="fas fa-cart-plus"></i></button>
+                                    @if ($product->sizes->first()->quantity > 0)
+                                        <button class="add-to-cart" data-id="{{ $product->id }}"
+                                            data-size="{{ $product->sizes->first()->size }}" onclick="addToCart(this)"><i
+                                                class="fas fa-cart-plus"></i></button>
+                                    @endif
                                     <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
                                         data-id="{{ $product->id }}"
                                         data-size="{{ $product->sizes->first()->size }}"><i

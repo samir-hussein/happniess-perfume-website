@@ -142,6 +142,10 @@
 	margin-top: 30px;
 }
 
+.single-product-actions {
+	justify-content: flex-start;
+}
+
 .add-to-cart {
 	padding: 12px 30px;
 	background-color: var(--royal-gold);

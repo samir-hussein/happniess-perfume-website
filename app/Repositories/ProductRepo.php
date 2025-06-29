@@ -90,7 +90,8 @@ class ProductRepo extends BaseRepository implements IProductRepo
             if ($size && $size !== "any" && $size !== "") {
                 $q->where("size", $size);
             }
-            $q->orderBy("price", "asc");
+            $q->orderByRaw('CASE WHEN quantity = 0 THEN 1 ELSE 0 END')
+                ->orderBy('price', 'asc');
         };
 
         return $query->with(["sizes" => $sizesQuery])->paginate($limit, ['*'], 'page', $page);
@@ -105,7 +106,8 @@ class ProductRepo extends BaseRepository implements IProductRepo
         }
 
         return $query->with(["sizes" => function ($q) {
-            $q->orderBy("price", "asc");
+            $q->orderByRaw('CASE WHEN quantity = 0 THEN 1 ELSE 0 END')
+                ->orderBy('price', 'asc');
         }])->latest("id")->paginate($limit, ['*'], 'page', $page);
     }
 
@@ -145,7 +147,8 @@ class ProductRepo extends BaseRepository implements IProductRepo
     {
         $currentProduct = $this->model->find($id);
         return $this->model->where("id", "!=", $id)->where("category_id", $currentProduct->category_id)->inRandomOrder()->with(["sizes" => function ($q) {
-            $q->orderBy("price", "asc");
+            $q->orderByRaw('CASE WHEN quantity = 0 THEN 1 ELSE 0 END')
+                ->orderBy('price', 'asc');
         }])->limit(4)->get();
     }
 
