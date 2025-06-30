@@ -57,88 +57,94 @@ use App\Interfaces\IPromotionalCodeRepo;
 use App\Repositories\ShippingMethodRepo;
 use App\Repositories\PromotionalCodeRepo;
 use App\Interfaces\IShippingMethodService;
+use App\Interfaces\IProductReviewRepo;
+use App\Interfaces\IProductReviewService;
+use App\Repositories\ProductReviewRepo;
+use App\Services\ProductReviewService;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        $this->app->bind(IRepository::class, BaseRepository::class);
-        $this->app->bind(ICategoryRepo::class, CategoryRepo::class);
-        $this->app->bind(IProductRepo::class, ProductRepo::class);
-        $this->app->bind(ICategoryService::class, CategoryService::class);
-        $this->app->bind(IProductService::class, ProductService::class);
-        $this->app->bind(IProductSizeRepo::class, ProductSizeRepo::class);
-        $this->app->bind(ICartService::class, CartService::class);
-        $this->app->bind(ICartRepo::class, CartRepo::class);
-        $this->app->bind(IAuthService::class, AuthService::class);
-        $this->app->bind(IClientRepo::class, ClientRepo::class);
-        $this->app->bind(IFavoriteRepo::class, FavoriteRepo::class);
-        $this->app->bind(IFavoriteService::class, FavoriteService::class);
-        $this->app->bind(IShippingMethodRepo::class, ShippingMethodRepo::class);
-        $this->app->bind(IShippingMethodService::class, ShippingMethodService::class);
-        $this->app->bind(ICheckoutService::class, CheckoutService::class);
-        $this->app->bind(IPromotionalCodeRepo::class, PromotionalCodeRepo::class);
-        $this->app->bind(IOrderRepo::class, OrderRepo::class);
-        $this->app->bind(IOrderService::class, OrderService::class);
-        $this->app->bind(IOrderLogRepo::class, OrderLogRepo::class);
-        $this->app->bind(IOrderItemsRepo::class, OrderItemsRepo::class);
-        $this->app->bind(IFirebaseService::class, FirebaseService::class);
-        $this->app->bind(IPaymentService::class, PaymentGatewayService::class);
-        $this->app->bind(IMessageService::class, MessageService::class);
-        $this->app->bind(IMessageRepo::class, MessageRepo::class);
-        $this->app->bind(IChatRepo::class, ChatRepo::class);
+	/**
+	 * Register any application services.
+	 */
+	public function register(): void
+	{
+		$this->app->bind(IRepository::class, BaseRepository::class);
+		$this->app->bind(ICategoryRepo::class, CategoryRepo::class);
+		$this->app->bind(IProductRepo::class, ProductRepo::class);
+		$this->app->bind(ICategoryService::class, CategoryService::class);
+		$this->app->bind(IProductService::class, ProductService::class);
+		$this->app->bind(IProductSizeRepo::class, ProductSizeRepo::class);
+		$this->app->bind(ICartService::class, CartService::class);
+		$this->app->bind(ICartRepo::class, CartRepo::class);
+		$this->app->bind(IAuthService::class, AuthService::class);
+		$this->app->bind(IClientRepo::class, ClientRepo::class);
+		$this->app->bind(IFavoriteRepo::class, FavoriteRepo::class);
+		$this->app->bind(IFavoriteService::class, FavoriteService::class);
+		$this->app->bind(IShippingMethodRepo::class, ShippingMethodRepo::class);
+		$this->app->bind(IShippingMethodService::class, ShippingMethodService::class);
+		$this->app->bind(ICheckoutService::class, CheckoutService::class);
+		$this->app->bind(IPromotionalCodeRepo::class, PromotionalCodeRepo::class);
+		$this->app->bind(IOrderRepo::class, OrderRepo::class);
+		$this->app->bind(IOrderService::class, OrderService::class);
+		$this->app->bind(IOrderLogRepo::class, OrderLogRepo::class);
+		$this->app->bind(IOrderItemsRepo::class, OrderItemsRepo::class);
+		$this->app->bind(IFirebaseService::class, FirebaseService::class);
+		$this->app->bind(IPaymentService::class, PaymentGatewayService::class);
+		$this->app->bind(IMessageService::class, MessageService::class);
+		$this->app->bind(IMessageRepo::class, MessageRepo::class);
+		$this->app->bind(IChatRepo::class, ChatRepo::class);
+		$this->app->bind(IProductReviewRepo::class, ProductReviewRepo::class);
+		$this->app->bind(IProductReviewService::class, ProductReviewService::class);
 
-        // Register PaymentGateway Facade
-        $this->app->singleton('PaymentGateway', function ($app) {
-            return $app->make(IPaymentService::class);
-        });
+		// Register PaymentGateway Facade
+		$this->app->singleton('PaymentGateway', function ($app) {
+			return $app->make(IPaymentService::class);
+		});
 
-        // Register Firebase Facade
-        $this->app->singleton('firebase', function ($app) {
-            return $app->make(IFirebaseService::class);
-        });
-    }
+		// Register Firebase Facade
+		$this->app->singleton('firebase', function ($app) {
+			return $app->make(IFirebaseService::class);
+		});
+	}
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        View::composer('Includes.navbar', function ($view) {
-            $view->with('categories', $this->app->make(ICategoryService::class)->getAll());
-        });
+	/**
+	 * Bootstrap any application services.
+	 */
+	public function boot(): void
+	{
+		View::composer('Includes.navbar', function ($view) {
+			$view->with('categories', $this->app->make(ICategoryService::class)->getAll());
+		});
 
-        View::composer('Includes.announcement', function ($view) {
-            $view->with('announcements', Announcement::latest()->get());
-        });
+		View::composer('Includes.announcement', function ($view) {
+			$view->with('announcements', Announcement::latest()->get());
+		});
 
-        View::composer(['layouts.app', 'Includes.chat'], function ($view) {
-            $user = Auth::user();
+		View::composer(['layouts.app', 'Includes.chat'], function ($view) {
+			$user = Auth::user();
 
-            $chat = null;
-            $chatId = null;
+			$chat = null;
+			$chatId = null;
 
-            if ($user) {
-                $chat = Chat::where('client_id', $user->id)->with('messages')->first();
-            } else {
-                $chat = Chat::where('client_ip', request()->cookie('chat_id'))->with('messages')->first();
-            }
+			if ($user) {
+				$chat = Chat::where('client_id', $user->id)->with('messages')->first();
+			} else {
+				$chat = Chat::where('client_ip', request()->cookie('chat_id'))->with('messages')->first();
+			}
 
-            if ($chat) {
-                $chatId = $chat->id;
-            }
+			if ($chat) {
+				$chatId = $chat->id;
+			}
 
-            // Set for each view accordingly
-            if ($view->getName() === 'layouts.app') {
-                $view->with('chatId', $chatId);
-            }
+			// Set for each view accordingly
+			if ($view->getName() === 'layouts.app') {
+				$view->with('chatId', $chatId);
+			}
 
-            if ($view->getName() === 'Includes.chat') {
-                $view->with('chat', $chat);
-            }
-        });
-    }
+			if ($view->getName() === 'Includes.chat') {
+				$view->with('chat', $chat);
+			}
+		});
+	}
 }

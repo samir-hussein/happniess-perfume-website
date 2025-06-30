@@ -50,6 +50,17 @@
                     <h1 class="product-title">{{ $product->{'name_' . app()->getLocale()} }}</h1>
                     <span class="product-category">{{ $product->category->{'name_' . app()->getLocale()} }}</span>
 
+                    <div>
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $product->reviews_avg_rate)
+                                <i class="fas fa-star"></i>
+                            @else
+                                <i class="far fa-star"></i>
+                            @endif
+                        @endfor
+                        ({{ $product->reviews_count }})
+                    </div>
+
                     <div class="product-price">
                         @if ($product->discount_amount > 0)
                             <span class="current-price">{{ $product->size_price_after_discount }}
@@ -96,144 +107,59 @@
                 {!! $product->{'description_' . app()->getLocale()} !!}
             </p>
 
-            <!-- Review Form -->
-            {{-- <div class="review-form-container">
-				<h3 class="review-form-title">{{ __('Add Your Review') }}</h3>
-				<form id="reviewForm" class="review-form">
-					<div class="form-group">
-						<label class="form-label">{{ __('Your Rating') }}</label>
-						<div class="rating-stars">
-							<input type="radio" id="star5" name="rating" value="5">
-							<label for="star5" class="star-label"><i class="fas fa-star"></i></label>
+            @auth
+                <!-- Review Form -->
+                <div class="review-form-container">
+                    <h3 class="review-form-title">
+                        {{ count($product->reviews) == 0 ? __('Add Your Review') : __('Update Your Review') }}
+                    </h3>
+                    <form id="reviewForm" class="review-form"
+                        action="{{ route('product.review.create', [app()->getLocale(), $product->id]) }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label class="form-label">{{ __('Your Rating') }}</label>
+                            <div class="rating-stars">
+                                <input type="radio" id="star1" name="rate" value="1">
+                                <label for="star1" class="star-label"><i class="fas fa-star"></i></label>
 
-							<input type="radio" id="star4" name="rating" value="4">
-							<label for="star4" class="star-label"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star2" name="rate" value="2">
+                                <label for="star2" class="star-label"><i class="fas fa-star"></i></label>
 
-							<input type="radio" id="star3" name="rating" value="3">
-							<label for="star3" class="star-label"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star3" name="rate" value="3">
+                                <label for="star3" class="star-label"><i class="fas fa-star"></i></label>
 
-							<input type="radio" id="star2" name="rating" value="2">
-							<label for="star2" class="star-label"><i class="fas fa-star"></i></label>
+                                <input type="radio" id="star4" name="rate" value="4">
+                                <label for="star4" class="star-label"><i class="fas fa-star"></i></label>
 
-							<input type="radio" id="star1" name="rating" value="1">
-							<label for="star1" class="star-label"><i class="fas fa-star"></i></label>
-						</div>
-					</div>
+                                <input type="radio" id="star5" name="rate" value="5">
+                                <label for="star5" class="star-label"><i class="fas fa-star"></i></label>
+                            </div>
+                        </div>
 
-					<div class="form-group">
-						<label for="reviewText" class="form-label">{{ __('Your Review') }}</label>
-						<textarea id="reviewText" class="form-textarea" rows="5" required></textarea>
-					</div>
+                        <div class="form-group">
+                            <label for="reviewText" class="form-label">{{ __('Your Review') }}</label>
+                            <textarea id="reviewText" class="form-textarea" rows="5" required name="comment" dir="auto">{{ count($product->reviews) == 0 ? '' : $product->reviews->first()->comment }}</textarea>
+                        </div>
 
-					<button type="submit" class="submit-review-btn">{{ __('Submit Review') }}</button>
-				</form>
-			</div> --}}
+                        <button type="submit"
+                            class="submit-review-btn">{{ count($product->reviews) == 0 ? __('Submit Review') : __('Update Review') }}</button>
+                    </form>
+
+                    @if (count($product->reviews) > 0)
+                        <form id="deleteReviewForm"
+                            action="{{ route('product.review.delete', [app()->getLocale(), $product->id]) }}" method="POST">
+                            @csrf
+                            @method('Delete')
+                            <button type="submit" for="deleteReviewForm"
+                                class="delete-review-btn">{{ __('Delete Review') }}</button>
+                        </form>
+                    @endif
+                </div>
+            @endauth
 
             <!-- Reviews Section -->
-            {{-- <section class="reviews-section">
-				<div class="section-title">
-					<h2>{{ __('Customer Reviews') }}</h2>
-				</div>
-
-				<div class="reviews-container">
-					<!-- Review 1 -->
-					<div class="review-card">
-						<div class="review-header">
-							<div class="reviewer">
-								<img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah Mohamed"
-									class="reviewer-avatar">
-								<div>
-									<div class="reviewer-name">Sarah Mohamed</div>
-									<div class="review-date">March 15, 2023</div>
-								</div>
-							</div>
-							<div class="review-rating">
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-							</div>
-						</div>
-						<div class="review-content">
-							The perfume is wonderful! The scent lasts all day and I receive many compliments.
-							The packaging was beautiful and the bottle is very elegant. I will definitely buy it again.
-						</div>
-					</div>
-
-					<!-- Review 2 -->
-					<div class="review-card">
-						<div class="review-header">
-							<div class="reviewer">
-								<img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Nora Ahmed"
-									class="reviewer-avatar">
-								<div>
-									<div class="reviewer-name">Nora Ahmed</div>
-									<div class="review-date">February 2, 2023</div>
-								</div>
-							</div>
-							<div class="review-rating">
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="far fa-star"></i>
-							</div>
-						</div>
-						<div class="review-content">
-							The scent is very beautiful and fresh, but I wish it lasted longer.
-							The delivery service was fast and the product arrived in excellent condition.
-						</div>
-					</div>
-
-					<!-- Review 3 -->
-					<div class="review-card">
-						<div class="review-header">
-							<div class="reviewer">
-								<img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Lama Khaled"
-									class="reviewer-avatar">
-								<div>
-									<div class="reviewer-name">Lama Khaled</div>
-									<div class="review-date">January 28, 2023</div>
-								</div>
-							</div>
-							<div class="review-rating">
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star"></i>
-								<i class="fas fa-star-half-alt"></i>
-							</div>
-						</div>
-						<div class="review-content">
-							This perfume has become my favorite! The scent is perfect for day and evening,
-							a wonderful mix of flowers and vanilla. I recommend it to anyone looking for an elegant
-							feminine perfume.
-						</div>
-					</div>
-				</div>
-
-				<!-- Pagination -->
-				<div class="pagination">
-					<ul class="pagination-list">
-						<li class="pagination-item">
-							<a href="#"><i class="fas fa-chevron-left"></i></a>
-						</li>
-						<li class="pagination-item active">
-							<a href="#">1</a>
-						</li>
-						<li class="pagination-item">
-							<a href="#">2</a>
-						</li>
-						<li class="pagination-item">
-							<a href="#">3</a>
-						</li>
-						<li class="pagination-item">
-							<a href="#"><i class="fas fa-chevron-right"></i></a>
-						</li>
-					</ul>
-				</div>
-			</section> --}}
+            <section class="reviews-section" id="reviewsSection">
+            </section>
 
             <!-- Related Products -->
             @if ($relatedProducts->isNotEmpty())
@@ -242,110 +168,58 @@
                         <h2>{{ __('Related Products') }}</h2>
                     </div>
 
-                    {{-- <div class="related-slider">
-						@if (app()->getLocale() == 'ar')
-							<div class="slider-nav slider-prev">
-								<i class="fas fa-chevron-right"></i>
-							</div>
-						@else
-							<div class="slider-nav slider-next">
-								<i class="fas fa-chevron-right"></i>
-							</div>
-						@endif
-
-						<div class="related-slider-container" id="relatedSlider">
-							@foreach ($relatedProducts as $product)
-								<div class="related-product-card">
-									<div class="related-product-img">
-										<a
-											href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-											<img src="{{ $product->main_image }}"
-												alt="{{ $product->{'name_' . app()->getLocale()} }}" loading="lazy"
-												width="270" height="250">
-										</a>
-									</div>
-									<div class="related-product-info">
-										<a
-											href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-											<h3>{{ $product->{'name_' . app()->getLocale()} }}</h3>
-										</a>
-										<span>{{ $product->sizes->first()->size }} {{ __('ml') }}</span>
-										@if ($product->discount_amount > 0)
-											<div class="related-product-price">
-												<span>{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
-												<span class="discounted-price">{{ $product->priceAfterDiscount }}
-													{{ __('EGP') }}</span>
-											</div>
-										@else
-											<div class="related-product-price">{{ $product->sizes->first()->price }}
-												{{ __('EGP') }}</div>
-										@endif
-									</div>
-								</div>
-							@endforeach
-						</div>
-
-						@if (app()->getLocale() == 'ar')
-							<div class="slider-nav slider-next">
-								<i class="fas fa-chevron-left"></i>
-							</div>
-						@else
-							<div class="slider-nav slider-prev">
-								<i class="fas fa-chevron-left"></i>
-							</div>
-						@endif
-					</div> --}}
-
                     <div class="product-grid" id="productGrid">
-                        @foreach ($relatedProducts as $product)
-                            <div class="product-card" data-id="{{ $product->id }}"
-                                data-category="{{ $product->category->name }}" data-price="{{ $product->price }}">
-                                @if ($product->sizes->first()->quantity == 0)
+                        @foreach ($relatedProducts as $relatedProduct)
+                            <div class="product-card" data-id="{{ $relatedProduct->id }}"
+                                data-category="{{ $relatedProduct->category->name }}"
+                                data-price="{{ $relatedProduct->price }}">
+                                @if ($relatedProduct->sizes->first()->quantity == 0)
                                     <div class="product-badge">{{ __('Out of Stock') }}</div>
                                 @else
-                                    @if ($product->tag_ar)
-                                        <div class="product-badge">{{ $product->{'tag_' . app()->getLocale()} }}</div>
+                                    @if ($relatedProduct->tag_ar)
+                                        <div class="product-badge">{{ $relatedProduct->{'tag_' . app()->getLocale()} }}
+                                        </div>
                                     @endif
                                 @endif
                                 <div class="product-img">
                                     <a
-                                        href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-                                        <img src="{{ $product->main_image }}"
-                                            alt="{{ $product->name_en . ' - Happiness Perfume' }}" loading="lazy"
+                                        href="{{ route('product', [app()->getLocale(), $relatedProduct->id, 'size' => $relatedProduct->sizes->first()->size]) }}">
+                                        <img src="{{ $relatedProduct->main_image }}"
+                                            alt="{{ $relatedProduct->name_en . ' - Happiness Perfume' }}" loading="lazy"
                                             width="100" height="300">
                                     </a>
                                 </div>
                                 <div class="product-info">
                                     <a
-                                        href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-                                        <h3 dir="auto">{{ $product->{'name_' . app()->getLocale()} }} -
-                                            <span class="size">{{ $product->sizes->first()->size }}
+                                        href="{{ route('product', [app()->getLocale(), $relatedProduct->id, 'size' => $relatedProduct->sizes->first()->size]) }}">
+                                        <h3 dir="auto">{{ $relatedProduct->{'name_' . app()->getLocale()} }} -
+                                            <span class="size">{{ $relatedProduct->sizes->first()->size }}
                                                 {{ __('ml') }}</span>
                                         </h3>
                                     </a>
-                                    @if ($product->discount_amount > 0)
+                                    @if ($relatedProduct->discount_amount > 0)
                                         <div class="product-price">
-                                            <span class="discounted-price">{{ $product->sizes->first()->price }}
+                                            <span class="discounted-price">{{ $relatedProduct->sizes->first()->price }}
                                                 {{ __('EGP') }}</span>
-                                            <span>{{ $product->priceAfterDiscount }}
+                                            <span>{{ $relatedProduct->priceAfterDiscount }}
                                                 {{ __('EGP') }}</span>
                                         </div>
                                     @else
-                                        <div class="product-price">{{ $product->sizes->first()->price }}
+                                        <div class="product-price">{{ $relatedProduct->sizes->first()->price }}
                                             {{ __('EGP') }}
                                         </div>
                                     @endif
                                     <div class="product-actions">
-                                        @if ($product->sizes->first()->quantity > 0)
-                                            <button class="add-to-cart-related" data-id="{{ $product->id }}"
-                                                data-size="{{ $product->sizes->first()->size }}"
+                                        @if ($relatedProduct->sizes->first()->quantity > 0)
+                                            <button class="add-to-cart-related" data-id="{{ $relatedProduct->id }}"
+                                                data-size="{{ $relatedProduct->sizes->first()->size }}"
                                                 onclick="addToCart(this)"><i class="fas fa-cart-plus"></i></button>
                                         @endif
                                         <button
-                                            class="add-to-fav-related {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
-                                            data-id="{{ $product->id }}"
-                                            data-size="{{ $product->sizes->first()->size }}"><i
-                                                class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
+                                            class="add-to-fav-related {{ in_array($relatedProduct->id, $favorites) ? 'favorited' : '' }}"
+                                            data-id="{{ $relatedProduct->id }}"
+                                            data-size="{{ $relatedProduct->sizes->first()->size }}"><i
+                                                class="{{ in_array($relatedProduct->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -374,133 +248,62 @@
             });
         });
 
-        // Related Products Slider
-        const slider = document.getElementById('relatedSlider');
-        const prevBtn = document.querySelector('.slider-prev');
-        const nextBtn = document.querySelector('.slider-next');
-
-        @if (app()->getLocale() == 'ar')
-            prevBtn.addEventListener('click', () => {
-                slider.scrollBy({
-                    left: 300,
-                    behavior: 'smooth'
-                });
-            });
-
-            nextBtn.addEventListener('click', () => {
-                slider.scrollBy({
-                    left: -300,
-                    behavior: 'smooth'
-                });
-            });
-        @endif
-
-        @if (app()->getLocale() == 'en')
-            nextBtn.addEventListener('click', () => {
-                slider.scrollBy({
-                    left: 300,
-                    behavior: 'smooth'
-                });
-            });
-
-            prevBtn.addEventListener('click', () => {
-                slider.scrollBy({
-                    left: -300,
-                    behavior: 'smooth'
-                });
-            });
-        @endif
-
-        // Pagination
-        const paginationItems = document.querySelectorAll('.pagination-item:not(:first-child):not(:last-child)');
-
-        paginationItems.forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelector('.pagination-item.active').classList.remove('active');
-                item.classList.add('active');
-                // Here you would load the corresponding reviews page
-            });
-        });
-
-        // Review Form Submission
-        const reviewForm = document.getElementById('reviewForm');
-
-        reviewForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const name = document.getElementById('reviewerName').value;
-            const rating = document.querySelector('input[name="rating"]:checked')?.value;
-            const reviewText = document.getElementById('reviewText').value;
-
-            if (!rating) {
-                alert('Please select a rating from 1 to 5 stars');
-                return;
-            }
-
-            // Here you would typically send the data to your server
-            console.log('New Review:', {
-                name,
-                rating,
-                reviewText
-            });
-
-            // For demo purposes, we'll add the review to the page
-            addReviewToPage(name, rating, reviewText);
-
-            // Reset the form
-            reviewForm.reset();
-
-            // Scroll to the new review
-            document.querySelector('.reviews-section').scrollIntoView({
-                behavior: 'smooth'
-            });
-
-            alert('Thank you for your review! Your review has been successfully added.');
-        });
-
-        function addReviewToPage(name, rating, text) {
-            const reviewsContainer = document.querySelector('.reviews-container');
-            const now = new Date();
-            const dateString = now.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
-            const reviewHTML = `
-			<div class="review-card">
-				<div class="review-header">
-					<div class="reviewer">
-						<img src="https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random"
-							alt="${name}" class="reviewer-avatar">
-						<div>
-							<div class="reviewer-name">${name}</div>
-							<div class="review-date">${dateString}</div>
-						</div>
-					</div>
-					<div class="review-rating">
-						${'<i class="fas fa-star"></i>'.repeat(rating)}
-						${'<i class="far fa-star"></i>'.repeat(5 - rating)}
-					</div>
-				</div>
-				<div class="review-content">${text}</div>
-			</div>
-		`;
-
-            reviewsContainer.insertAdjacentHTML('afterbegin', reviewHTML);
-        }
-
         // Star rating hover effect
         const starInputs = document.querySelectorAll('.rating-stars input');
         const starLabels = document.querySelectorAll('.star-label');
 
+        function setStarColor(index) {
+            if (index == 0) return;
+            starLabels.forEach(l => l.style.color = '#ddd');
+
+            // Fill stars up to the clicked one
+            for (let i = 0; i < index; i++) {
+                starLabels[i].style.color = 'var(--royal-gold)';
+            }
+
+            // Set the corresponding input as checked
+            starInputs[index - 1].checked = true;
+        }
+
+        setStarColor(@json(data_get($product->reviews, 0)->rate ?? 0));
+
+        // Add click event listeners to star labels
+        starLabels.forEach((label, index) => {
+            label.addEventListener('click', () => {
+                // Clear all stars
+                starLabels.forEach(l => l.style.color = '#ddd');
+
+                // Fill stars up to the clicked one
+                for (let i = 0; i <= index; i++) {
+                    starLabels[i].style.color = 'var(--royal-gold)';
+                }
+
+                // Set the corresponding input as checked
+                starInputs[index].checked = true;
+            });
+        });
+
         starInputs.forEach((input, index) => {
+            input.addEventListener('change', () => {
+                // Clear all stars
+                starLabels.forEach(l => l.style.color = '#ddd');
+
+                // Fill stars up to the selected one
+                for (let i = 0; i <= index; i++) {
+                    starLabels[i].style.color = 'var(--royal-gold)';
+                }
+            });
+
             input.addEventListener('mouseenter', () => {
-                starLabels.forEach((label, labelIndex) => {
-                    if (labelIndex <= index) {
-                        label.style.color = 'var(--royal-gold)';
+                // Only change colors if no star is selected or we're hovering over the selected star or higher
+                const checkedInput = document.querySelector('input[name="rating"]:checked');
+                const checkedIndex = checkedInput ? Array.from(starInputs).indexOf(checkedInput) : -1;
+
+                if (checkedIndex === -1 || index <= checkedIndex) {
+                    for (let i = 0; i <= index; i++) {
+                        starLabels[i].style.color = 'var(--royal-gold)';
                     }
-                });
+                }
             });
 
             input.addEventListener('mouseleave', () => {
@@ -509,8 +312,88 @@
                     starLabels.forEach(label => {
                         label.style.color = '#ddd';
                     });
+                } else {
+                    // Restore the selected rating
+                    const selectedIndex = Array.from(starInputs).indexOf(checkedInput);
+                    starLabels.forEach((label, i) => {
+                        label.style.color = i <= selectedIndex ? 'var(--royal-gold)' : '#ddd';
+                    });
                 }
             });
         });
+
+        //get reviews
+        const reviewsContainer = document.querySelector('.reviews-section');
+
+        fetch('/{{ app()->getLocale() }}/product/' + {{ request('id') }} + '/reviews', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                reviewsContainer.innerHTML = data.reviews;
+                attachPaginationListeners();
+            })
+            .catch(error => console.error(error));
+
+        // Function to attach event listeners to all pagination links
+        function attachPaginationListeners() {
+            document.querySelectorAll('.pagination-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    fetch('/{{ app()->getLocale() }}/product/' + {{ request('id') }} +
+                            '/reviews?page=' + page, {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                }
+                            })
+                        .then(response => response.json())
+                        .then(data => {
+                            reviewsContainer.innerHTML = data.reviews;
+                            // Re-attach event listeners to the new pagination links
+                            attachPaginationListeners();
+                            // Scroll to the reviews section with a slight delay to ensure DOM is updated
+                            setTimeout(() => {
+                                const reviewsSection = document.getElementById(
+                                    'reviewsSection');
+                                if (reviewsSection) {
+                                    reviewsSection.scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'start'
+                                    });
+                                }
+                            }, 100);
+                        })
+                        .catch(error => console.error(error));
+                });
+            });
+        }
+
+        // Disable submit button on form submission to prevent multiple clicks
+        const reviewForm = document.getElementById('reviewForm');
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', function() {
+                const submitButton = this.querySelector('.submit-review-btn');
+                const deleteButton = this.querySelector('.delete-review-btn');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '{{ __('Processing...') }}';
+                    submitButton.style.opacity = '0.7';
+                    submitButton.style.cursor = 'not-allowed';
+                }
+                if (deleteButton) {
+                    deleteButton.disabled = true;
+                    deleteButton.innerHTML = '{{ __('Processing...') }}';
+                    deleteButton.style.opacity = '0.7';
+                    deleteButton.style.cursor = 'not-allowed';
+                }
+            });
+        }
     </script>
 @endsection

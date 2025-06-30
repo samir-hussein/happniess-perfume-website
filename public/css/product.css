@@ -298,6 +298,12 @@
 	gap: 15px;
 }
 
+.empty-reviews{
+	text-align: center;
+	font-size: 18px;
+	color: var(--deep-bronze);
+}
+
 .reviewer-avatar {
 	width: 50px;
 	height: 50px;
@@ -308,6 +314,18 @@
 .reviewer-name {
 	font-weight: 600;
 	margin-bottom: 5px;
+}
+
+.reviewer-name span {
+	color: var(--deep-bronze);
+	display: block;
+	margin-bottom: 0;
+}
+
+.reviewer-name span:last-child {
+	margin-bottom: 5px;
+	font-size: 14px;
+	color: var(--golden-shadow);
 }
 
 .review-date {
@@ -415,16 +433,33 @@
 	color: #ddd;
 }
 
-.submit-review-btn {
+.delete-review-btn{
 	padding: 12px 30px;
-	background-color: var(--royal-gold);
-	color: var(--charcoal-black);
+	background-color: rgb(197, 11, 11);
+	color: var(--ivory-white);
 	border: none;
 	border-radius: 6px;
 	font-weight: 600;
 	cursor: pointer;
 	transition: background-color 0.3s;
 	display: inline-block;
+}
+
+.delete-review-btn:hover{
+	background-color: rgb(197, 11, 11);
+}
+
+.submit-review-btn {
+	padding: 12px 30px;
+	background-color: var(--royal-gold);
+	color: var(--ivory-white);
+	border: none;
+	border-radius: 6px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	display: inline-block;
+	margin-bottom: 15px;
 }
 
 .submit-review-btn:hover {

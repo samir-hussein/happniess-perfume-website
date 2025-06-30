@@ -16,6 +16,27 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $name_en
+ * @property string $name_ar
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Announcement newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Announcement newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Announcement query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Announcement whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Announcement whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Announcement whereNameAr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Announcement whereNameEn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Announcement whereUpdatedAt($value)
+ */
+	class Announcement extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property int $client_id
  * @property int $product_id
  * @property int $size
@@ -339,6 +360,8 @@ namespace App\Models{
  * @property-read mixed $price_after_discount
  * @property-read mixed $size_price_after_discount
  * @property-read mixed $size_price
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProductReview> $reviews
+ * @property-read int|null $reviews_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProductSize> $sizes
  * @property-read int|null $sizes_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product newModelQuery()
@@ -370,11 +393,39 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $product_id
+ * @property int $client_id
+ * @property int $rate
+ * @property string $comment
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Client $client
+ * @property-read \App\Models\Product $product
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview whereClientId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview whereComment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview whereRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductReview whereUpdatedAt($value)
+ */
+	class ProductReview extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property int $size
  * @property string $price
  * @property int $product_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $quantity
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductSize newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductSize newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductSize query()
@@ -382,6 +433,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductSize whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductSize wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductSize whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductSize whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductSize whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProductSize whereUpdatedAt($value)
  */

@@ -4,8 +4,9 @@ namespace App\Repositories;
 
 use App\Models\Product;
 use App\Interfaces\IProductRepo;
-use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\BaseRepository;
+use Illuminate\Support\Facades\Auth;
 
 class ProductRepo extends BaseRepository implements IProductRepo
 {
@@ -125,7 +126,13 @@ class ProductRepo extends BaseRepository implements IProductRepo
             abort(404);
         }
 
-        $product = $query->with(["category", "sizes"])->first();
+        $product = $query->with([
+            "category",
+            "sizes",
+            "reviews" => function ($q) use ($id) {
+                $q->where("client_id", Auth::user()->id);
+            }
+        ])->withCount("reviews")->withAvg("reviews", "rate")->first();
 
         if (!$product) {
             abort(404);

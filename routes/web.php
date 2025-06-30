@@ -13,6 +13,7 @@ use App\Http\Controllers\WalletPaymentController;
 use App\Http\Controllers\ShippingPolicyController;
 use App\Http\Controllers\PusherController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ProductReviewController;
 
 Route::post("/pusher/auth", [PusherController::class, "auth"])->name("pusher.auth")->middleware("throttle:10,1");
 
@@ -31,59 +32,62 @@ Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->
 Route::get('/auth/logout', [AuthController::class, 'logout'])->middleware('auth')->name('auth.logout');
 
 Route::middleware(['local', 'guest'])->prefix('{locale}')->group(function () {
-    Route::get('/login', function () {
-        return view('login');
-    })->name('login');
+	Route::get('/login', function () {
+		return view('login');
+	})->name('login');
 
-    Route::get('/register', function () {
-        return view('register');
-    })->name('register');
+	Route::get('/register', function () {
+		return view('register');
+	})->name('register');
 });
 
 Route::middleware(['guest', 'throttle:6,10'])->group(function () {
-    Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
-    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+	Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
+	Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 });
 
 Route::middleware(['local'])->prefix('{locale}')->group(function () {
-    Route::get('/', [HomePageController::class, "index"])->name("home");
-    Route::get('/products', [HomePageController::class, "products"])->name("products");
-    Route::get('/product/{id}/size/{size}', [ProductPageController::class, "index"])->name("product");
-    Route::get('/return-policy', function () {
-        return view('return-policy');
-    })->name("return-policy");
-    Route::get('/shipping-policy', [ShippingPolicyController::class, "index"])->name("shipping-policy");
+	Route::get("product/{productId}/reviews", [ProductReviewController::class, "reviews"])->name("product.reviews")->middleware("throttle:60,1");
+	Route::get('/', [HomePageController::class, "index"])->name("home");
+	Route::get('/products', [HomePageController::class, "products"])->name("products");
+	Route::get('/product/{id}/size/{size}', [ProductPageController::class, "index"])->name("product");
+	Route::get('/return-policy', function () {
+		return view('return-policy');
+	})->name("return-policy");
+	Route::get('/shipping-policy', [ShippingPolicyController::class, "index"])->name("shipping-policy");
 });
 
 Route::middleware(['local', 'auth'])->prefix('{locale}')->group(function () {
-    Route::get('/favorite', [FavoriteController::class, "index"])->name("favorite");
-    Route::get('/checkout', [CheckOutController::class, "index"])->name("checkout");
-    Route::get('/order-confirmation', [CheckOutController::class, "orderConfirmation"])->name("order-confirmation");
-    Route::get('/payment-failed', [CheckOutController::class, "paymentFailed"])->name("payment-failed");
-    Route::get('/order', [OrderController::class, "index"])->name("order.index");
-    Route::get('/order/logs/{orderId}', [OrderController::class, "getOrderLogs"])->name("order.logs");
-    Route::get('/wallet-payment', [WalletPaymentController::class, "showQrCode"])->name("wallet-payment");
+	Route::get('/favorite', [FavoriteController::class, "index"])->name("favorite");
+	Route::get('/checkout', [CheckOutController::class, "index"])->name("checkout");
+	Route::get('/order-confirmation', [CheckOutController::class, "orderConfirmation"])->name("order-confirmation");
+	Route::get('/payment-failed', [CheckOutController::class, "paymentFailed"])->name("payment-failed");
+	Route::get('/order', [OrderController::class, "index"])->name("order.index");
+	Route::get('/order/logs/{orderId}', [OrderController::class, "getOrderLogs"])->name("order.logs");
+	Route::get('/wallet-payment', [WalletPaymentController::class, "showQrCode"])->name("wallet-payment");
 
-    Route::middleware('throttle:60,10')->group(function () {
-        Route::post('/checkout/apply-coupon', [CheckOutController::class, "applyCoupon"])->name("checkout.apply-coupon");
-        Route::post('/checkout/place-order', [CheckOutController::class, "placeOrder"])->name("checkout.place-order");
-        Route::post('/order/reorder/{orderId}', [OrderController::class, "reorder"])->name("order.reorder");
-        Route::put('/order/cancel/{orderId}', [OrderController::class, "cancelOrder"])->name("order.cancel");
-        Route::post('/buy-now', [OrderController::class, "buyNow"])->name("buy.now");
-    });
+	Route::middleware('throttle:60,1')->group(function () {
+		Route::post("product/{productId}/reviews", [ProductReviewController::class, "createOrUpdateReview"])->name("product.review.create");
+		Route::delete("product/{productId}/reviews", [ProductReviewController::class, "deleteReview"])->name("product.review.delete");
+		Route::post('/checkout/apply-coupon', [CheckOutController::class, "applyCoupon"])->name("checkout.apply-coupon");
+		Route::post('/checkout/place-order', [CheckOutController::class, "placeOrder"])->name("checkout.place-order");
+		Route::post('/order/reorder/{orderId}', [OrderController::class, "reorder"])->name("order.reorder");
+		Route::put('/order/cancel/{orderId}', [OrderController::class, "cancelOrder"])->name("order.cancel");
+		Route::post('/buy-now', [OrderController::class, "buyNow"])->name("buy.now");
+	});
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/cart/count', [CartController::class, "getCartCount"])->name("cart.count");
-    Route::get('/favorite/count', [FavoriteController::class, "getFavoritesCount"])->name("favorite.count");
-    Route::get("/order/{orderId}/invoice", [OrderController::class, "getInvoice"])->name("order.invoice");
-    Route::get("/check-payment-status/{orderId}", [OrderController::class, "checkPaymentStatus"])->name("check.payment.status");
+	Route::get('/cart/count', [CartController::class, "getCartCount"])->name("cart.count");
+	Route::get('/favorite/count', [FavoriteController::class, "getFavoritesCount"])->name("favorite.count");
+	Route::get("/order/{orderId}/invoice", [OrderController::class, "getInvoice"])->name("order.invoice");
+	Route::get("/check-payment-status/{orderId}", [OrderController::class, "checkPaymentStatus"])->name("check.payment.status");
 
-    Route::middleware('throttle:60,10')->group(function () {
-        Route::post('/cart/add', [CartController::class, "addToCart"])->name("cart.add");
-        Route::delete('/cart/remove', [CartController::class, "removeFromCart"])->name("cart.remove");
-        Route::post('/cart/update', [CartController::class, "updateCartQuantity"])->name("cart.update");
-        Route::post('/favorite/add', [FavoriteController::class, "addToFavorite"])->name("favorite.add");
-        Route::post('/cart/sync', [CartController::class, "syncCart"])->name("cart.sync");
-    });
+	Route::middleware('throttle:60,1')->group(function () {
+		Route::post('/cart/add', [CartController::class, "addToCart"])->name("cart.add");
+		Route::delete('/cart/remove', [CartController::class, "removeFromCart"])->name("cart.remove");
+		Route::post('/cart/update', [CartController::class, "updateCartQuantity"])->name("cart.update");
+		Route::post('/favorite/add', [FavoriteController::class, "addToFavorite"])->name("favorite.add");
+		Route::post('/cart/sync', [CartController::class, "syncCart"])->name("cart.sync");
+	});
 });
