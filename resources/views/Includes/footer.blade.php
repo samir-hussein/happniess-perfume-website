@@ -9,10 +9,10 @@
                 <div class="social-links">
                     <a href="https://www.facebook.com/share/1PVPUd4v2x/" target="_blank" rel="noopener noreferrer"><i
                             class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/Happiness_perfume?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-                        target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@Happiness.perfume?_t=ZS-8wUv6iyOOD1&_r=1" target="_blank"
-                        rel="noopener noreferrer"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.instagram.com/Happniess_perfume" target="_blank" rel="noopener noreferrer"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@happniess.perfume" target="_blank" rel="noopener noreferrer"><i
+                            class="fab fa-tiktok"></i></a>
                 </div>
             </div>
 
