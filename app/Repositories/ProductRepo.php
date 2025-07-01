@@ -130,7 +130,7 @@ class ProductRepo extends BaseRepository implements IProductRepo
             "category",
             "sizes",
             "reviews" => function ($q) use ($id) {
-                $q->where("client_id", Auth::user()->id);
+                $q->where("client_id", Auth::user()?->id);
             }
         ])->withCount("reviews")->withAvg("reviews", "rate")->first();
 
