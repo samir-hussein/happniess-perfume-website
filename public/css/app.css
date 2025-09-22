@@ -757,6 +757,8 @@ header {
 
 	.nav-links.active {
 		left: 0;
+		top: 18vh;
+		height: 100vh;
 	}
 
 	.dropdown-content {
@@ -1389,10 +1391,6 @@ footer {
 		padding: 40px 20px;
 		transition: left 0.3s;
 		z-index: 100;
-	}
-
-	.nav-links.active {
-		left: 0;
 	}
 
 	.dropdown-content {
