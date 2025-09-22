@@ -7,7 +7,8 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>{{ __('Discover Your Signature Scent With Happiness Perfume') }}</h1>
+                <h2>{{ __('Discover Your Signature Scent With') }}</h2>
+                <h1>{{ __('Happiness Perfume') }}</h1>
                 <p>{{ __('Experience luxury fragrances crafted with the finest ingredients to elevate your everyday moments.') }}
                 </p>
             </div>
@@ -84,10 +85,75 @@
                 @endif
             </div>
 
-            <div class="view-all">
+            <!-- <div class="view-all">
                 <a href="{{ route('products', app()->getLocale()) }}">{{ __('View All') }} <i
                         class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i></a>
+            </div> -->
+
+             <!-- Pagination -->
+        @if ($products->hasPages())
+            <div class="pagination">
+                <ul class="pagination-list">
+                    <li class="pagination-item">
+                        <a href="{{ $products->appends(request()->except('page'))->previousPageUrl() }}" id="prevPage"
+                            class="pagination-link"><i
+                                class="fas {{ app()->getLocale() === 'ar' ? 'fa-chevron-right' : 'fa-chevron-left' }}"></i></a>
+                    </li>
+                    @php
+                        $currentPage = $products->currentPage();
+                        $lastPage = $products->lastPage();
+                    @endphp
+
+                    <li class="pagination-item {{ $currentPage == 1 ? 'active' : '' }}">
+                        {{-- Always show page 1 --}}
+                        <a href="{{ $products->appends(request()->except('page'))->url(1) }}">1</a>
+                    </li>
+
+                    @if ($currentPage > 2 && $currentPage <= $lastPage && $lastPage > 3)
+                        <li class="pagination-item">
+                            {{-- Show ellipsis if currentPage > 2 --}}
+                            <span class="pagination-ellipsis">...</span>
+                        </li>
+                    @endif
+
+                    {{-- Show middle pages if not near the start or end --}}
+                    @for ($i = max(2, $currentPage); $i <= min($lastPage - 1, $currentPage + 1); $i++)
+                        <li class="pagination-item {{ $currentPage == $i ? 'active' : '' }}">
+                            <a
+                                href="{{ $products->appends(request()->except('page'))->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+
+                    {{-- Show ellipsis if not near the end --}}
+                    @if ($currentPage < $lastPage - 2)
+                        <li class="pagination-item">
+                            <span class="pagination-ellipsis">...</span>
+                        </li>
+                    @endif
+
+                    @if ($currentPage == $lastPage && $lastPage > 3)
+                        <li class="pagination-item {{ $currentPage == $lastPage - 1 ? 'active' : '' }}">
+                            <a
+                                href="{{ $products->appends(request()->except('page'))->url($lastPage - 1) }}">{{ $lastPage - 1 }}</a>
+                        </li>
+                    @endif
+
+                    {{-- Always show last page if it's not 1 --}}
+                    @if ($lastPage > 1)
+                        <li class="pagination-item {{ $currentPage == $lastPage ? 'active' : '' }}">
+                            <a
+                                href="{{ $products->appends(request()->except('page'))->url($lastPage) }}">{{ $lastPage }}</a>
+                        </li>
+                    @endif
+
+                    <li class="pagination-item">
+                        <a href="{{ $products->appends(request()->except('page'))->nextPageUrl() }}" id="nextPage"
+                            class="pagination-link"><i
+                                class="fas {{ app()->getLocale() === 'ar' ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i></a>
+                    </li>
+                </ul>
             </div>
+        @endif
         </div>
     </section>
 @endsection

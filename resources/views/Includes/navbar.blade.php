@@ -6,7 +6,9 @@
                 <i class="fas fa-bars"></i>
             </div>
 
-            <a href="{{ route('home', app()->getLocale()) }}" class="logo">Happiness<span>Perfume</span></a>
+            <a href="{{ route('home', app()->getLocale()) }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" width="130">
+            </a>
 
             <div class="nav-links">
                 <a href="{{ route('home', app()->getLocale()) }}">{{ __('Home') }}</a>

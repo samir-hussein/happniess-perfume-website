@@ -388,7 +388,9 @@ header {
 /* Hero Section */
 .hero {
 	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/hero.webp");
-	background-size: cover;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-color: black;
 	background-position: center;
 	height: 80vh;
 	display: flex;
@@ -398,14 +400,18 @@ header {
 }
 
 .hero-content {
-	max-width: 800px;
+	max-width: 90vw;
 	margin: 0 auto;
 }
 
-.hero h1 {
+.hero h1, .hero h2 {
 	font-size: 48px;
 	margin-bottom: 20px;
 	color: var(--royal-gold);
+}
+
+.hero h2 {
+	font-size: 40px;
 }
 
 .hero p {
@@ -770,6 +776,10 @@ header {
 		font-size: 36px;
 	}
 
+	.hero h2 {
+		font-size: 30px;
+	}
+
 	.hero p {
 		font-size: 16px;
 	}
@@ -819,6 +829,10 @@ header {
 		width: 100%;
 		justify-content: center;
 	}
+
+	.hero-content {
+		max-width: 100vw;
+	}
 }
 
 @media (max-width: 576px) {
@@ -835,6 +849,10 @@ header {
 	}
 	.for-mobile-hide{
 		display: none;
+	}
+
+	.hero-content {
+		max-width: 100vw;
 	}
 }
 
@@ -1338,6 +1356,10 @@ footer {
 	.discounted-price {
 		font-size: 11px;
 	}
+
+	.hero-content {
+		max-width: 100vw;
+	}
 }
 
 @media (max-width: 768px) {
@@ -1386,8 +1408,12 @@ footer {
 		display: block;
 	}
 
-	.hero h1 {
+	.hero h1{
 		font-size: 36px;
+	}
+
+	.hero h2 {
+		font-size: 30px;
 	}
 
 	.hero p {
