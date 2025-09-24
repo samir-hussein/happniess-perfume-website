@@ -9,7 +9,7 @@
             <div class="hero-content">
                 <h2>{{ __('Discover Your Signature Scent With') }}</h2>
                 <h1>{{ __('Happiness Perfume') }}</h1>
-                <p>{{ __('Experience luxury fragrances crafted with the finest ingredients to elevate your everyday moments.') }}
+                <!-- <p>{{ __('Experience luxury fragrances crafted with the finest ingredients to elevate your everyday moments.') }} -->
                 </p>
             </div>
         </div>
