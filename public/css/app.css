@@ -1814,3 +1814,42 @@ footer {
 		font-size: 12px;
 	}
 }
+
+.whatsapp-circle {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(18, 140, 126, 0.35);
+  z-index: 9999;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.2s ease;
+}
+
+.whatsapp-circle i {
+  font-size: 28px;
+}
+
+.whatsapp-circle:hover {
+  transform: scale(1.08);
+  box-shadow: 0 14px 30px rgba(18, 140, 126, 0.45);
+}
+
+@media (max-width: 480px) {
+  .whatsapp-circle {
+    bottom: 90px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+  }
+
+  .whatsapp-circle i {
+    font-size: 26px;
+  }
+}

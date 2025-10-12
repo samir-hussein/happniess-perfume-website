@@ -107,7 +107,9 @@
     @include('Includes.footer')
 
     @include('Includes.chat')
-
+    <a href="https://wa.me/+201011796422" class="whatsapp-circle" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
     <input type="hidden" id="chat-id" value="{{ $chatId }}">
 
     <script>
