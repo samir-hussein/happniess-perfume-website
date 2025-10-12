@@ -41,7 +41,7 @@
                 <div>
                     @php
                         $segments = request()->segments();
-                        $segments[0] = request()->segment(1) === 'en' ? 'ar' : 'en';
+                        $segments[0] = request()->segment(1) === 'ar' ? 'en' : 'ar';
                         $url =
                             url(implode('/', $segments)) .
                             (request()->getQueryString() ? '?' . request()->getQueryString() : '');
