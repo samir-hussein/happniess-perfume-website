@@ -20,7 +20,7 @@
         <div class="search-container">
             <input type="text" placeholder="{{ __('Search for your perfect fragrance...') }}" id="searchInput"
                 value="{{ request('search') }}">
-            <i class="fas fa-search"></i>
+            <i class="fas fa-search" id="searchIcon"></i>
         </div>
     </div>
 
@@ -162,6 +162,7 @@
     <script>
         const products = Array.from(document.querySelectorAll('.product-card'));
         const searchInput = document.getElementById('searchInput');
+        const searchIcon = document.getElementById('searchIcon');
 
         // Search functionality
         searchInput.addEventListener('keydown', function(e) {
@@ -173,6 +174,15 @@
                 url.searchParams.set('page', 1);
                 window.location.href = url.toString();
             }
+        });
+
+        searchIcon.addEventListener('click', function() {
+            const searchValue = searchInput.value.trim();
+
+            const url = new URL("{{ route('products', app()->getLocale()) }}");
+            url.searchParams.set('search', searchValue);
+            url.searchParams.set('page', 1);
+            window.location.href = url.toString();
         });
     </script>
 @endsection

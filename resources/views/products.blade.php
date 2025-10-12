@@ -8,7 +8,7 @@
         <div class="search-container">
             <input type="text" placeholder="{{ __('Search for your perfect fragrance...') }}" id="searchInput"
                 value="{{ request('search') }}">
-            <i class="fas fa-search"></i>
+            <i class="fas fa-search" id="searchIcon"></i>
         </div>
     </div>
 
@@ -275,6 +275,7 @@
         const mobileFilterToggle = document.getElementById('mobileFilterToggle');
         const filterSection = document.getElementById('filterSection');
         const searchInput = document.getElementById('searchInput');
+        const searchIcon = document.getElementById('searchIcon');
         const applyFiltersBtn = document.getElementById('applyFiltersBtn');
 
         // Mobile filter toggle
@@ -350,6 +351,15 @@
                 url.searchParams.set('page', 1); // reset to first page
                 window.location.href = url.toString();
             }
+        });
+
+        searchIcon.addEventListener('click', function() {
+            const searchValue = searchInput.value.trim();
+
+            const url = new URL(window.location.href);
+            url.searchParams.set('search', searchValue);
+            url.searchParams.set('page', 1); // reset to first page
+            window.location.href = url.toString();
         });
 
         applyFiltersBtn.addEventListener('click', function() {
