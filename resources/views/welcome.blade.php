@@ -2,6 +2,18 @@
 
 @section('title', 'Happiness Perfume | عطور السعادة')
 
+@section('styles')
+    <style>
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{{ $heroSetting->image }}");
+            background-size: {{ $heroSetting->image_size }};
+            background-color: {{ $heroSetting->background_color }};
+            background-repeat: no-repeat;
+	        background-position: center;
+        }
+    </style>
+@endsection
+
 @section('content')
     <!-- Hero Section -->
     <section class="hero">

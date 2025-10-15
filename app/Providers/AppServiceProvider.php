@@ -61,6 +61,10 @@ use App\Interfaces\IProductReviewRepo;
 use App\Interfaces\IProductReviewService;
 use App\Repositories\ProductReviewRepo;
 use App\Services\ProductReviewService;
+use App\Interfaces\IHeroSettingRepo;
+use App\Interfaces\IHeroSettingService;
+use App\Repositories\HeroSettingRepo;
+use App\Services\HeroSettingService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -96,6 +100,8 @@ class AppServiceProvider extends ServiceProvider
 		$this->app->bind(IChatRepo::class, ChatRepo::class);
 		$this->app->bind(IProductReviewRepo::class, ProductReviewRepo::class);
 		$this->app->bind(IProductReviewService::class, ProductReviewService::class);
+		$this->app->bind(IHeroSettingRepo::class, HeroSettingRepo::class);
+		$this->app->bind(IHeroSettingService::class, HeroSettingService::class);
 
 		// Register PaymentGateway Facade
 		$this->app->singleton('PaymentGateway', function ($app) {

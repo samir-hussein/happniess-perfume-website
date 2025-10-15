@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Interfaces\IProductService;
 use App\Interfaces\ICategoryService;
 use App\Interfaces\IFavoriteService;
+use App\Interfaces\IHeroSettingService;
 
 class HomePageController extends Controller
 {
-	public function __construct(private IProductService $productService, private ICategoryService $categoryService, private IFavoriteService $favoriteService) {}
+	public function __construct(private IProductService $productService, private ICategoryService $categoryService, private IFavoriteService $favoriteService, private IHeroSettingService $heroSettingService) {}
 
 	public function index(Request $request)
 	{
@@ -23,6 +24,7 @@ class HomePageController extends Controller
 			"tags" => $this->productService->tags(),
 			"sizes" => $this->productService->sizes(),
 			"favorites" => request()->user() ? $this->favoriteService->getFavoritesByClientId(request()->user()->id) : [],
+			"heroSetting" => $this->heroSettingService->getFirst(),
 		]);
 	}
 
