@@ -33,28 +33,20 @@ class ShippingMethod extends Model
 			'new_valley',
 			'north_sinai',
 			'south_sinai',
-			'red_sea'
+			'red_sea',
+			'qena',
+			'aswan',
+			'luxor',
+			'sohag',
 		];
 
 		if (in_array($governorate, $remoteAreas)) {
 			$shippingMethod = ShippingMethod::where('name_en', 'Remote Areas')->first();
-
-			if ($shippingMethod->minimum_order_amount && $subtotal >= $shippingMethod->minimum_order_amount) {
-				return 0;
-			}
-			return ceil($shippingMethod->cost);
-		}
-
-		if ($governorate === 'cairo' || $governorate === 'giza') {
+		}else if ($governorate === 'cairo' || $governorate === 'giza') {
 			$shippingMethod = ShippingMethod::where('name_en', 'Cairo & Giza')->first();
-
-			if ($shippingMethod->minimum_order_amount && $subtotal >= $shippingMethod->minimum_order_amount) {
-				return 0;
-			}
-			return ceil($shippingMethod->cost);
+		}else{	
+			$shippingMethod = ShippingMethod::where('name_en', 'Other Governorates')->first();
 		}
-
-		$shippingMethod = ShippingMethod::where('name_en', 'Other Governorates')->first();
 
 		if ($shippingMethod->minimum_order_amount && $subtotal >= $shippingMethod->minimum_order_amount) {
 			return 0;

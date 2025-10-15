@@ -286,7 +286,7 @@
 
             // Define which governorates belong to which shipping method
             const cairoGizaGovernorates = ['cairo', 'giza'];
-            const remoteAreasGovernorates = ['matruh', 'new_valley', 'north_sinai', 'south_sinai', 'red_sea'];
+            const remoteAreasGovernorates = ['matruh', 'new_valley', 'north_sinai', 'south_sinai', 'red_sea','qena','aswan','luxor','sohag'];
 
             // chooseShippingMethod(governorateSelect.value);
             chooseShippingMethod(governorateSelect.value, true);
