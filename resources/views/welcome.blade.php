@@ -19,10 +19,9 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h2>{{ __('Discover Your Signature Scent With') }}</h2>
-                <h1>{{ __('Happiness Perfume') }}</h1>
-                <!-- <p>{{ __('Experience luxury fragrances crafted with the finest ingredients to elevate your everyday moments.') }} -->
-                </p>
+                <h1>Happiness Perfume</h1>
+                <h2>{{ __('Let every fragrance tell your story.') }}</h2>
+                <a href="{{ route('products', app()->getLocale()) }}" class="btn shop-btn">{{ __('Shop Now') }}</a>
             </div>
         </div>
     </section>
