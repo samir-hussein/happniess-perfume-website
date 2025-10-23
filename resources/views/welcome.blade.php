@@ -35,9 +35,50 @@
         </div>
     </div>
 
+    <!-- Categories Section -->
+    @if ($categories->isNotEmpty())
+        <section class="categories-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>{{ __('Shop by Category') }}</h2>
+                    <p>{{ __('Discover your perfect scent') }}</p>
+                </div>
+                <div class="categories-grid">
+                    @foreach ($categories as $category)
+                        @php
+                            $randomProduct = $category->products->random();
+                            $backgroundImage = $randomProduct ? $randomProduct->main_image : '';
+                        @endphp
+                        <a href="{{ route('products', [app()->getLocale(), 'categories' => $category->id]) }}" 
+                           class="category-card" 
+                           style="animation-delay: {{ $loop->index * 0.15 }}s; background-image: url('{{ $backgroundImage }}');">
+                            <div class="category-overlay"></div>
+                            <div class="category-shine"></div>
+                            <div class="category-info">
+                                <div class="category-icon-wrapper">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <h3 class="category-name">{{ $category->{'name_' . app()->getLocale()} }}</h3>
+                                <span class="category-products">{{ $category->products->count() }} {{ __('Products') }}</span>
+                                <div class="category-explore">
+                                    <span>{{ __('Explore') }}</span>
+                                    <i class="fas fa-long-arrow-alt-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- Products Section -->
     <section class="products">
         <div class="container">
+            <div class="section-title">
+                <h2>{{ __('Our Collection') }}</h2>
+                <p>{{ __('Explore our exquisite range of fragrances') }}</p>
+            </div>
             <div class="product-grid" id="productGrid">
                 @if ($products->isEmpty())
                     <p class="no-products">{{ __('No products found') }}</p>
