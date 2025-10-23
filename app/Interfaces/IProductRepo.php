@@ -11,4 +11,5 @@ interface IProductRepo extends IRepository
     public function relatedProducts(int $id);
     public function getProductsForCart(array $ids);
     public function newVisit(int $productId);
+    public function getRandomNewProducts(int $limit);
 }

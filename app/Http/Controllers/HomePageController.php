@@ -16,6 +16,7 @@ class HomePageController extends Controller
 	{
 		$data = $request->all();
 		$data["limit"] = 12;
+		
 		return view("welcome", [
 			"products" => $this->productService->getAll($data),
 			"categories" => $this->categoryService->getAll(),
@@ -25,6 +26,7 @@ class HomePageController extends Controller
 			"sizes" => $this->productService->sizes(),
 			"favorites" => request()->user() ? $this->favoriteService->getFavoritesByClientId(request()->user()->id) : [],
 			"heroSetting" => $this->heroSettingService->getFirst(),
+			"newProducts" => $this->productService->getRandomNewProducts(4),
 		]);
 	}
 

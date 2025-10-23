@@ -168,4 +168,16 @@ class ProductRepo extends BaseRepository implements IProductRepo
     {
         return $this->model->find($productId)?->increment("views");
     }
+
+    public function getRandomNewProducts(int $limit)
+    {
+        return $this->model->where("tag_en", "new")
+            ->inRandomOrder()
+            ->with(["sizes" => function ($q) {
+                $q->orderByRaw('CASE WHEN quantity = 0 THEN 1 ELSE 0 END')
+                    ->orderBy('price', 'asc');
+            }, "category"])
+            ->limit($limit)
+            ->get();
+    }
 }

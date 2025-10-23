@@ -72,6 +72,38 @@
         </section>
     @endif
 
+    <!-- New Arrivals Section -->
+    @if ($newProducts->isNotEmpty())
+        <section class="new-arrivals-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>{{ __('New Arrivals') }}</h2>
+                    <p>{{ __('Discover our latest fragrances') }}</p>
+                </div>
+                <div class="new-arrivals-grid">
+                    @foreach ($newProducts as $product)
+                        <div class="new-product-card" data-id="{{ $product->id }}">
+                            <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
+                               class="new-product-link">
+                                <div class="new-product-image">
+                                    <img src="{{ $product->main_image }}" alt="{{ $product->{'name_' . app()->getLocale()} }}">
+                                    <div class="new-badge">{{ __('New') }}</div>
+                                </div>
+                                <div class="new-product-info">
+                                    <h3 class="new-product-name">{{ $product->{'name_' . app()->getLocale()} }}</h3>
+                                    <p class="new-product-category">{{ $product->category->{'name_' . app()->getLocale()} }}</p>
+                                    <div class="new-product-price">
+                                        <span class="price">{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- Products Section -->
     <section class="products">
         <div class="container">

@@ -11,4 +11,5 @@ interface IProductService
     public function sizes();
     public function tags();
     public function relatedProducts(int $id);
+    public function getRandomNewProducts(int $limit);
 }
