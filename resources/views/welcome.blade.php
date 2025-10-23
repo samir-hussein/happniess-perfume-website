@@ -86,7 +86,7 @@
                             <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
                                class="new-product-link">
                                 <div class="new-product-image">
-                                    <img src="{{ $product->main_image }}" alt="{{ $product->{'name_' . app()->getLocale()} }}">
+                                    <img src="{{ $product->main_image }}" alt="{{ $product->{'name_' . app()->getLocale()} }}" loading="lazy">
                                     <div class="new-badge">{{ __('New') }}</div>
                                 </div>
                                 <div class="new-product-info">
