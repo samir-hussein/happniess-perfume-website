@@ -151,10 +151,10 @@
     <!-- Products Section -->
     <section class="products">
         <div class="container">
+            <div class="product-grid" id="productGrid">
             @if ($products->isEmpty())
                 <p class="no-products">{{ __('No products found') }}</p>
             @else
-                <div class="product-grid" id="productGrid">
                     @foreach ($products as $product)
                         <div class="product-card" data-id="{{ $product->id }}"
                             data-category="{{ $product->category->name }}" data-price="{{ $product->price }}">
@@ -206,19 +206,19 @@
                             </div>
                         </div>
                     @endforeach
-                </div>
-
-                <!-- Loading Indicator -->
-                <div id="loadingIndicator" class="loading-indicator" style="display: none;">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>{{ __('Loading more products...') }}</p>
-                </div>
-
-                <!-- End of Products Message -->
-                <div id="endOfProducts" class="end-of-products" style="display: none;">
-                    <p>{{ __('No more products to load') }}</p>
-                </div>
             @endif
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>{{ __('Loading more products...') }}</p>
+            </div>
+
+            <!-- End of Products Message -->
+            <div id="endOfProducts" class="end-of-products" style="display: none;">
+                <p>{{ __('No more products to load') }}</p>
+            </div>
         </div>
 
         <!-- Hidden Pagination Data -->
@@ -465,12 +465,23 @@
         });
 
         // Infinite Scroll Pagination
+        (function() {
+            const paginationData = document.getElementById('paginationData');
+            const productGrid = document.getElementById('productGrid');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const endOfProducts = document.getElementById('endOfProducts');
+
+            // Check if elements exist
+            if (!paginationData || !productGrid || !loadingIndicator || !endOfProducts) {
+                console.error('Required elements not found for infinite scroll');
+                return;
+            }
+
         let isLoading = false;
-        let currentPage = parseInt(document.getElementById('paginationData').dataset.currentPage);
-        const lastPage = parseInt(document.getElementById('paginationData').dataset.lastPage);
-        const productGrid = document.getElementById('productGrid');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const endOfProducts = document.getElementById('endOfProducts');
+        let currentPage = parseInt(paginationData.dataset.currentPage);
+        let lastPage = parseInt(paginationData.dataset.lastPage);
+
+        console.log('Infinite scroll initialized:', { currentPage, lastPage });
 
         // Intersection Observer for infinite scroll
         const observerOptions = {
@@ -482,17 +493,20 @@
         const loadMoreObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !isLoading && currentPage < lastPage) {
+                    console.log('Loading more products...');
                     loadMoreProducts();
                 }
             });
         }, observerOptions);
 
         // Observe the loading indicator
-        if (loadingIndicator && currentPage < lastPage) {
+        if (currentPage < lastPage) {
             loadingIndicator.style.display = 'flex';
             loadMoreObserver.observe(loadingIndicator);
-        } else if (currentPage >= lastPage && productGrid) {
+            console.log('Observer attached to loading indicator');
+        } else {
             endOfProducts.style.display = 'block';
+            console.log('All products loaded');
         }
 
         function loadMoreProducts() {
@@ -505,35 +519,54 @@
             const url = new URL(window.location.href);
             url.searchParams.set('page', currentPage + 1);
 
+            console.log('Fetching URL:', url.toString());
+
             fetch(url.toString(), {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'application/json'
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
-                // Render new products
-                data.products.forEach(product => {
-                    const productCard = createProductCard(product, data.favorites);
-                    productGrid.appendChild(productCard);
-                });
+                console.log('Received data:', data);
+                console.log('Number of products:', data.products ? data.products.length : 0);
 
-                // Update current page
+                // Render new products
+                if (data.products && data.products.length > 0) {
+                    data.products.forEach(product => {
+                        const productCard = createProductCard(product, data.favorites);
+                        productGrid.appendChild(productCard);
+                    });
+                    console.log('Products appended to grid');
+                } else {
+                    console.warn('No products in response');
+                }
+
+                // Update current page and last page
                 currentPage = data.current_page;
+                lastPage = data.last_page;
 
                 // Hide loading indicator
                 loadingIndicator.style.display = 'none';
                 isLoading = false;
 
                 // Check if we've reached the last page
-                if (!data.has_more || currentPage >= data.last_page) {
+                if (!data.has_more || currentPage >= lastPage) {
                     loadMoreObserver.disconnect();
                     loadingIndicator.style.display = 'none';
                     endOfProducts.style.display = 'block';
+                    console.log('Reached last page');
                 } else {
                     // Continue observing
                     loadMoreObserver.observe(loadingIndicator);
+                    console.log('Continuing to observe for more products');
                 }
 
                 // Re-attach event listeners to new products
@@ -623,10 +656,27 @@
                 if (!btn.hasAttribute('data-listener-attached')) {
                     btn.setAttribute('data-listener-attached', 'true');
                     btn.addEventListener('click', function() {
-                        addToFavorite(this);
+                        if (!window.authUser) {
+                            window.location.href = '/{{ app()->getLocale() }}/login';
+                            return;
+                        }
+                        this.classList.toggle('favorited');
+                        const icon = this.querySelector('i');
+                        
+                        if (this.classList.contains('favorited')) {
+                            icon.classList.remove('far');
+                            icon.classList.add('fas');
+                        } else {
+                            icon.classList.remove('fas');
+                            icon.classList.add('far');
+                        }
+                        
+                        // Call the existing function from app.js
+                        addToFavorites(this);
                     });
                 }
             });
         }
+        })(); // End of IIFE for infinite scroll
     </script>
 @endsection

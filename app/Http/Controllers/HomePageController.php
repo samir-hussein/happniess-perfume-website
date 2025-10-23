@@ -42,8 +42,14 @@ class HomePageController extends Controller
 			$products = $this->productService->getAll($data);
 			$favorites = request()->user() ? $this->favoriteService->getFavoritesByClientId(request()->user()->id) : [];
 			
+			// Load relationships for each product
+			$productsWithRelations = $products->getCollection()->map(function($product) {
+				$product->load(['category', 'sizes']);
+				return $product;
+			});
+			
 			return response()->json([
-				'products' => $products->items(),
+				'products' => $productsWithRelations,
 				'current_page' => $products->currentPage(),
 				'last_page' => $products->lastPage(),
 				'has_more' => $products->hasMorePages(),
