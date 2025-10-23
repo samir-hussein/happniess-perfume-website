@@ -93,7 +93,12 @@
                                     <h3 class="new-product-name">{{ $product->{'name_' . app()->getLocale()} }}</h3>
                                     <p class="new-product-category">{{ $product->category->{'name_' . app()->getLocale()} }}</p>
                                     <div class="new-product-price">
-                                        <span class="price">{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
+                                        @if ($product->discount_amount > 0)
+                                            <span class="price-original">{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
+                                            <span class="price-discounted">{{ $product->priceAfterDiscount }} {{ __('EGP') }}</span>
+                                        @else
+                                            <span class="price">{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             </a>

@@ -2237,9 +2237,31 @@ footer {
 }
 
 .new-product-price {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.new-product-price .price {
 	font-size: 20px;
 	font-weight: 700;
 	color: var(--royal-gold);
+}
+
+.new-product-price .price-original {
+	font-size: 16px;
+	font-weight: 500;
+	color: var(--charcoal-black);
+	opacity: 0.5;
+	text-decoration: line-through;
+}
+
+.new-product-price .price-discounted {
+	font-size: 20px;
+	font-weight: 700;
+	color: #e74c3c;
 }
 
 /* Responsive Design for New Arrivals */
@@ -2280,7 +2302,15 @@ footer {
 		font-size: 13px;
 	}
 
-	.new-product-price {
+	.new-product-price .price {
+		font-size: 18px;
+	}
+
+	.new-product-price .price-original {
+		font-size: 14px;
+	}
+
+	.new-product-price .price-discounted {
 		font-size: 18px;
 	}
 
