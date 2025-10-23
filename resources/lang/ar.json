@@ -291,5 +291,7 @@
 "OFF": "خصم",
 "EGP OFF": "جنيه خصم",
 "Special Offers": "العروض الخاصة",
-"Show Only Products with Offers": "إظهار المنتجات التي لديها عروض فقط"
+"Show Only Products with Offers": "إظهار المنتجات التي لديها عروض فقط",
+"Loading more products...": "جاري تحميل المزيد من المنتجات...",
+"No more products to load": "لا توجد منتجات أخرى للتحميل"
 }

@@ -36,6 +36,21 @@ class HomePageController extends Controller
 	{
 		$data = $request->all();
 		$data["limit"] = 16;
+		
+		// Check if it's an AJAX request for infinite scroll
+		if ($request->ajax() || $request->wantsJson()) {
+			$products = $this->productService->getAll($data);
+			$favorites = request()->user() ? $this->favoriteService->getFavoritesByClientId(request()->user()->id) : [];
+			
+			return response()->json([
+				'products' => $products->items(),
+				'current_page' => $products->currentPage(),
+				'last_page' => $products->lastPage(),
+				'has_more' => $products->hasMorePages(),
+				'favorites' => $favorites,
+			]);
+		}
+		
 		return view("products", [
 			"products" => $this->productService->getAll($data),
 			"categories" => $this->categoryService->getAll(),

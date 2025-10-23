@@ -2909,6 +2909,52 @@ footer {
 	}
 }
 
+/* Infinite Scroll Loading Indicator */
+.loading-indicator {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 20px;
+	gap: 15px;
+}
+
+.loading-indicator i {
+	font-size: 40px;
+	color: var(--royal-gold);
+	animation: spin 1s linear infinite;
+}
+
+.loading-indicator p {
+	font-size: 16px;
+	color: var(--charcoal-black);
+	opacity: 0.7;
+	margin: 0;
+}
+
+.end-of-products {
+	text-align: center;
+	padding: 40px 20px;
+	margin-top: 20px;
+}
+
+.end-of-products p {
+	font-size: 16px;
+	color: var(--charcoal-black);
+	opacity: 0.6;
+	margin: 0;
+	font-style: italic;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 /* Responsive Design for Categories */
 @media (max-width: 992px) {
 	.categories-section {

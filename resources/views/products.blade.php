@@ -207,12 +207,30 @@
                         </div>
                     @endforeach
                 </div>
+
+                <!-- Loading Indicator -->
+                <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>{{ __('Loading more products...') }}</p>
+                </div>
+
+                <!-- End of Products Message -->
+                <div id="endOfProducts" class="end-of-products" style="display: none;">
+                    <p>{{ __('No more products to load') }}</p>
+                </div>
             @endif
         </div>
 
-        <!-- Pagination -->
+        <!-- Hidden Pagination Data -->
+        <div id="paginationData" 
+             data-current-page="{{ $products->currentPage() }}" 
+             data-last-page="{{ $products->lastPage() }}" 
+             data-next-page-url="{{ $products->nextPageUrl() }}"
+             style="display: none;"></div>
+
+        <!-- Pagination (Hidden, for SEO) -->
         @if ($products->hasPages())
-            <div class="pagination">
+            <div class="pagination" style="display: none;">
                 <ul class="pagination-list">
                     <li class="pagination-item">
                         <a href="{{ $products->appends(request()->except('page'))->previousPageUrl() }}" id="prevPage"
@@ -445,5 +463,170 @@
             // Navigate to the filtered URL
             window.location.href = url.toString();
         });
+
+        // Infinite Scroll Pagination
+        let isLoading = false;
+        let currentPage = parseInt(document.getElementById('paginationData').dataset.currentPage);
+        const lastPage = parseInt(document.getElementById('paginationData').dataset.lastPage);
+        const productGrid = document.getElementById('productGrid');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const endOfProducts = document.getElementById('endOfProducts');
+
+        // Intersection Observer for infinite scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '200px',
+            threshold: 0.1
+        };
+
+        const loadMoreObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isLoading && currentPage < lastPage) {
+                    loadMoreProducts();
+                }
+            });
+        }, observerOptions);
+
+        // Observe the loading indicator
+        if (loadingIndicator && currentPage < lastPage) {
+            loadingIndicator.style.display = 'flex';
+            loadMoreObserver.observe(loadingIndicator);
+        } else if (currentPage >= lastPage && productGrid) {
+            endOfProducts.style.display = 'block';
+        }
+
+        function loadMoreProducts() {
+            if (isLoading || currentPage >= lastPage) return;
+
+            isLoading = true;
+            loadingIndicator.style.display = 'flex';
+
+            // Build URL with current filters
+            const url = new URL(window.location.href);
+            url.searchParams.set('page', currentPage + 1);
+
+            fetch(url.toString(), {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Render new products
+                data.products.forEach(product => {
+                    const productCard = createProductCard(product, data.favorites);
+                    productGrid.appendChild(productCard);
+                });
+
+                // Update current page
+                currentPage = data.current_page;
+
+                // Hide loading indicator
+                loadingIndicator.style.display = 'none';
+                isLoading = false;
+
+                // Check if we've reached the last page
+                if (!data.has_more || currentPage >= data.last_page) {
+                    loadMoreObserver.disconnect();
+                    loadingIndicator.style.display = 'none';
+                    endOfProducts.style.display = 'block';
+                } else {
+                    // Continue observing
+                    loadMoreObserver.observe(loadingIndicator);
+                }
+
+                // Re-attach event listeners to new products
+                attachProductEventListeners();
+            })
+            .catch(error => {
+                console.error('Error loading products:', error);
+                loadingIndicator.style.display = 'none';
+                isLoading = false;
+            });
+        }
+
+        function createProductCard(product, favorites) {
+            const locale = '{{ app()->getLocale() }}';
+            const isFavorited = favorites.includes(product.id);
+            const firstSize = product.sizes[0];
+            const isOutOfStock = firstSize.quantity === 0;
+            
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.setAttribute('data-id', product.id);
+            card.setAttribute('data-category', product.category.name);
+            card.setAttribute('data-price', product.price);
+            
+            let badgeHTML = '';
+            if (isOutOfStock) {
+                badgeHTML = `<div class="product-badge">{{ __('Out of Stock') }}</div>`;
+            } else if (product['tag_' + locale]) {
+                badgeHTML = `<div class="product-badge">${product['tag_' + locale]}</div>`;
+            }
+            
+            let priceHTML = '';
+            if (product.discount_amount > 0) {
+                priceHTML = `
+                    <div class="product-price">
+                        <span class="discounted-price">${firstSize.price} {{ __('EGP') }}</span>
+                        <span>${product.priceAfterDiscount} {{ __('EGP') }}</span>
+                    </div>
+                `;
+            } else {
+                priceHTML = `<div class="product-price">${firstSize.price} {{ __('EGP') }}</div>`;
+            }
+            
+            let cartButtonHTML = '';
+            if (!isOutOfStock) {
+                cartButtonHTML = `
+                    <button class="add-to-cart" data-id="${product.id}" data-size="${firstSize.size}" onclick="addToCart(this)">
+                        <i class="fas fa-cart-plus"></i>
+                    </button>
+                `;
+            }
+            
+            card.innerHTML = `
+                ${badgeHTML}
+                <div class="product-img">
+                    <a href="/{{ app()->getLocale() }}/product/${product.id}/size/${firstSize.size}">
+                        <img src="${product.main_image}" alt="${product['name_' + locale]} - Happiness Perfume" loading="lazy" width="100" height="300">
+                    </a>
+                </div>
+                <div class="product-info">
+                    <a href="/{{ app()->getLocale() }}/product/${product.id}/size/${firstSize.size}">
+                        <h3 dir="auto">${product['name_' + locale]} - <span class="size">${firstSize.size} {{ __('ml') }}</span></h3>
+                    </a>
+                    ${priceHTML}
+                    <div class="product-actions">
+                        ${cartButtonHTML}
+                        <button class="add-to-fav ${isFavorited ? 'favorited' : ''}" data-id="${product.id}" data-size="${firstSize.size}">
+                            <i class="${isFavorited ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function attachProductEventListeners() {
+            // Re-attach add to cart listeners
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.onclick = function() {
+                    addToCart(this);
+                };
+            });
+
+            // Re-attach add to favorite listeners
+            document.querySelectorAll('.add-to-fav').forEach(btn => {
+                if (!btn.hasAttribute('data-listener-attached')) {
+                    btn.setAttribute('data-listener-attached', 'true');
+                    btn.addEventListener('click', function() {
+                        addToFavorite(this);
+                    });
+                }
+            });
+        }
     </script>
 @endsection
