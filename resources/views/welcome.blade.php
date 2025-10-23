@@ -37,9 +37,9 @@
 
     <!-- Categories Section -->
     @if ($categories->isNotEmpty())
-        <section class="categories-section">
+        <section class="categories-section animate-on-scroll">
             <div class="container">
-                <div class="section-title">
+                <div class="section-title fade-in-up">
                     <h2>{{ __('Shop by Category') }}</h2>
                     <p>{{ __('Discover your perfect scent') }}</p>
                 </div>
@@ -50,8 +50,7 @@
                             $backgroundImage = $randomProduct ? $randomProduct->main_image : '';
                         @endphp
                         <a href="{{ route('products', [app()->getLocale(), 'categories' => $category->id]) }}" 
-                           class="category-card" 
-                           style="animation-delay: {{ $loop->index * 0.15 }}s; background-image: url('{{ $backgroundImage }}');">
+                           class="category-card stagger-item" style="animation-delay: {{ $loop->index * 0.15 }}s; background-image: url('{{ $backgroundImage }}');">
                             <div class="category-overlay"></div>
                             <div class="category-shine"></div>
                             <div class="category-info">
@@ -74,9 +73,9 @@
 
     <!-- New Arrivals Section -->
     @if ($newProducts->isNotEmpty())
-        <section class="new-arrivals-section">
+        <section class="new-arrivals-section animate-on-scroll">
             <div class="container">
-                <div class="section-header">
+                <div class="section-header fade-in-up">
                     <div class="section-title">
                         <h2>{{ __('New Arrivals') }}</h2>
                         <p>{{ __('Discover our latest fragrances') }}</p>
@@ -87,7 +86,7 @@
                 </div>
                 <div class="new-arrivals-grid">
                     @foreach ($newProducts as $product)
-                        <div class="new-product-card" data-id="{{ $product->id }}">
+                        <div class="new-product-card stagger-item" data-id="{{ $product->id }}">
                             <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
                                class="new-product-link">
                                 <div class="new-product-image">
@@ -121,9 +120,9 @@
 
     <!-- Best Sellers Section -->
     @if ($bestSellerProducts->isNotEmpty())
-        <section class="best-sellers-section">
+        <section class="best-sellers-section animate-on-scroll">
             <div class="container">
-                <div class="section-header">
+                <div class="section-header fade-in-up">
                     <div class="section-title">
                         <h2>{{ __('Best Sellers') }}</h2>
                         <p>{{ __('Our most popular fragrances') }}</p>
@@ -134,7 +133,7 @@
                 </div>
                 <div class="best-sellers-grid">
                     @foreach ($bestSellerProducts as $product)
-                        <div class="best-seller-card" data-id="{{ $product->id }}">
+                        <div class="best-seller-card stagger-item" data-id="{{ $product->id }}">
                             <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
                                class="best-seller-link">
                                 <div class="best-seller-image">
@@ -168,9 +167,9 @@
 
     <!-- Best Offers Section -->
     @if ($bestOffersProducts->isNotEmpty())
-        <section class="best-offers-section">
+        <section class="best-offers-section animate-on-scroll">
             <div class="container">
-                <div class="section-header">
+                <div class="section-header fade-in-up">
                     <div class="section-title">
                         <h2>{{ __('Best Offers') }}</h2>
                         <p>{{ __('Amazing discounts on selected fragrances') }}</p>
@@ -181,7 +180,7 @@
                 </div>
                 <div class="best-offers-grid">
                     @foreach ($bestOffersProducts as $product)
-                        <div class="best-offer-card" data-id="{{ $product->id }}">
+                        <div class="best-offer-card stagger-item" data-id="{{ $product->id }}">
                             <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
                                class="best-offer-link">
                                 <div class="best-offer-image">
@@ -378,6 +377,27 @@
             url.searchParams.set('search', searchValue);
             url.searchParams.set('page', 1);
             window.location.href = url.toString();
+        });
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    // Optionally unobserve after animation
+                    // observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animation classes
+        document.querySelectorAll('.animate-on-scroll, .fade-in-up, .fade-in-left, .fade-in-right, .scale-in, .stagger-item').forEach(element => {
+            observer.observe(element);
         });
     </script>
 @endsection
