@@ -157,10 +157,6 @@
                 </div>
             @endauth
 
-            <!-- Reviews Section -->
-            <section class="reviews-section" id="reviewsSection">
-            </section>
-
             <!-- Related Products -->
             @if ($relatedProducts->isNotEmpty())
                 <section class="related-products">
@@ -227,6 +223,10 @@
                     </div>
                 </section>
             @endif
+
+            <!-- Reviews Section -->
+            <section class="reviews-section" id="reviewsSection">
+            </section>
         </div>
     </div>
 @endsection
