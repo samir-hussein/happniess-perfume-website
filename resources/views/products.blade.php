@@ -526,13 +526,22 @@
                 return response.json();
             })
             .then(data => {
+                console.log('Products received:', data.products.length);
+                console.log('Product grid element:', productGrid);
+                console.log('Grid innerHTML length before:', productGrid.innerHTML.length);
+                
                 // Render new products
                 if (data.products && data.products.length > 0) {
-                    data.products.forEach(product => {
+                    data.products.forEach((product, index) => {
                         const productCard = createProductCard(product, data.favorites);
+                        console.log(`Card ${index + 1} created:`, productCard);
                         productGrid.appendChild(productCard);
+                        console.log(`Card ${index + 1} appended, grid children:`, productGrid.children.length);
                     });
                 }
+                
+                console.log('Grid innerHTML length after:', productGrid.innerHTML.length);
+                console.log('Total grid children:', productGrid.children.length);
 
                 // Update current page and last page
                 currentPage = data.current_page;
@@ -560,67 +569,94 @@
         }
 
         function createProductCard(product, favorites) {
+            console.log('Creating card for product:', product.id, product.name_en || product.name_ar);
             const locale = '{{ app()->getLocale() }}';
             const isFavorited = favorites.includes(product.id);
             const firstSize = product.sizes[0];
             const isOutOfStock = firstSize.quantity === 0;
             
+            console.log('Product details:', { locale, isFavorited, firstSize, isOutOfStock });
+            console.log('Product category:', product.category);
+            
             const card = document.createElement('div');
             card.className = 'product-card';
             card.setAttribute('data-id', product.id);
-            card.setAttribute('data-category', product.category.name);
-            card.setAttribute('data-price', product.price);
             
-            let badgeHTML = '';
-            if (isOutOfStock) {
-                badgeHTML = `<div class="product-badge">{{ __('Out of Stock') }}</div>`;
-            } else if (product['tag_' + locale]) {
-                badgeHTML = `<div class="product-badge">${product['tag_' + locale]}</div>`;
+            // Safely set category
+            if (product.category && product.category.name) {
+                card.setAttribute('data-category', product.category.name);
             }
             
-            let priceHTML = '';
-            if (product.discount_amount > 0) {
-                priceHTML = `
-                    <div class="product-price">
-                        <span class="discounted-price">${firstSize.price} {{ __('EGP') }}</span>
-                        <span>${product.priceAfterDiscount} {{ __('EGP') }}</span>
-                    </div>
-                `;
-            } else {
-                priceHTML = `<div class="product-price">${firstSize.price} {{ __('EGP') }}</div>`;
-            }
+            card.setAttribute('data-price', product.price || '');
             
-            let cartButtonHTML = '';
-            if (!isOutOfStock) {
-                cartButtonHTML = `
-                    <button class="add-to-cart" data-id="${product.id}" data-size="${firstSize.size}" onclick="addToCart(this)">
-                        <i class="fas fa-cart-plus"></i>
-                    </button>
-                `;
-            }
+            console.log('Card element created:', card.className);
             
-            card.innerHTML = `
-                ${badgeHTML}
-                <div class="product-img">
-                    <a href="/{{ app()->getLocale() }}/product/${product.id}/size/${firstSize.size}">
-                        <img src="${product.main_image}" alt="${product['name_' + locale]} - Happiness Perfume" loading="lazy" width="100" height="300">
-                    </a>
-                </div>
-                <div class="product-info">
-                    <a href="/{{ app()->getLocale() }}/product/${product.id}/size/${firstSize.size}">
-                        <h3 dir="auto">${product['name_' + locale]} - <span class="size">${firstSize.size} {{ __('ml') }}</span></h3>
-                    </a>
-                    ${priceHTML}
-                    <div class="product-actions">
-                        ${cartButtonHTML}
-                        <button class="add-to-fav ${isFavorited ? 'favorited' : ''}" data-id="${product.id}" data-size="${firstSize.size}">
-                            <i class="${isFavorited ? 'fas' : 'far'} fa-heart"></i>
+            try {
+                console.log('Building badge HTML...');
+                let badgeHTML = '';
+                if (isOutOfStock) {
+                    badgeHTML = `<div class="product-badge">{{ __('Out of Stock') }}</div>`;
+                } else if (product['tag_' + locale]) {
+                    badgeHTML = `<div class="product-badge">${product['tag_' + locale]}</div>`;
+                }
+                console.log('Badge HTML:', badgeHTML);
+                
+                console.log('Building price HTML...');
+                let priceHTML = '';
+                if (product.discount_amount > 0) {
+                    priceHTML = `
+                        <div class="product-price">
+                            <span class="discounted-price">${firstSize.price} {{ __('EGP') }}</span>
+                            <span>${product.priceAfterDiscount} {{ __('EGP') }}</span>
+                        </div>
+                    `;
+                } else {
+                    priceHTML = `<div class="product-price">${firstSize.price} {{ __('EGP') }}</div>`;
+                }
+                console.log('Price HTML:', priceHTML);
+                
+                console.log('Building cart button HTML...');
+                let cartButtonHTML = '';
+                if (!isOutOfStock) {
+                    cartButtonHTML = `
+                        <button class="add-to-cart" data-id="${product.id}" data-size="${firstSize.size}" onclick="addToCart(this)">
+                            <i class="fas fa-cart-plus"></i>
                         </button>
-                    </div>
-                </div>
-            `;
+                    `;
+                }
+                console.log('Cart button HTML:', cartButtonHTML);
             
-            return card;
+                console.log('Setting card innerHTML...');
+                card.innerHTML = `
+                    ${badgeHTML}
+                    <div class="product-img">
+                        <a href="/{{ app()->getLocale() }}/product/${product.id}/size/${firstSize.size}">
+                            <img src="${product.main_image}" alt="${product['name_' + locale]} - Happiness Perfume" loading="lazy" width="100" height="300">
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <a href="/{{ app()->getLocale() }}/product/${product.id}/size/${firstSize.size}">
+                            <h3 dir="auto">${product['name_' + locale]} - <span class="size">${firstSize.size} {{ __('ml') }}</span></h3>
+                        </a>
+                        ${priceHTML}
+                        <div class="product-actions">
+                            ${cartButtonHTML}
+                            <button class="add-to-fav ${isFavorited ? 'favorited' : ''}" data-id="${product.id}" data-size="${firstSize.size}">
+                                <i class="${isFavorited ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                console.log('Card HTML set successfully, innerHTML length:', card.innerHTML.length);
+                console.log('Card ready to return:', card);
+                
+                return card;
+            } catch (error) {
+                console.error('Error creating product card:', error);
+                console.error('Product data:', product);
+                throw error;
+            }
         }
 
         function attachProductEventListeners() {
