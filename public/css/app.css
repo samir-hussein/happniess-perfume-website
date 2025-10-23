@@ -2119,15 +2119,55 @@ footer {
 	transform: translateX(5px);
 }
 
+/* Section Header with View All Button */
+.section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 50px;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+.section-header .section-title {
+	text-align: left;
+	margin-bottom: 0;
+}
+
+.view-all-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 28px;
+	background: linear-gradient(135deg, var(--royal-gold), var(--deep-bronze));
+	color: #fff;
+	text-decoration: none;
+	border-radius: 30px;
+	font-weight: 600;
+	font-size: 15px;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+	letter-spacing: 0.5px;
+}
+
+.view-all-btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+.view-all-btn i {
+	transition: transform 0.3s ease;
+	font-size: 14px;
+}
+
+.view-all-btn:hover i {
+	transform: translateX(4px);
+}
+
 /* New Arrivals Section */
 .new-arrivals-section {
 	padding: 70px 0;
 	background: #fff;
-}
-
-.new-arrivals-section .section-title {
-	text-align: center;
-	margin-bottom: 50px;
 }
 
 .new-arrivals-section .section-title h2 {
@@ -2277,6 +2317,21 @@ footer {
 
 	.new-arrivals-section .section-title h2 {
 		font-size: 32px;
+	}
+
+	.section-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 15px;
+	}
+
+	.section-header .section-title {
+		text-align: center;
+		width: 100%;
+	}
+
+	.view-all-btn {
+		align-self: center;
 	}
 }
 

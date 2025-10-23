@@ -28,7 +28,8 @@ class ProductRepo extends BaseRepository implements IProductRepo
         }
 
         if ($tags && $tags !== []) {
-            $query->whereIn("tag_" . app()->getLocale(), $tags);
+            $query->whereIn("tag_en", $tags)
+            ->orWhereIn("tag_ar", $tags);
         }
 
         if ($size && $size !== "any" && $size !== "") {

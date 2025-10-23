@@ -76,9 +76,14 @@
     @if ($newProducts->isNotEmpty())
         <section class="new-arrivals-section">
             <div class="container">
-                <div class="section-title">
-                    <h2>{{ __('New Arrivals') }}</h2>
-                    <p>{{ __('Discover our latest fragrances') }}</p>
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>{{ __('New Arrivals') }}</h2>
+                        <p>{{ __('Discover our latest fragrances') }}</p>
+                    </div>
+                    <a href="{{ route('products', [app()->getLocale(), 'tags' => 'new']) }}" class="view-all-btn">
+                        {{ __('View All') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i>
+                    </a>
                 </div>
                 <div class="new-arrivals-grid">
                     @foreach ($newProducts as $product)
@@ -113,9 +118,14 @@
     @if ($bestSellerProducts->isNotEmpty())
         <section class="best-sellers-section">
             <div class="container">
-                <div class="section-title">
-                    <h2>{{ __('Best Sellers') }}</h2>
-                    <p>{{ __('Our most popular fragrances') }}</p>
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>{{ __('Best Sellers') }}</h2>
+                        <p>{{ __('Our most popular fragrances') }}</p>
+                    </div>
+                    <a href="{{ route('products', [app()->getLocale(), 'tags' => 'best seller']) }}" class="view-all-btn">
+                        {{ __('View All') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i>
+                    </a>
                 </div>
                 <div class="best-sellers-grid">
                     @foreach ($bestSellerProducts as $product)
