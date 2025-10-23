@@ -50,7 +50,7 @@
                             $backgroundImage = $randomProduct ? $randomProduct->main_image : '';
                         @endphp
                         <a href="{{ route('products', [app()->getLocale(), 'categories' => $category->id]) }}" 
-                           class="category-card stagger-item" style="animation-delay: {{ $loop->index * 0.15 }}s; background-image: url('{{ $backgroundImage }}');">
+                           class="category-card fade-in-up" style="animation-delay: {{ $loop->index * 0.15 }}s; background-image: url('{{ $backgroundImage }}');">
                             <div class="category-overlay"></div>
                             <div class="category-shine"></div>
                             <div class="category-info">
@@ -86,7 +86,7 @@
                 </div>
                 <div class="new-arrivals-grid">
                     @foreach ($newProducts as $product)
-                        <div class="new-product-card stagger-item" data-id="{{ $product->id }}">
+                        <div class="new-product-card fade-in-up" data-id="{{ $product->id }}">
                             <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
                                class="new-product-link">
                                 <div class="new-product-image">
@@ -133,7 +133,7 @@
                 </div>
                 <div class="best-sellers-grid">
                     @foreach ($bestSellerProducts as $product)
-                        <div class="best-seller-card stagger-item" data-id="{{ $product->id }}">
+                        <div class="best-seller-card fade-in-up" data-id="{{ $product->id }}">
                             <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
                                class="best-seller-link">
                                 <div class="best-seller-image">
@@ -180,7 +180,7 @@
                 </div>
                 <div class="best-offers-grid">
                     @foreach ($bestOffersProducts as $product)
-                        <div class="best-offer-card stagger-item" data-id="{{ $product->id }}">
+                        <div class="best-offer-card fade-in-up" data-id="{{ $product->id }}">
                             <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
                                class="best-offer-link">
                                 <div class="best-offer-image">
