@@ -296,6 +296,68 @@ header {
 	color: var(--royal-gold);
 }
 
+/* Mobile Search in Collapsed Nav */
+.mobile-search-form-nav {
+	display: none;
+	padding: 15px 0;
+	margin-bottom: 10px;
+}
+
+.search-input-wrapper {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+.mobile-nav-search-input {
+	flex: 1;
+	padding: 12px 20px;
+	border: 2px solid var(--royal-gold);
+	border-radius: 25px;
+	background-color: var(--ivory-white);
+	color: var(--charcoal-black);
+	font-size: 14px;
+	outline: none;
+	transition: border-color 0.3s;
+}
+
+.mobile-nav-search-input:focus {
+	border-color: var(--deep-bronze);
+}
+
+.mobile-nav-search-input::placeholder {
+	color: #999;
+}
+
+.mobile-nav-search-btn {
+	padding: 12px 20px;
+	background-color: var(--royal-gold);
+	color: var(--ivory-white);
+	border: none;
+	border-radius: 25px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.mobile-nav-search-btn:hover {
+	background-color: var(--deep-bronze);
+}
+
+.mobile-nav-search-btn i {
+	font-size: 14px;
+}
+
+@media (max-width: 992px) {
+	.mobile-search-form-nav {
+		display: block;
+	}
+}
+
+
 .cart-count {
 	position: absolute;
 	top: -10px;

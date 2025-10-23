@@ -55,6 +55,16 @@
                         @endif
                     </a>
                 </div>
+
+                <!-- Mobile Search Form -->
+                <form action="{{ route('products', app()->getLocale()) }}" method="GET" class="mobile-search-form-nav">
+                    <div class="search-input-wrapper">
+                        <input type="text" name="search" placeholder="{{ __('Search products...') }}" class="mobile-nav-search-input">
+                        <button type="submit" class="mobile-nav-search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
 
             <div class="nav-icons">
