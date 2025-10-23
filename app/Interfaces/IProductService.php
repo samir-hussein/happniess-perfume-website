@@ -12,4 +12,5 @@ interface IProductService
     public function tags();
     public function relatedProducts(int $id);
     public function getRandomNewProducts(int $limit);
+    public function getBestSellerProducts(int $limit);
 }

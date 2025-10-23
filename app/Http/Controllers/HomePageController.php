@@ -27,6 +27,7 @@ class HomePageController extends Controller
 			"favorites" => request()->user() ? $this->favoriteService->getFavoritesByClientId(request()->user()->id) : [],
 			"heroSetting" => $this->heroSettingService->getFirst(),
 			"newProducts" => $this->productService->getRandomNewProducts(4),
+			"bestSellerProducts" => $this->productService->getBestSellerProducts(4),
 		]);
 	}
 

@@ -180,4 +180,16 @@ class ProductRepo extends BaseRepository implements IProductRepo
             ->limit($limit)
             ->get();
     }
+
+    public function getBestSellerProducts(int $limit)
+    {
+        return $this->model->where("tag_en", "best seller")
+            ->inRandomOrder()
+            ->with(["sizes" => function ($q) {
+                $q->orderByRaw('CASE WHEN quantity = 0 THEN 1 ELSE 0 END')
+                    ->orderBy('price', 'asc');
+            }, "category"])
+            ->limit($limit)
+            ->get();
+    }
 }

@@ -8,6 +8,7 @@ use App\Interfaces\IProductSizeRepo;
 use App\Handlers\GetAllProductHandler;
 use App\Handlers\GetByIdProductHandler;
 use App\Handlers\GetRandomNewProductsHandler;
+use App\Handlers\GetBestSellerProductsHandler;
 
 class ProductService implements IProductService
 {
@@ -15,6 +16,7 @@ class ProductService implements IProductService
         private GetAllProductHandler $getAllProductHandler,
         private GetByIdProductHandler $getByIdProductHandler,
         private GetRandomNewProductsHandler $getRandomNewProductsHandler,
+        private GetBestSellerProductsHandler $getBestSellerProductsHandler,
         private IProductSizeRepo $productSizeRepo,
         private IProductRepo $productRepo
     ) {}
@@ -58,5 +60,10 @@ class ProductService implements IProductService
     public function getRandomNewProducts(int $limit)
     {
         return $this->getRandomNewProductsHandler->__invoke($limit);
+    }
+
+    public function getBestSellerProducts(int $limit)
+    {
+        return $this->getBestSellerProductsHandler->__invoke($limit);
     }
 }

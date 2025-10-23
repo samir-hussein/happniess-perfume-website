@@ -109,6 +109,43 @@
         </section>
     @endif
 
+    <!-- Best Sellers Section -->
+    @if ($bestSellerProducts->isNotEmpty())
+        <section class="best-sellers-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>{{ __('Best Sellers') }}</h2>
+                    <p>{{ __('Our most popular fragrances') }}</p>
+                </div>
+                <div class="best-sellers-grid">
+                    @foreach ($bestSellerProducts as $product)
+                        <div class="best-seller-card" data-id="{{ $product->id }}">
+                            <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
+                               class="best-seller-link">
+                                <div class="best-seller-image">
+                                    <img src="{{ $product->main_image }}" alt="{{ $product->{'name_' . app()->getLocale()} }}" loading="lazy">
+                                    <div class="best-seller-badge">{{ __('Best Seller') }}</div>
+                                </div>
+                                <div class="best-seller-info">
+                                    <h3 class="best-seller-name">{{ $product->{'name_' . app()->getLocale()} }}</h3>
+                                    <p class="best-seller-category">{{ $product->category->{'name_' . app()->getLocale()} }}</p>
+                                    <div class="best-seller-price">
+                                        @if ($product->discount_amount > 0)
+                                            <span class="price-original">{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
+                                            <span class="price-discounted">{{ $product->priceAfterDiscount }} {{ __('EGP') }}</span>
+                                        @else
+                                            <span class="price">{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- Products Section -->
     <section class="products">
         <div class="container">
