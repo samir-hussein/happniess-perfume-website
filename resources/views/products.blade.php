@@ -473,15 +473,12 @@
 
             // Check if elements exist
             if (!paginationData || !productGrid || !loadingIndicator || !endOfProducts) {
-                console.error('Required elements not found for infinite scroll');
                 return;
             }
 
         let isLoading = false;
         let currentPage = parseInt(paginationData.dataset.currentPage);
         let lastPage = parseInt(paginationData.dataset.lastPage);
-
-        console.log('Infinite scroll initialized:', { currentPage, lastPage });
 
         // Intersection Observer for infinite scroll
         const observerOptions = {
@@ -493,7 +490,6 @@
         const loadMoreObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !isLoading && currentPage < lastPage) {
-                    console.log('Loading more products...');
                     loadMoreProducts();
                 }
             });
@@ -503,10 +499,8 @@
         if (currentPage < lastPage) {
             loadingIndicator.style.display = 'flex';
             loadMoreObserver.observe(loadingIndicator);
-            console.log('Observer attached to loading indicator');
         } else {
             endOfProducts.style.display = 'block';
-            console.log('All products loaded');
         }
 
         function loadMoreProducts() {
@@ -519,8 +513,6 @@
             const url = new URL(window.location.href);
             url.searchParams.set('page', currentPage + 1);
 
-            console.log('Fetching URL:', url.toString());
-
             fetch(url.toString(), {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -528,25 +520,18 @@
                 }
             })
             .then(response => {
-                console.log('Response status:', response.status);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('Received data:', data);
-                console.log('Number of products:', data.products ? data.products.length : 0);
-
                 // Render new products
                 if (data.products && data.products.length > 0) {
                     data.products.forEach(product => {
                         const productCard = createProductCard(product, data.favorites);
                         productGrid.appendChild(productCard);
                     });
-                    console.log('Products appended to grid');
-                } else {
-                    console.warn('No products in response');
                 }
 
                 // Update current page and last page
@@ -562,18 +547,13 @@
                     loadMoreObserver.disconnect();
                     loadingIndicator.style.display = 'none';
                     endOfProducts.style.display = 'block';
-                    console.log('Reached last page');
                 } else {
-                    // Continue observing
                     loadMoreObserver.observe(loadingIndicator);
-                    console.log('Continuing to observe for more products');
                 }
 
-                // Re-attach event listeners to new products
                 attachProductEventListeners();
             })
             .catch(error => {
-                console.error('Error loading products:', error);
                 loadingIndicator.style.display = 'none';
                 isLoading = false;
             });
