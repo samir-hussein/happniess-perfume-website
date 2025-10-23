@@ -81,7 +81,7 @@
                         <h2>{{ __('New Arrivals') }}</h2>
                         <p>{{ __('Discover our latest fragrances') }}</p>
                     </div>
-                    <a href="{{ route('products', [app()->getLocale(), 'tags' => 'new']) }}" class="view-all-btn">
+                    <a href="{{ route('products', [app()->getLocale(), 'tags' => 'new']) }}" class="view-all-btn view-all-desktop">
                         {{ __('View All') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i>
                     </a>
                 </div>
@@ -110,6 +110,11 @@
                         </div>
                     @endforeach
                 </div>
+                <div class="view-all-container view-all-mobile">
+                    <a href="{{ route('products', [app()->getLocale(), 'tags' => 'new']) }}" class="view-all-btn">
+                        {{ __('View All') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i>
+                    </a>
+                </div>
             </div>
         </section>
     @endif
@@ -123,7 +128,7 @@
                         <h2>{{ __('Best Sellers') }}</h2>
                         <p>{{ __('Our most popular fragrances') }}</p>
                     </div>
-                    <a href="{{ route('products', [app()->getLocale(), 'tags' => 'best seller']) }}" class="view-all-btn">
+                    <a href="{{ route('products', [app()->getLocale(), 'tags' => 'best seller']) }}" class="view-all-btn view-all-desktop">
                         {{ __('View All') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i>
                     </a>
                 </div>
@@ -151,6 +156,11 @@
                             </a>
                         </div>
                     @endforeach
+                </div>
+                <div class="view-all-container view-all-mobile">
+                    <a href="{{ route('products', [app()->getLocale(), 'tags' => 'best seller']) }}" class="view-all-btn">
+                        {{ __('View All') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i>
+                    </a>
                 </div>
             </div>
         </section>
