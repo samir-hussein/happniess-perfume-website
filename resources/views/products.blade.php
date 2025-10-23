@@ -125,6 +125,19 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">{{ __('Special Offers') }}</label>
+                    <div class="filter-checkbox-group">
+                        <div class="filter-checkbox-option">
+                            <input type="checkbox" id="hasOffers" {{ request('hasOffers') == 'true' ? 'checked' : '' }}>
+                            <label for="hasOffers">
+                                <i class="fas fa-tag"></i>
+                                {{ __('Show Only Products with Offers') }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="apply-filters">
@@ -416,6 +429,14 @@
             // Add size
             if (sizeValue !== 'any') {
                 url.searchParams.set('size', sizeValue);
+            }
+
+            // Add hasOffers filter
+            const hasOffersCheckbox = document.getElementById('hasOffers');
+            if (hasOffersCheckbox.checked) {
+                url.searchParams.set('hasOffers', 'true');
+            } else {
+                url.searchParams.delete('hasOffers');
             }
 
             // Reset to first page

@@ -9,6 +9,7 @@ use App\Handlers\GetAllProductHandler;
 use App\Handlers\GetByIdProductHandler;
 use App\Handlers\GetRandomNewProductsHandler;
 use App\Handlers\GetBestSellerProductsHandler;
+use App\Handlers\GetBestOffersProductsHandler;
 
 class ProductService implements IProductService
 {
@@ -17,13 +18,14 @@ class ProductService implements IProductService
         private GetByIdProductHandler $getByIdProductHandler,
         private GetRandomNewProductsHandler $getRandomNewProductsHandler,
         private GetBestSellerProductsHandler $getBestSellerProductsHandler,
+        private GetBestOffersProductsHandler $getBestOffersProductsHandler,
         private IProductSizeRepo $productSizeRepo,
         private IProductRepo $productRepo
     ) {}
 
     public function getAll(array $data)
     {
-        return $this->getAllProductHandler->__invoke($data["page"] ?? 1, $data["limit"] ?? 9, $data["search"] ?? null, $data["categories"] ?? null, $data["tags"] ?? null, $data["price"] ?? null, $data["sort"] ?? null, $data["size"] ?? null);
+        return $this->getAllProductHandler->__invoke($data["page"] ?? 1, $data["limit"] ?? 9, $data["search"] ?? null, $data["categories"] ?? null, $data["tags"] ?? null, $data["price"] ?? null, $data["sort"] ?? null, $data["size"] ?? null, $data["hasOffers"] ?? null);
     }
 
     public function find(int $id, int|null $size)
@@ -65,5 +67,10 @@ class ProductService implements IProductService
     public function getBestSellerProducts(int $limit)
     {
         return $this->getBestSellerProductsHandler->__invoke($limit);
+    }
+
+    public function getBestOffersProducts(int $limit)
+    {
+        return $this->getBestOffersProductsHandler->__invoke($limit);
     }
 }

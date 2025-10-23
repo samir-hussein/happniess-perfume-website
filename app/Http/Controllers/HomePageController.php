@@ -28,6 +28,7 @@ class HomePageController extends Controller
 			"heroSetting" => $this->heroSettingService->getFirst(),
 			"newProducts" => $this->productService->getRandomNewProducts(4),
 			"bestSellerProducts" => $this->productService->getBestSellerProducts(4),
+			"bestOffersProducts" => $this->productService->getBestOffersProducts(4),
 		]);
 	}
 

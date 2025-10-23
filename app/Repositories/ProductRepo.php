@@ -15,7 +15,7 @@ class ProductRepo extends BaseRepository implements IProductRepo
         parent::__construct($product);
     }
 
-    public function search(int $page, int $limit, string|null $search, array|null $categories, array|null $tags, string|null $price, string|null $sort, string|null $size)
+    public function search(int $page, int $limit, string|null $search, array|null $categories, array|null $tags, string|null $price, string|null $sort, string|null $size, bool $hasOffers = false)
     {
         $query = $this->model->query();
 
@@ -30,6 +30,11 @@ class ProductRepo extends BaseRepository implements IProductRepo
         if ($tags && $tags !== []) {
             $query->whereIn("tag_en", $tags)
             ->orWhereIn("tag_ar", $tags);
+        }
+
+        // Filter products with offers/discounts
+        if ($hasOffers) {
+            $query->where('discount_amount', '>', 0);
         }
 
         if ($size && $size !== "any" && $size !== "") {
@@ -185,6 +190,18 @@ class ProductRepo extends BaseRepository implements IProductRepo
     public function getBestSellerProducts(int $limit)
     {
         return $this->model->where("tag_en", "best seller")
+            ->inRandomOrder()
+            ->with(["sizes" => function ($q) {
+                $q->orderByRaw('CASE WHEN quantity = 0 THEN 1 ELSE 0 END')
+                    ->orderBy('price', 'asc');
+            }, "category"])
+            ->limit($limit)
+            ->get();
+    }
+
+    public function getBestOffersProducts(int $limit)
+    {
+        return $this->model->where('discount_amount', '>', 0)
             ->inRandomOrder()
             ->with(["sizes" => function ($q) {
                 $q->orderByRaw('CASE WHEN quantity = 0 THEN 1 ELSE 0 END')

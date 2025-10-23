@@ -166,6 +166,55 @@
         </section>
     @endif
 
+    <!-- Best Offers Section -->
+    @if ($bestOffersProducts->isNotEmpty())
+        <section class="best-offers-section">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>{{ __('Best Offers') }}</h2>
+                        <p>{{ __('Amazing discounts on selected fragrances') }}</p>
+                    </div>
+                    <a href="{{ route('products', [app()->getLocale(), 'hasOffers' => true]) }}" class="view-all-btn view-all-desktop">
+                        {{ __('View All') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i>
+                    </a>
+                </div>
+                <div class="best-offers-grid">
+                    @foreach ($bestOffersProducts as $product)
+                        <div class="best-offer-card" data-id="{{ $product->id }}">
+                            <a href="{{ route('product', [app()->getLocale(), $product->id, $product->sizes->first()->size]) }}" 
+                               class="best-offer-link">
+                                <div class="best-offer-image">
+                                    <img src="{{ $product->main_image }}" alt="{{ $product->{'name_' . app()->getLocale()} }}" loading="lazy">
+                                    <div class="best-offer-badge">
+                                        @if ($product->discount_type === 'percentage')
+                                            {{ $product->discount_amount }}% {{ __('OFF') }}
+                                        @else
+                                            {{ $product->discount_amount }} {{ __('EGP OFF') }}
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="best-offer-info">
+                                    <h3 class="best-offer-name">{{ $product->{'name_' . app()->getLocale()} }}</h3>
+                                    <p class="best-offer-category">{{ $product->category->{'name_' . app()->getLocale()} }}</p>
+                                    <div class="best-offer-price">
+                                        <span class="price-original">{{ $product->sizes->first()->price }} {{ __('EGP') }}</span>
+                                        <span class="price-discounted">{{ $product->priceAfterDiscount }} {{ __('EGP') }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="view-all-container view-all-mobile">
+                    <a href="{{ route('products', [app()->getLocale(),'hasOffers' => true]) }}" class="view-all-btn">
+                        {{ __('View All') }} <i class="fas fa-arrow-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- Products Section -->
     <section class="products">
         <div class="container">

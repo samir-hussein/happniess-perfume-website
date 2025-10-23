@@ -13,4 +13,5 @@ interface IProductService
     public function relatedProducts(int $id);
     public function getRandomNewProducts(int $limit);
     public function getBestSellerProducts(int $limit);
+    public function getBestOffersProducts(int $limit);
 }
