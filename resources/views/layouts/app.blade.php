@@ -81,6 +81,16 @@
 
 <body>
 
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+            <div class="loader-text">{{ __('Loading') }}...</div>
+        </div>
+    </div>
+
     <!-- Announcement Bar -->
     @include('Includes.announcement')
 

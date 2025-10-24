@@ -3100,3 +3100,173 @@ footer {
 		font-size: 16px;
 	}
 }
+
+/* Page Loader Styles - Elegant & Luxurious */
+.page-loader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(135deg, rgba(253, 251, 246, 0.97) 0%, rgba(247, 229, 183, 0.95) 100%);
+	backdrop-filter: blur(10px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.page-loader.active {
+	opacity: 1;
+	visibility: visible;
+}
+
+.loader-spinner {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 30px;
+}
+
+/* Elegant perfume bottle inspired spinner */
+.spinner-ring {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	border: 2px solid transparent;
+	border-top: 2px solid var(--royal-gold);
+	border-right: 2px solid var(--royal-gold);
+	animation: elegant-spin 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+	box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.spinner-ring:nth-child(2) {
+	width: 75px;
+	height: 75px;
+	border-top: 2px solid var(--deep-bronze);
+	border-right: 2px solid var(--deep-bronze);
+	animation: elegant-spin-reverse 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+	box-shadow: 0 0 15px rgba(140, 106, 37, 0.2);
+}
+
+.spinner-ring:nth-child(3) {
+	width: 50px;
+	height: 50px;
+	border-top: 2px solid var(--golden-shadow);
+	border-right: 2px solid var(--golden-shadow);
+	animation: elegant-spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+	box-shadow: 0 0 10px rgba(184, 134, 11, 0.2);
+}
+
+/* Center decorative dot */
+.spinner-ring::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 8px;
+	height: 8px;
+	background: var(--royal-gold);
+	border-radius: 50%;
+	box-shadow: 0 0 10px var(--royal-gold);
+	animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.loader-text {
+	margin-top: 120px;
+	font-size: 18px;
+	font-weight: 600;
+	color: var(--charcoal-black);
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	font-family: 'Playfair Display', serif;
+	animation: fade-in-out 2s ease-in-out infinite;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Elegant spinning animation */
+@keyframes elegant-spin {
+	0% {
+		transform: rotate(0deg);
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.7;
+	}
+	100% {
+		transform: rotate(360deg);
+		opacity: 1;
+	}
+}
+
+@keyframes elegant-spin-reverse {
+	0% {
+		transform: rotate(360deg);
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.7;
+	}
+	100% {
+		transform: rotate(0deg);
+		opacity: 1;
+	}
+}
+
+@keyframes pulse-dot {
+	0%, 100% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: translate(-50%, -50%) scale(1.5);
+		opacity: 0.5;
+	}
+}
+
+@keyframes fade-in-out {
+	0%, 100% {
+		opacity: 0.5;
+		transform: translateY(0);
+	}
+	50% {
+		opacity: 1;
+		transform: translateY(-3px);
+	}
+}
+
+/* Responsive adjustments for page loader */
+@media (max-width: 768px) {
+	.spinner-ring {
+		width: 80px;
+		height: 80px;
+	}
+
+	.spinner-ring:nth-child(2) {
+		width: 60px;
+		height: 60px;
+	}
+
+	.spinner-ring:nth-child(3) {
+		width: 40px;
+		height: 40px;
+	}
+
+	.spinner-ring::before {
+		width: 6px;
+		height: 6px;
+	}
+
+	.loader-text {
+		margin-top: 100px;
+		font-size: 16px;
+		letter-spacing: 2px;
+	}
+}

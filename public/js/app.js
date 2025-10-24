@@ -790,4 +790,126 @@ function markAsRead() {
 		});
 }
 
+// Page Loader Functionality
+const pageLoader = document.getElementById('pageLoader');
+
+// Show loader function
+function showPageLoader() {
+	if (pageLoader) {
+		pageLoader.classList.add('active');
+		document.body.style.overflow = 'hidden';
+	}
+}
+
+// Hide loader function
+function hidePageLoader() {
+	if (pageLoader) {
+		pageLoader.classList.remove('active');
+		document.body.style.overflow = '';
+	}
+}
+
+// Hide loader on page load
+window.addEventListener('load', function() {
+	hidePageLoader();
+});
+
+// Show loader when navigating away from the page
+window.addEventListener('beforeunload', function() {
+	showPageLoader();
+});
+
+// Handle all navigation links in navbar
+document.addEventListener('DOMContentLoaded', function() {
+	// Get all navigation links
+	const navLinks = document.querySelectorAll('.nav-links a, .navbar a, .nav-icons a');
+	
+	navLinks.forEach(link => {
+		link.addEventListener('click', function(e) {
+			// Check if it's not a dropdown toggle or external link
+			const href = this.getAttribute('href');
+			
+			// Skip if it's a hash link, javascript:void, or external link
+			if (href && 
+				href !== '#' && 
+				!href.startsWith('javascript:') && 
+				!href.startsWith('tel:') && 
+				!href.startsWith('mailto:') &&
+				!this.hasAttribute('target')) {
+				
+				// Show loader
+				showPageLoader();
+				
+				// If navigation fails, hide loader after timeout
+				setTimeout(() => {
+					hidePageLoader();
+				}, 5000);
+			}
+		});
+	});
+	
+	// Handle product links (for product cards)
+	const productLinks = document.querySelectorAll('a[href*="/product/"]');
+	
+	productLinks.forEach(link => {
+		link.addEventListener('click', function(e) {
+			const href = this.getAttribute('href');
+			
+			if (href && !this.hasAttribute('target')) {
+				showPageLoader();
+				
+				// Fallback to hide loader after timeout
+				setTimeout(() => {
+					hidePageLoader();
+				}, 5000);
+			}
+		});
+	});
+	
+	// Handle category links
+	const categoryLinks = document.querySelectorAll('a[href*="/products"]');
+	
+	categoryLinks.forEach(link => {
+		link.addEventListener('click', function(e) {
+			const href = this.getAttribute('href');
+			
+			if (href && !this.hasAttribute('target')) {
+				showPageLoader();
+				
+				// Fallback to hide loader after timeout
+				setTimeout(() => {
+					hidePageLoader();
+				}, 5000);
+			}
+		});
+	});
+	
+	// Handle form submissions that navigate to new pages
+	const forms = document.querySelectorAll('form[method="GET"]');
+	
+	forms.forEach(form => {
+		form.addEventListener('submit', function(e) {
+			showPageLoader();
+			
+			// Fallback to hide loader after timeout
+			setTimeout(() => {
+				hidePageLoader();
+			}, 5000);
+		});
+	});
+});
+
+// Handle browser back/forward buttons
+window.addEventListener('pageshow', function(event) {
+	// If page is loaded from cache (back/forward button)
+	if (event.persisted) {
+		hidePageLoader();
+	}
+});
+
+// Additional safety: hide loader if it's been showing for too long
+setTimeout(() => {
+	hidePageLoader();
+}, 10000);
+
 
