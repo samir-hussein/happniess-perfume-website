@@ -176,10 +176,8 @@
                             <div class="product-info">
                                 <a
                                     href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-                                    <h3 dir="auto">{{ $product->{'name_' . app()->getLocale()} }} -
-                                        <span class="size">{{ $product->sizes->first()->size }}
-                                            {{ __('ml') }}</span>
-                                    </h3>
+                                    <h3 dir="auto">{{ $product->{'name_' . app()->getLocale()} }}</h3>
+                                    <span class="size">{{ $product->sizes->first()->size }} {{ __('ml') }}</span>
                                 </a>
                                 @if ($product->discount_amount > 0)
                                     <div class="product-price">
@@ -615,7 +613,8 @@
                     </div>
                     <div class="product-info">
                         <a href="/{{ app()->getLocale() }}/product/${product.id}/size/${firstSize.size}">
-                            <h3 dir="auto">${product['name_' + locale]} - <span class="size">${firstSize.size} {{ __('ml') }}</span></h3>
+                            <h3 dir="auto">${product['name_' + locale]}</h3>
+                            <span class="size">${firstSize.size} {{ __('ml') }}</span>
                         </a>
                         ${priceHTML}
                         <div class="product-actions">

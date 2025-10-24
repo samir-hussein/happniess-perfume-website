@@ -247,10 +247,8 @@
                             <div class="product-info">
                                 <a
                                     href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
-                                    <h3 dir="auto">{{ $product->{'name_' . app()->getLocale()} }} -
-                                        <span class="size">{{ $product->sizes->first()->size }}
-                                            {{ __('ml') }}</span>
-                                    </h3>
+                                    <h3 dir="auto">{{ $product->{'name_' . app()->getLocale()} }}</h3>
+                                    <span class="size">{{ $product->sizes->first()->size }} {{ __('ml') }}</span>
                                 </a>
                                 @if ($product->discount_amount > 0)
                                     <div class="product-price">
