@@ -1236,7 +1236,8 @@ header {
 	gap: 10px;
 }
 
-.pagination-item a {
+.pagination-item a,
+.pagination-item span {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1253,6 +1254,20 @@ header {
 .pagination-item.active a {
 	background-color: var(--royal-gold);
 	color: var(--charcoal-black);
+}
+
+.pagination-item.disabled .pagination-link,
+.pagination-link.disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+	pointer-events: none;
+	background-color: var(--warm-beige);
+	color: #999;
+}
+
+.pagination-item.disabled .pagination-link:hover {
+	background-color: #e0e0e0;
+	color: #999;
 }
 
 /* Footer */

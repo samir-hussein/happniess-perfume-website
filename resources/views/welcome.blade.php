@@ -288,15 +288,21 @@
         @if ($products->hasPages())
             <div class="pagination">
                 <ul class="pagination-list">
-                    <li class="pagination-item">
-                        <a href="{{ $products->appends(request()->except('page'))->previousPageUrl() }}" id="prevPage"
-                            class="pagination-link"><i
-                                class="fas {{ app()->getLocale() === 'ar' ? 'fa-chevron-right' : 'fa-chevron-left' }}"></i></a>
-                    </li>
                     @php
                         $currentPage = $products->currentPage();
                         $lastPage = $products->lastPage();
                     @endphp
+                    
+                    <li class="pagination-item {{ $currentPage == 1 ? 'disabled' : '' }}">
+                        @if($currentPage == 1)
+                            <span class="pagination-link disabled"><i
+                                class="fas {{ app()->getLocale() === 'ar' ? 'fa-chevron-right' : 'fa-chevron-left' }}"></i></span>
+                        @else
+                            <a href="{{ $products->appends(request()->except('page'))->previousPageUrl() }}" id="prevPage"
+                                class="pagination-link"><i
+                                    class="fas {{ app()->getLocale() === 'ar' ? 'fa-chevron-right' : 'fa-chevron-left' }}"></i></a>
+                        @endif
+                    </li>
 
                     <li class="pagination-item {{ $currentPage == 1 ? 'active' : '' }}">
                         {{-- Always show page 1 --}}
@@ -340,10 +346,15 @@
                         </li>
                     @endif
 
-                    <li class="pagination-item">
-                        <a href="{{ $products->appends(request()->except('page'))->nextPageUrl() }}" id="nextPage"
-                            class="pagination-link"><i
-                                class="fas {{ app()->getLocale() === 'ar' ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i></a>
+                    <li class="pagination-item {{ $currentPage == $lastPage ? 'disabled' : '' }}">
+                        @if($currentPage == $lastPage)
+                            <span class="pagination-link disabled"><i
+                                class="fas {{ app()->getLocale() === 'ar' ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i></span>
+                        @else
+                            <a href="{{ $products->appends(request()->except('page'))->nextPageUrl() }}" id="nextPage"
+                                class="pagination-link"><i
+                                    class="fas {{ app()->getLocale() === 'ar' ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i></a>
+                        @endif
                     </li>
                 </ul>
             </div>
