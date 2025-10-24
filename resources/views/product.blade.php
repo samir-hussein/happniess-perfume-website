@@ -121,9 +121,6 @@
                         </div>
                     </div>
                     <div class="fixed-actions">
-                        <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
-                            data-id="{{ $product->id }}" data-size="{{ request()->size }}"><i
-                                class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
                         @if ($product->sizes->where('size', request()->size)->first()->quantity > 0)
                             <form
                                 action="{{ route('buy.now', ['locale' => app()->getLocale(), 'product_id' => $product->id, 'size' => request()->size]) }}"
@@ -460,39 +457,6 @@
                 
                 lastScrollTop = scrollTop;
             });
-            
-            // Sync favorite button state between original and fixed bars
-            const originalFavBtn = originalActions.querySelector('.add-to-fav');
-            const fixedFavBtn = fixedActionBar.querySelector('.add-to-fav');
-            
-            if (originalFavBtn && fixedFavBtn) {
-                // Sync clicks from fixed to original
-                fixedFavBtn.addEventListener('click', function() {
-                    if (!window.authUser) {
-                        window.location.href = '/{{ app()->getLocale() }}/login';
-                        return;
-                    }
-                    this.classList.toggle('favorited');
-                    originalFavBtn.classList.toggle('favorited');
-                    
-                    const fixedIcon = this.querySelector('i');
-                    const originalIcon = originalFavBtn.querySelector('i');
-                    
-                    if (this.classList.contains('favorited')) {
-                        fixedIcon.classList.remove('far');
-                        fixedIcon.classList.add('fas');
-                        originalIcon.classList.remove('far');
-                        originalIcon.classList.add('fas');
-                    } else {
-                        fixedIcon.classList.remove('fas');
-                        fixedIcon.classList.add('far');
-                        originalIcon.classList.remove('fas');
-                        originalIcon.classList.add('far');
-                    }
-                    
-                    addToFavorites(this);
-                });
-            }
         }
     </script>
 @endsection
