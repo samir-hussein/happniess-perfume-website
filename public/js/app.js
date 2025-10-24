@@ -814,8 +814,13 @@ window.addEventListener('load', function() {
 	hidePageLoader();
 });
 
-// Show loader when navigating away from the page
+// Show loader when navigating away from the page (this fires when page actually starts unloading)
 window.addEventListener('beforeunload', function() {
+	showPageLoader();
+});
+
+// Also listen to pagehide event for better mobile support
+window.addEventListener('pagehide', function() {
 	showPageLoader();
 });
 
@@ -840,10 +845,10 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Show loader
 				showPageLoader();
 				
-				// If navigation fails, hide loader after timeout
+				// If navigation fails, hide loader after longer timeout for slow connections
 				setTimeout(() => {
 					hidePageLoader();
-				}, 5000);
+				}, 15000);
 			}
 		});
 	});
@@ -861,7 +866,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Fallback to hide loader after timeout
 				setTimeout(() => {
 					hidePageLoader();
-				}, 5000);
+				}, 15000);
 			}
 		});
 	});
@@ -879,7 +884,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Fallback to hide loader after timeout
 				setTimeout(() => {
 					hidePageLoader();
-				}, 5000);
+				}, 15000);
 			}
 		});
 	});
@@ -894,7 +899,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			// Fallback to hide loader after timeout
 			setTimeout(() => {
 				hidePageLoader();
-			}, 5000);
+			}, 15000);
 		});
 	});
 });
@@ -910,6 +915,6 @@ window.addEventListener('pageshow', function(event) {
 // Additional safety: hide loader if it's been showing for too long
 setTimeout(() => {
 	hidePageLoader();
-}, 10000);
+}, 20000);
 
 
