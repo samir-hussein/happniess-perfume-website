@@ -77,6 +77,42 @@
         <link rel="stylesheet" href="{{ asset('css/app-ar.css') }}?v={{ filemtime(public_path('css/app-ar.css')) }}">
     @endif
     @yield('styles')
+
+    <!-- Organization Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Happiness Perfume",
+        "url": "{{ url('/') }}",
+        "logo": "{{ asset('images/logo.png') }}",
+        "description": "Luxury perfumes and fragrances for every occasion",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+201011796422",
+            "contactType": "Customer Service",
+            "availableLanguage": ["English", "Arabic"]
+        },
+        "sameAs": [
+            "https://wa.me/+201011796422"
+        ]
+    }
+    </script>
+
+    <!-- WebSite Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Happiness Perfume",
+        "url": "{{ url('/') }}",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{{ route('products', app()->getLocale()) }}?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
 </head>
 
 <body>

@@ -678,4 +678,26 @@
         }
         })(); // End of IIFE for infinite scroll
     </script>
+
+    <!-- BreadcrumbList Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "{{ __('Home') }}",
+                "item": "{{ route('home', app()->getLocale()) }}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "{{ __('Products') }}",
+                "item": "{{ url()->current() }}"
+            }
+        ]
+    }
+    </script>
 @endsection

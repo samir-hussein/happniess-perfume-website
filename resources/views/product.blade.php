@@ -459,4 +459,44 @@
             });
         }
     </script>
+
+    <!-- Product Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": "{{ $product->{'name_' . app()->getLocale()} }}",
+        "image": [
+            "{{ $product->main_image }}"
+            @foreach($product->images() as $image)
+                @if($image)
+                    ,"{{ env('PANEL_URL') }}/storage/{{ $image }}"
+                @endif
+            @endforeach
+        ],
+        "description": "{{ strip_tags($product->{'description_' . app()->getLocale()}) }}",
+        "sku": "{{ $product->id }}",
+        "brand": {
+            "@type": "Brand",
+            "name": "Happiness Perfume"
+        },
+        "offers": {
+            "@type": "AggregateOffer",
+            "url": "{{ url()->current() }}",
+            "priceCurrency": "EGP",
+            "lowPrice": "{{ $product->sizes->min('price') }}",
+            "highPrice": "{{ $product->sizes->max('price') }}",
+            "availability": "{{ $product->sizes->where('size', request()->size)->first()->quantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }}",
+            "itemCondition": "https://schema.org/NewCondition"
+        },
+        "category": "{{ $product->category->{'name_' . app()->getLocale()} }}"
+        @if($product->reviews->count() > 0)
+        ,"aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "{{ $product->reviews->avg('rating') }}",
+            "reviewCount": "{{ $product->reviews->count() }}"
+        }
+        @endif
+    }
+    </script>
 @endsection
