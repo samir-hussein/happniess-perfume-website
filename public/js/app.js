@@ -50,7 +50,7 @@ overlay.addEventListener("click", () => {
 });
 
 // Favorite Toggle
-const favButtons = document.querySelectorAll(".add-to-fav");
+const favButtons = document.querySelectorAll(".add-to-fav, .add-to-fav-overlay");
 
 favButtons.forEach((button) => {
 	button.addEventListener("click", function () {

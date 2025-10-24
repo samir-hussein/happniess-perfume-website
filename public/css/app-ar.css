@@ -95,6 +95,19 @@
 	right: auto;
 }
 
+/* RTL styles for overlay buttons */
+.add-to-fav-overlay {
+	right: 10px;
+	left: auto;
+}
+
+@media (max-width: 992px) {
+	.add-to-fav-overlay {
+		right: 8px;
+		left: auto;
+	}
+}
+
 .footer-column h3::after {
 	right: 0;
 	left: auto;

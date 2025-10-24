@@ -237,12 +237,23 @@
                             @endif
 
                             <div class="product-img">
+                                <button class="add-to-fav-overlay {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
+                                    data-id="{{ $product->id }}" data-size="{{ $product->sizes->first()->size }}">
+                                    <i class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i>
+                                </button>
                                 <a
                                     href="{{ route('product', [app()->getLocale(), $product->id, 'size' => $product->sizes->first()->size]) }}">
                                     <img src="{{ $product->main_image }}"
                                         alt="{{ $product->name_en . ' - Happiness Perfume' }}" loading="lazy"
                                         width="100" height="300">
                                 </a>
+                                @if ($product->sizes->first()->quantity > 0)
+                                    <button class="add-to-cart-overlay" data-id="{{ $product->id }}"
+                                        data-size="{{ $product->sizes->first()->size }}" onclick="addToCart(this)">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span>{{ __('Add to Cart') }}</span>
+                                    </button>
+                                @endif
                             </div>
                             <div class="product-info">
                                 <a
@@ -261,16 +272,6 @@
                                     <div class="product-price">{{ $product->sizes->first()->price }} {{ __('EGP') }}
                                     </div>
                                 @endif
-                                <div class="product-actions">
-                                    @if ($product->sizes->first()->quantity > 0)
-                                        <button class="add-to-cart" data-id="{{ $product->id }}"
-                                            data-size="{{ $product->sizes->first()->size }}" onclick="addToCart(this)"><i
-                                                class="fas fa-cart-plus"></i></button>
-                                    @endif
-                                    <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
-                                        data-id="{{ $product->id }}" data-size="{{ $product->sizes->first()->size }}"><i
-                                            class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
-                                </div>
                             </div>
                         </div>
                     @endforeach
