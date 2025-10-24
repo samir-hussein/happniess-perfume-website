@@ -432,6 +432,7 @@
         const originalActions = document.getElementById('originalActions');
         const luxuryChatWidget = document.querySelector('.luxury-chat');
         const whatsappButton = document.querySelector('.whatsapp-circle');
+        const floatingCartWidget = document.getElementById('floatingCartWidget');
         
         if (fixedActionBar && originalActions) {
             let lastScrollTop = 0;
@@ -444,14 +445,16 @@
                 // Show fixed bar when original actions are scrolled out of view
                 if (originalActionsBottom < 0) {
                     fixedActionBar.classList.add('show');
-                    // Push chat and WhatsApp buttons up
+                    // Push chat, WhatsApp, and floating cart widget up
                     if (luxuryChatWidget) luxuryChatWidget.classList.add('push-up');
                     if (whatsappButton) whatsappButton.classList.add('push-up');
+                    if (floatingCartWidget) floatingCartWidget.classList.add('push-up');
                 } else {
                     fixedActionBar.classList.remove('show');
-                    // Return chat and WhatsApp buttons to original position
+                    // Return chat, WhatsApp, and floating cart widget to original position
                     if (luxuryChatWidget) luxuryChatWidget.classList.remove('push-up');
                     if (whatsappButton) whatsappButton.classList.remove('push-up');
+                    if (floatingCartWidget) floatingCartWidget.classList.remove('push-up');
                 }
                 
                 lastScrollTop = scrollTop;

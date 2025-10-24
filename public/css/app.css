@@ -2501,6 +2501,12 @@ footer {
   transition: bottom 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+/* Push floating cart widget up when fixed action bar is visible */
+.floating-cart-widget.push-up {
+  bottom: 110px;
+  transition: bottom 0.3s ease;
+}
+
 /* Scroll to Top Bar */
 .scroll-top-bar {
   position: fixed;
@@ -2583,6 +2589,10 @@ footer {
 
   .whatsapp-circle.push-up {
     bottom: 180px;
+  }
+
+  .floating-cart-widget.push-up {
+    bottom: 100px;
   }
 
   .hero .container{
