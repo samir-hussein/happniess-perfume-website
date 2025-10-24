@@ -139,6 +139,72 @@
                 {!! $product->{'description_' . app()->getLocale()} !!}
             </p>
 
+            <!-- Related Products -->
+            @if ($relatedProducts->isNotEmpty())
+                <section class="related-products">
+                    <div class="section-title">
+                        <h2>{{ __('Related Products') }}</h2>
+                    </div>
+
+                    <div class="product-grid" id="productGrid">
+                        @foreach ($relatedProducts as $relatedProduct)
+                            <div class="product-card" data-id="{{ $relatedProduct->id }}"
+                                data-category="{{ $relatedProduct->category->name }}"
+                                data-price="{{ $relatedProduct->price }}">
+                                @if ($relatedProduct->sizes->first()->quantity == 0)
+                                    <div class="product-badge">{{ __('Out of Stock') }}</div>
+                                @else
+                                    @if ($relatedProduct->tag_ar)
+                                        <div class="product-badge">{{ $relatedProduct->{'tag_' . app()->getLocale()} }}
+                                        </div>
+                                    @endif
+                                @endif
+                                <div class="product-img">
+                                    <button class="add-to-fav-overlay {{ in_array($relatedProduct->id, $favorites) ? 'favorited' : '' }}"
+                                        data-id="{{ $relatedProduct->id }}"
+                                        data-size="{{ $relatedProduct->sizes->first()->size }}">
+                                        <i class="{{ in_array($relatedProduct->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i>
+                                    </button>
+                                    <a
+                                        href="{{ route('product', [app()->getLocale(), $relatedProduct->id, 'size' => $relatedProduct->sizes->first()->size]) }}">
+                                        <img src="{{ $relatedProduct->main_image }}"
+                                            alt="{{ $relatedProduct->name_en . ' - Happiness Perfume' }}" loading="lazy"
+                                            width="100" height="300">
+                                    </a>
+                                    @if ($relatedProduct->sizes->first()->quantity > 0)
+                                        <button class="add-to-cart-overlay" data-id="{{ $relatedProduct->id }}"
+                                            data-size="{{ $relatedProduct->sizes->first()->size }}" onclick="addToCart(this)">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            <span>{{ __('Add to Cart') }}</span>
+                                        </button>
+                                    @endif
+                                </div>
+                                <div class="product-info">
+                                    <a
+                                        href="{{ route('product', [app()->getLocale(), $relatedProduct->id, 'size' => $relatedProduct->sizes->first()->size]) }}">
+                                        <h3 dir="auto">{{ $relatedProduct->{'name_' . app()->getLocale()} }}</h3>
+                                        <span class="size">{{ $relatedProduct->sizes->first()->size }}
+                                            {{ __('ml') }}</span>
+                                    </a>
+                                    @if ($relatedProduct->discount_amount > 0)
+                                        <div class="product-price">
+                                            <span class="discounted-price">{{ $relatedProduct->sizes->first()->price }}
+                                                {{ __('EGP') }}</span>
+                                            <span>{{ $relatedProduct->priceAfterDiscount }}
+                                                {{ __('EGP') }}</span>
+                                        </div>
+                                    @else
+                                        <div class="product-price">{{ $relatedProduct->sizes->first()->price }}
+                                            {{ __('EGP') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+
             @auth
                 <!-- Review Form -->
                 <div class="review-form-container">
@@ -188,73 +254,6 @@
                     @endif
                 </div>
             @endauth
-
-            <!-- Related Products -->
-            @if ($relatedProducts->isNotEmpty())
-                <section class="related-products">
-                    <div class="section-title">
-                        <h2>{{ __('Related Products') }}</h2>
-                    </div>
-
-                    <div class="product-grid" id="productGrid">
-                        @foreach ($relatedProducts as $relatedProduct)
-                            <div class="product-card" data-id="{{ $relatedProduct->id }}"
-                                data-category="{{ $relatedProduct->category->name }}"
-                                data-price="{{ $relatedProduct->price }}">
-                                @if ($relatedProduct->sizes->first()->quantity == 0)
-                                    <div class="product-badge">{{ __('Out of Stock') }}</div>
-                                @else
-                                    @if ($relatedProduct->tag_ar)
-                                        <div class="product-badge">{{ $relatedProduct->{'tag_' . app()->getLocale()} }}
-                                        </div>
-                                    @endif
-                                @endif
-                                <div class="product-img">
-                                    <a
-                                        href="{{ route('product', [app()->getLocale(), $relatedProduct->id, 'size' => $relatedProduct->sizes->first()->size]) }}">
-                                        <img src="{{ $relatedProduct->main_image }}"
-                                            alt="{{ $relatedProduct->name_en . ' - Happiness Perfume' }}" loading="lazy"
-                                            width="100" height="300">
-                                    </a>
-                                </div>
-                                <div class="product-info">
-                                    <a
-                                        href="{{ route('product', [app()->getLocale(), $relatedProduct->id, 'size' => $relatedProduct->sizes->first()->size]) }}">
-                                        <h3 dir="auto">{{ $relatedProduct->{'name_' . app()->getLocale()} }} -
-                                            <span class="size">{{ $relatedProduct->sizes->first()->size }}
-                                                {{ __('ml') }}</span>
-                                        </h3>
-                                    </a>
-                                    @if ($relatedProduct->discount_amount > 0)
-                                        <div class="product-price">
-                                            <span class="discounted-price">{{ $relatedProduct->sizes->first()->price }}
-                                                {{ __('EGP') }}</span>
-                                            <span>{{ $relatedProduct->priceAfterDiscount }}
-                                                {{ __('EGP') }}</span>
-                                        </div>
-                                    @else
-                                        <div class="product-price">{{ $relatedProduct->sizes->first()->price }}
-                                            {{ __('EGP') }}
-                                        </div>
-                                    @endif
-                                    <div class="product-actions">
-                                        @if ($relatedProduct->sizes->first()->quantity > 0)
-                                            <button class="add-to-cart-related" data-id="{{ $relatedProduct->id }}"
-                                                data-size="{{ $relatedProduct->sizes->first()->size }}"
-                                                onclick="addToCart(this)"><i class="fas fa-cart-plus"></i></button>
-                                        @endif
-                                        <button
-                                            class="add-to-fav-related {{ in_array($relatedProduct->id, $favorites) ? 'favorited' : '' }}"
-                                            data-id="{{ $relatedProduct->id }}"
-                                            data-size="{{ $relatedProduct->sizes->first()->size }}"><i
-                                                class="{{ in_array($relatedProduct->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </section>
-            @endif
 
             <!-- Reviews Section -->
             <section class="reviews-section" id="reviewsSection">
