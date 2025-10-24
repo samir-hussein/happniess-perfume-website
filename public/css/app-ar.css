@@ -119,6 +119,12 @@
 	left: auto;
 }
 
+/* Floating Cart Widget - RTL */
+.floating-cart-widget {
+	right: 30px;
+	left: auto;
+}
+
 @media (max-width: 768px) {
 	.nav-links {
 		right: -100%;
@@ -139,6 +145,12 @@
 	.cart-panel {
 		left: -100%;
 		right: auto;
+	}
+
+	.floating-cart-widget {
+		bottom: 50px;
+		left: 90px;
+		right: 20px;
 	}
 }
 

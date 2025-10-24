@@ -134,6 +134,26 @@
     <!-- Cart Side Panel -->
     @include('Includes.cart-panel')
 
+    <!-- Floating Cart Widget -->
+    <div class="floating-cart-widget" id="floatingCartWidget" style="display: none;">
+        <div class="floating-cart-content">
+            <div class="floating-cart-icon">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+            <div class="floating-cart-info">
+                <div class="floating-cart-items">
+                    <span class="floating-cart-count">0</span> {{ __('items') }}
+                </div>
+                <div class="floating-cart-total">
+                    <span id="floatingCartTotal">0</span> {{ __('EGP') }}
+                </div>
+            </div>
+            <a href="{{ route('checkout', app()->getLocale()) }}" class="floating-cart-btn">
+                {{ __('Checkout') }} <i class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }}"></i>
+            </a>
+        </div>
+    </div>
+
     <div class="overlay"></div>
 
     <div class="toast-container" id="toastContainer">

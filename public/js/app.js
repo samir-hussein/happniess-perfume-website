@@ -116,6 +116,9 @@ function addToCart(e) {
 		addToCartLocalStorage(e);
 	}
 	showToast(window.translations.product_added_to_cart, "success");
+	
+	// Animate cart icon to draw attention
+	animateCartIcon();
 }
 
 function addToCartLocalStorage(e) {
@@ -165,6 +168,17 @@ function addToCartLoggedUser(e) {
 
 updateCartCount();
 
+// Animate cart icon to draw attention
+function animateCartIcon() {
+	const cartIcon = document.getElementById("cart-icon");
+	if (cartIcon) {
+		cartIcon.classList.add("cart-pulse");
+		setTimeout(() => {
+			cartIcon.classList.remove("cart-pulse");
+		}, 1000);
+	}
+}
+
 function updateLocalStorageCartCount() {
 	let cart = JSON.parse(localStorage.getItem("cart")) || [];
 	let cartCount = document.querySelector(".cart-count");
@@ -173,6 +187,13 @@ function updateLocalStorageCartCount() {
 		0
 	);
 	cartCount.style.display = cart.length > 0 ? "flex" : "none";
+	
+	// Fetch full cart data to update floating widget with total
+	if (cart.length > 0) {
+		fetchCartDataForWidget();
+	} else {
+		updateFloatingCartWidget();
+	}
 }
 
 function updateLoggedUserCartCount() {
@@ -192,6 +213,13 @@ function updateLoggedUserCartCount() {
 			let cartCount = document.querySelector(".cart-count");
 			cartCount.textContent = count;
 			cartCount.style.display = count > 0 ? "flex" : "none";
+			
+			// Fetch full cart data to update floating widget with total
+			if (count > 0) {
+				fetchCartDataForWidget();
+			} else {
+				updateFloatingCartWidget();
+			}
 		})
 		.catch((error) => console.error(error));
 }
@@ -414,6 +442,82 @@ function formatNumber(num) {
 	}).format(num);
 }
 
+// Fetch cart data specifically for floating widget
+function fetchCartDataForWidget() {
+	if (window.authUser) {
+		// For logged-in users
+		fetch("/" + locale + "/cart", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+				"X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+			},
+			body: JSON.stringify({
+				user_id: window.authUser.id,
+			}),
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			updateFloatingCartWidget(data);
+		})
+		.catch((error) => console.error(error));
+	} else {
+		// For guest users
+		let cartData = localStorage.getItem("cart");
+		if (cartData && cartData !== "[]" && cartData.length > 0) {
+			fetch("/" + locale + "/cart", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+					"X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+				},
+				body: JSON.stringify({
+					products: JSON.parse(cartData),
+				}),
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				updateFloatingCartWidget(data);
+			})
+			.catch((error) => console.error(error));
+		}
+	}
+}
+
+// Update Floating Cart Widget
+function updateFloatingCartWidget(cartData = null) {
+	const floatingWidget = document.getElementById("floatingCartWidget");
+	const floatingCount = document.querySelector(".floating-cart-count");
+	const floatingTotal = document.getElementById("floatingCartTotal");
+	
+	// Hide on checkout page
+	const currentPath = window.location.pathname;
+	if (currentPath.includes('/checkout') || currentPath.includes('/order-confirmation')) {
+		floatingWidget.style.display = "none";
+		return;
+	}
+	
+	// If cart data is provided, use it directly
+	if (cartData) {
+		const totalItems = cartData.products.length > 0 ? 
+			cartData.products.reduce((sum, item) => sum + item.quantity, 0) : 0;
+		
+		if (totalItems > 0) {
+			floatingCount.textContent = totalItems;
+			floatingTotal.textContent = cartData.total;
+			floatingWidget.style.display = "block";
+		} else {
+			floatingWidget.style.display = "none";
+		}
+		return;
+	}
+	
+	// If no cart data provided, hide the widget
+	floatingWidget.style.display = "none";
+}
+
 function handleCartDataView(data) {
 	const cartItems = document.querySelector(".cart-items");
 	cartItems.innerHTML = "";
@@ -475,6 +579,9 @@ function handleCartDataView(data) {
 		cartTotalDiv.style.display = "none";
 		browseBtn.style.display = "block";
 	}
+	
+	// Update floating cart widget with cart data
+	updateFloatingCartWidget(data);
 }
 
 function updateCartQuantity(element) {
