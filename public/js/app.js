@@ -917,4 +917,26 @@ setTimeout(() => {
 	hidePageLoader();
 }, 20000);
 
+// Scroll to Top Bar Functionality
+const scrollTopBar = document.getElementById('scrollTopBar');
+
+if (scrollTopBar) {
+	// Show/hide scroll top bar based on scroll position
+	window.addEventListener('scroll', function() {
+		if (window.pageYOffset > 500) {
+			scrollTopBar.classList.add('show');
+		} else {
+			scrollTopBar.classList.remove('show');
+		}
+	});
+
+	// Scroll to top when clicked
+	scrollTopBar.addEventListener('click', function() {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
+	});
+}
+
 

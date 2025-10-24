@@ -134,6 +134,15 @@
     <a href="https://wa.me/+201011796422" class="whatsapp-circle" target="_blank" rel="noopener" aria-label="WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
+    
+    <!-- Scroll to Top Bar -->
+    <div class="scroll-top-bar" id="scrollTopBar">
+        <div class="scroll-top-content">
+            <i class="fas fa-arrow-up"></i>
+            <span>{{ __('Back to Top') }}</span>
+        </div>
+    </div>
+    
     <input type="hidden" id="chat-id" value="{{ $chatId }}">
 
     <script>
