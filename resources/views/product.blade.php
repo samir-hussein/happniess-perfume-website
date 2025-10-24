@@ -468,33 +468,34 @@
         "name": "{{ $product->{'name_' . app()->getLocale()} }}",
         "image": [
             "{{ $product->main_image }}"
-            @foreach($product->images() as $image)
-                @if($image)
-                    ,"{{ env('PANEL_URL') }}/storage/{{ $image }}"
-                @endif
-            @endforeach
         ],
         "description": "{{ strip_tags($product->{'description_' . app()->getLocale()}) }}",
-        "sku": "{{ $product->id }}",
+        "sku": "PERFUME-{{ $product->id }}",
+        "mpn": "{{ $product->id }}",
         "brand": {
             "@type": "Brand",
             "name": "Happiness Perfume"
         },
         "offers": {
-            "@type": "AggregateOffer",
+            "@type": "Offer",
             "url": "{{ url()->current() }}",
             "priceCurrency": "EGP",
-            "lowPrice": "{{ $product->sizes->min('price') }}",
-            "highPrice": "{{ $product->sizes->max('price') }}",
+            "price": "{{ $product->sizes->where('size', request()->size)->first()->price }}",
+            "priceValidUntil": "{{ now()->addYear()->format('Y-m-d') }}",
             "availability": "{{ $product->sizes->where('size', request()->size)->first()->quantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }}",
-            "itemCondition": "https://schema.org/NewCondition"
-        },
-        "category": "{{ $product->category->{'name_' . app()->getLocale()} }}"
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+                "@type": "Organization",
+                "name": "Happiness Perfume"
+            }
+        }
         @if($product->reviews->count() > 0)
         ,"aggregateRating": {
             "@type": "AggregateRating",
-            "ratingValue": "{{ $product->reviews->avg('rating') }}",
-            "reviewCount": "{{ $product->reviews->count() }}"
+            "ratingValue": "{{ number_format($product->reviews->avg('rating'), 1) }}",
+            "reviewCount": "{{ $product->reviews->count() }}",
+            "bestRating": "5",
+            "worstRating": "1"
         }
         @endif
     }
