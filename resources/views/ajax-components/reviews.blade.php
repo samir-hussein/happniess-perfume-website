@@ -15,7 +15,6 @@
                         <div>
                             <div class="reviewer-name">
                                 <span>{{ $review->client->name }}</span>
-                                <span>{{ $review->client->email }}</span>
                             </div>
                             <div class="review-date">{{ $review->created_at->format('F j, Y') }}</div>
                         </div>
