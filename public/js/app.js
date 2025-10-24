@@ -114,9 +114,7 @@ function addToCart(e) {
 	} else {
 		// Guest user
 		addToCartLocalStorage(e);
-	}
-	showToast(window.translations.product_added_to_cart, "success");
-	
+	}	
 	// Animate cart icon to draw attention
 	animateCartIcon();
 }
@@ -617,7 +615,6 @@ function updateLoggedUserCartQuantity(element) {
 		.then((response) => response.json())
 		.then((data) => {
 			getCartProducts();
-			showToast(window.translations.product_quantity_updated, "success");
 		})
 		.catch((error) => console.error(error));
 }
@@ -646,7 +643,6 @@ function updateLocalStorageCartQuantity(element) {
 	}
 	localStorage.setItem("cart", JSON.stringify(cart));
 	getCartProducts();
-	showToast(window.translations.product_quantity_updated, "success");
 }
 
 function removeFromCartLocalStorage(element) {
@@ -659,7 +655,6 @@ function removeFromCartLocalStorage(element) {
 	);
 	localStorage.setItem("cart", JSON.stringify(cart));
 	getCartProducts();
-	showToast(window.translations.product_removed_from_cart, "success");
 }
 
 function removeFromCartLoggedUser(element) {
@@ -683,7 +678,6 @@ function removeFromCartLoggedUser(element) {
 		.then((response) => response.json())
 		.then((data) => {
 			getCartProducts();
-			showToast(window.translations.product_removed_from_cart, "success");
 		})
 		.catch((error) => console.error(error));
 }
