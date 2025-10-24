@@ -25,6 +25,6 @@ class ProductSizeRepo extends BaseRepository implements IProductSizeRepo
 
 	public function sizes()
 	{
-		return $this->model->select("size")->distinct()->get()->pluck("size")->toArray();
+		return $this->model->select("size")->distinct()->orderBy("size", "asc")->get()->pluck("size")->toArray();
 	}
 }
