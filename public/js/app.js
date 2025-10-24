@@ -53,6 +53,9 @@ overlay.addEventListener("click", () => {
 const favButtons = document.querySelectorAll(".add-to-fav, .add-to-fav-overlay");
 
 favButtons.forEach((button) => {
+	// Mark button as having listener attached
+	button.setAttribute("data-fav-listener-attached", "true");
+	
 	button.addEventListener("click", function () {
 		if (!window.authUser) {
 			window.location.href = "/" + locale + "/login";

@@ -462,6 +462,49 @@
             window.location.href = url.toString();
         });
 
+        // Function to attach event listeners to newly loaded product buttons only
+        function attachProductEventListeners(newCards) {
+            console.log('Attaching listeners to', newCards.length, 'new cards');
+            
+            // Attach add to cart listeners to new cards only
+            newCards.forEach(card => {
+                const cartBtn = card.querySelector('.add-to-cart-overlay');
+                if (cartBtn && !cartBtn.hasAttribute('data-cart-listener-attached')) {
+                    cartBtn.setAttribute('data-cart-listener-attached', 'true');
+                    cartBtn.addEventListener('click', function() {
+                        addToCart(this);
+                    });
+                    console.log('Cart listener attached to new product');
+                }
+
+                // Attach add to favorite listeners to new cards only
+                const favBtn = card.querySelector('.add-to-fav-overlay');
+                if (favBtn && !favBtn.hasAttribute('data-fav-listener-attached')) {
+                    favBtn.setAttribute('data-fav-listener-attached', 'true');
+                    favBtn.addEventListener('click', function() {
+                        if (!window.authUser) {
+                            window.location.href = '/{{ app()->getLocale() }}/login';
+                            return;
+                        }
+                        this.classList.toggle('favorited');
+                        const icon = this.querySelector('i');
+                        
+                        if (this.classList.contains('favorited')) {
+                            icon.classList.remove('far');
+                            icon.classList.add('fas');
+                        } else {
+                            icon.classList.remove('fas');
+                            icon.classList.add('far');
+                        }
+                        
+                        // Call the existing function from app.js
+                        addToFavorites(this);
+                    });
+                    console.log('Favorite listener attached to new product');
+                }
+            });
+        }
+
         // Infinite Scroll Pagination
         (function() {
             const paginationData = document.getElementById('paginationData');
@@ -524,11 +567,13 @@
                 return response.json();
             })
             .then(data => {
-                // Render new products
+                // Render new products and collect them
+                const newCards = [];
                 if (data.products && data.products.length > 0) {
                     data.products.forEach((product, index) => {
                         const productCard = createProductCard(product, data.favorites);
                         productGrid.appendChild(productCard);
+                        newCards.push(productCard);
                     });
                 }
 
@@ -550,7 +595,8 @@
                     loadMoreObserver.observe(loadingIndicator);
                 }
 
-                attachProductEventListeners();
+                // Attach listeners only to newly loaded cards
+                attachProductEventListeners(newCards);
             })
             .catch(error => {
                 loadingIndicator.style.display = 'none';
@@ -598,7 +644,7 @@
                 let cartButtonHTML = '';
                 if (!isOutOfStock) {
                     cartButtonHTML = `
-                        <button class="add-to-cart-overlay" data-id="${product.id}" data-size="${firstSize.size}" onclick="addToCart(this)">
+                        <button class="add-to-cart-overlay" data-id="${product.id}" data-size="${firstSize.size}">
                             <i class="fas fa-shopping-cart"></i>
                             <span>{{ __('Add to Cart') }}</span>
                         </button>
@@ -631,41 +677,6 @@
                 console.error('Product data:', product);
                 throw error;
             }
-        }
-
-        function attachProductEventListeners() {
-            // Re-attach add to cart listeners
-            document.querySelectorAll('.add-to-cart-overlay').forEach(btn => {
-                btn.onclick = function() {
-                    addToCart(this);
-                };
-            });
-
-            // Re-attach add to favorite listeners
-            document.querySelectorAll('.add-to-fav-overlay').forEach(btn => {
-                if (!btn.hasAttribute('data-listener-attached')) {
-                    btn.setAttribute('data-listener-attached', 'true');
-                    btn.addEventListener('click', function() {
-                        if (!window.authUser) {
-                            window.location.href = '/{{ app()->getLocale() }}/login';
-                            return;
-                        }
-                        this.classList.toggle('favorited');
-                        const icon = this.querySelector('i');
-                        
-                        if (this.classList.contains('favorited')) {
-                            icon.classList.remove('far');
-                            icon.classList.add('fas');
-                        } else {
-                            icon.classList.remove('fas');
-                            icon.classList.add('far');
-                        }
-                        
-                        // Call the existing function from app.js
-                        addToFavorites(this);
-                    });
-                }
-            });
         }
         })(); // End of IIFE for infinite scroll
     </script>
