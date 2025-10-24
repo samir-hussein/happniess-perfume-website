@@ -474,7 +474,6 @@
                     cartBtn.addEventListener('click', function() {
                         addToCart(this);
                     });
-                    console.log('Cart listener attached to new product');
                 }
 
                 // Attach add to favorite listeners to new cards only
@@ -500,7 +499,6 @@
                         // Call the existing function from app.js
                         addToFavorites(this);
                     });
-                    console.log('Favorite listener attached to new product');
                 }
             });
         }
