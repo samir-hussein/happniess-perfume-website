@@ -85,7 +85,42 @@
                         </div>
                     </div>
 
-                    <div class="product-actions single-product-actions">
+                    <div class="product-actions single-product-actions" id="originalActions">
+                        <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
+                            data-id="{{ $product->id }}" data-size="{{ request()->size }}"><i
+                                class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
+                        @if ($product->sizes->where('size', request()->size)->first()->quantity > 0)
+                            <form
+                                action="{{ route('buy.now', ['locale' => app()->getLocale(), 'product_id' => $product->id, 'size' => request()->size]) }}"
+                                method="POST">
+                                @csrf
+                                <button type="submit" class="buy-now">{{ __('Buy Now') }}</button>
+                            </form>
+                            <button class="add-to-cart" data-id="{{ $product->id }}" data-size="{{ request()->size }}"
+                                onclick="addToCart(this)"><i class="fas fa-cart-plus"></i></button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fixed Bottom Action Bar -->
+            <div class="fixed-action-bar" id="fixedActionBar">
+                <div class="fixed-action-content">
+                    <div class="fixed-product-info">
+                        <img src="{{ $product->main_image }}" alt="{{ $product->name_en }}" class="fixed-product-image">
+                        <div class="fixed-product-details">
+                            <h4 class="fixed-product-name">{{ $product->{'name_' . app()->getLocale()} }}</h4>
+                            <div class="fixed-product-price">
+                                @if ($product->discount_amount > 0)
+                                    <span class="fixed-current-price">{{ $product->size_price_after_discount }} {{ __('EGP') }}</span>
+                                    <span class="fixed-original-price">{{ $product->size_price }} {{ __('EGP') }}</span>
+                                @else
+                                    <span class="fixed-current-price">{{ $product->size_price }} {{ __('EGP') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fixed-actions">
                         <button class="add-to-fav {{ in_array($product->id, $favorites) ? 'favorited' : '' }}"
                             data-id="{{ $product->id }}" data-size="{{ request()->size }}"><i
                                 class="{{ in_array($product->id, $favorites) ? 'fas' : 'far' }} fa-heart"></i></button>
@@ -394,6 +429,70 @@
                     deleteButton.style.cursor = 'not-allowed';
                 }
             });
+        }
+
+        // Fixed Action Bar Scroll Logic
+        const fixedActionBar = document.getElementById('fixedActionBar');
+        const originalActions = document.getElementById('originalActions');
+        const luxuryChatWidget = document.querySelector('.luxury-chat');
+        const whatsappButton = document.querySelector('.whatsapp-circle');
+        
+        if (fixedActionBar && originalActions) {
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const originalActionsRect = originalActions.getBoundingClientRect();
+                const originalActionsBottom = originalActionsRect.bottom;
+                
+                // Show fixed bar when original actions are scrolled out of view
+                if (originalActionsBottom < 0) {
+                    fixedActionBar.classList.add('show');
+                    // Push chat and WhatsApp buttons up
+                    if (luxuryChatWidget) luxuryChatWidget.classList.add('push-up');
+                    if (whatsappButton) whatsappButton.classList.add('push-up');
+                } else {
+                    fixedActionBar.classList.remove('show');
+                    // Return chat and WhatsApp buttons to original position
+                    if (luxuryChatWidget) luxuryChatWidget.classList.remove('push-up');
+                    if (whatsappButton) whatsappButton.classList.remove('push-up');
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+            
+            // Sync favorite button state between original and fixed bars
+            const originalFavBtn = originalActions.querySelector('.add-to-fav');
+            const fixedFavBtn = fixedActionBar.querySelector('.add-to-fav');
+            
+            if (originalFavBtn && fixedFavBtn) {
+                // Sync clicks from fixed to original
+                fixedFavBtn.addEventListener('click', function() {
+                    if (!window.authUser) {
+                        window.location.href = '/{{ app()->getLocale() }}/login';
+                        return;
+                    }
+                    this.classList.toggle('favorited');
+                    originalFavBtn.classList.toggle('favorited');
+                    
+                    const fixedIcon = this.querySelector('i');
+                    const originalIcon = originalFavBtn.querySelector('i');
+                    
+                    if (this.classList.contains('favorited')) {
+                        fixedIcon.classList.remove('far');
+                        fixedIcon.classList.add('fas');
+                        originalIcon.classList.remove('far');
+                        originalIcon.classList.add('fas');
+                    } else {
+                        fixedIcon.classList.remove('fas');
+                        fixedIcon.classList.add('far');
+                        originalIcon.classList.remove('fas');
+                        originalIcon.classList.add('far');
+                    }
+                    
+                    addToFavorites(this);
+                });
+            }
         }
     </script>
 @endsection

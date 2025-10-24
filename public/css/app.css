@@ -1702,6 +1702,12 @@ footer {
 	box-shadow: 0 15px 30px rgba(140, 106, 37, 0.4);
   }
 
+  /* Push chat up when fixed action bar is visible */
+  .luxury-chat.push-up {
+	bottom: 120px;
+	transition: bottom 0.3s ease;
+  }
+
   .pulse-dot {
 	position: absolute;
 	top: 5px;
@@ -1990,6 +1996,10 @@ footer {
     .chat-container {
         width: 320px;
     }
+
+    .luxury-chat.push-up {
+        bottom: 110px;
+    }
 }
 
   .announcement-container {
@@ -2078,6 +2088,12 @@ footer {
   box-shadow: 0 14px 30px rgba(18, 140, 126, 0.45);
 }
 
+/* Push WhatsApp up when fixed action bar is visible */
+.whatsapp-circle.push-up {
+  bottom: 190px;
+  transition: bottom 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
 @media (max-width: 480px) {
   .whatsapp-circle {
     bottom: 90px;
@@ -2088,6 +2104,10 @@ footer {
 
   .whatsapp-circle i {
     font-size: 26px;
+  }
+
+  .whatsapp-circle.push-up {
+    bottom: 170px;
   }
 
   .hero .container{
