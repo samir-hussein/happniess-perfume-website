@@ -579,10 +579,12 @@ function handleCartDataView(data) {
 		browseBtn.style.display = "block";
 	}
 
-	shipping.textContent = data.shippingCost + " " + window.translations.egp;
-	shipping.dataset.value = data.shippingCost;
-	shipping.dataset.freeShipping = data.freeShipping;
-	
+	if(shipping){
+		shipping.textContent = data.shippingCost + " " + window.translations.egp;
+		shipping.dataset.value = data.shippingCost;
+		shipping.dataset.freeShipping = data.freeShipping;
+	}
+
 	// Update floating cart widget with cart data
 	updateFloatingCartWidget(data);
 }
