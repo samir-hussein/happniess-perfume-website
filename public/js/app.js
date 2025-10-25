@@ -568,6 +568,7 @@ function handleCartDataView(data) {
 	const checkoutBtn = document.querySelector(".checkout-btn");
 	const cartTotalDiv = document.querySelector(".cart-total");
 	const browseBtn = document.getElementById("browseBtn");
+	const shipping = document.getElementById("shipping");
 	if (data.products.length > 0) {
 		checkoutBtn.style.display = "block";
 		cartTotalDiv.style.display = "flex";
@@ -577,6 +578,10 @@ function handleCartDataView(data) {
 		cartTotalDiv.style.display = "none";
 		browseBtn.style.display = "block";
 	}
+
+	shipping.textContent = data.shippingCost + " " + window.translations.egp;
+	shipping.dataset.value = data.shippingCost;
+	shipping.dataset.freeShipping = data.freeShipping;
 	
 	// Update floating cart widget with cart data
 	updateFloatingCartWidget(data);

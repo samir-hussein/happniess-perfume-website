@@ -167,7 +167,7 @@ class ProductRepo extends BaseRepository implements IProductRepo
 
     public function getProductsForCart(array $ids)
     {
-        return $this->model->select("id", "discount_amount", "discount_type", "name_" . app()->getLocale() . " as name", "main_image")->whereIn("id", $ids)->with(["sizes"])->get();
+        return $this->model->select("id", "discount_amount", "discount_type", "name_" . app()->getLocale() . " as name", "main_image", "free_shipping")->whereIn("id", $ids)->with(["sizes"])->get();
     }
 
     public function newVisit(int $productId)

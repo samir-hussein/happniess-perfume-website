@@ -46,7 +46,9 @@ class PlaceOrderHandler
 
         // calculate subtotal and shipping cost
         $subtotal = $cartProducts['totalAsNumber'];
-        $shipping = ShippingMethod::calculateShipping($data['city'], $subtotal);
+        if(!$cartProducts['freeShipping']) {
+            $shipping = ShippingMethod::calculateShipping($data['city'], $subtotal);
+        }
         $total = $subtotal + $shipping - $discount;
 
         // prepare order data

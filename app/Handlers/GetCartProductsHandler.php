@@ -30,6 +30,7 @@ class GetCartProductsHandler
 
             $cartProducts = [];
             $cartProductsTotal = 0;
+            $freeShipping = false;
 
             foreach ($data as $item) {
                 $product = $products->where('id', $item['product_id'])->first();
@@ -60,6 +61,10 @@ class GetCartProductsHandler
                     "size" => $size,
                     "quantity" => $item['quantity'],
                 ];
+
+                if ($product->free_shipping) {
+                    $freeShipping = true;
+                }
             }
 
             if (count($removedSizes) > 0 && $userId) {
@@ -71,10 +76,9 @@ class GetCartProductsHandler
             }
 
             $shippingCost = 0;
-            if ($userId) {
+            if ($userId && !$freeShipping) {
                 $shippingCost = ShippingMethod::calculateShipping(Auth::user()->city, $cartProductsTotal);
             }
-
 
             return [
                 "products" => $cartProducts,
@@ -82,6 +86,7 @@ class GetCartProductsHandler
                 "totalAsNumber" => $cartProductsTotal,
                 "removedSizes" => $removedSizes,
                 "shippingCost" => $shippingCost,
+                "freeShipping"=> $freeShipping,
             ];
         }
 

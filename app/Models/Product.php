@@ -24,7 +24,12 @@ class Product extends Model
 		'tag_en',
 		'tag_ar',
 		'views',
-		'category_id'
+		'category_id',
+		'oil_code',
+		'alcohol_code',
+		'type',
+		'is_bundle',
+		'free_shipping'
 	];
 
 	protected $appends = ['priceAfterDiscount'];

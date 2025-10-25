@@ -183,7 +183,7 @@
 
                     <div class="order-item">
                         <span>{{ __('Shipping') }}</span>
-                        <span id="shipping" data-value="">0 {{ __('EGP') }}</span>
+                        <span id="shipping" data-value="" data-free-shipping="0">0 {{ __('EGP') }}</span>
                     </div>
 
                     <div class="order-total">
@@ -283,7 +283,7 @@
             const cairoGizaShipping = document.getElementById('CairoGiza');
             const otherGovernoratesShipping = document.getElementById('OtherGovernorates');
             const remoteAreasShipping = document.getElementById('RemoteAreas');
-
+            
             // Define which governorates belong to which shipping method
             const cairoGizaGovernorates = ['cairo', 'giza'];
             const remoteAreasGovernorates = ['matruh', 'new_valley', 'north_sinai', 'south_sinai', 'red_sea','qena','aswan','luxor','sohag'];
@@ -296,8 +296,9 @@
                 const selectedGovernorate = this.value;
                 chooseShippingMethod(selectedGovernorate);
             });
-
+            
             function chooseShippingMethod(selectedGovernorate, withoutCost = false) {
+                let freeShipping = document.getElementById('shipping').dataset.freeShipping;
                 // Reset all shipping methods
                 cairoGizaShipping.checked = false;
                 otherGovernoratesShipping.checked = false;
@@ -317,9 +318,9 @@
                     cairoGizaShipping.disabled = false;
                     cairoGizaShipping.checked = true;
                     if (!withoutCost) {
-                        if (cairoGizaShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
+                        if ((cairoGizaShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
                                 'subtotal').dataset.value) >= parseFloat(cairoGizaShipping.dataset
-                                .minimum_order_amount)) {
+                                .minimum_order_amount)) || freeShipping == "true") {
                             updateShippingCost(0);
                         } else {
                             updateShippingCost(cairoGizaShipping.dataset.cost);
@@ -329,9 +330,9 @@
                     remoteAreasShipping.disabled = false;
                     remoteAreasShipping.checked = true;
                     if (!withoutCost) {
-                        if (remoteAreasShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
+                        if ((remoteAreasShipping.dataset.minimum_order_amount && parseFloat(document.getElementById(
                                 'subtotal').dataset.value) >= parseFloat(remoteAreasShipping.dataset
-                                .minimum_order_amount)) {
+                                .minimum_order_amount)) || freeShipping == "true") {
                             updateShippingCost(0);
                         } else {
                             updateShippingCost(remoteAreasShipping.dataset.cost);
@@ -341,10 +342,10 @@
                     otherGovernoratesShipping.disabled = false;
                     otherGovernoratesShipping.checked = true;
                     if (!withoutCost) {
-                        if (otherGovernoratesShipping.dataset.minimum_order_amount && parseFloat(document
+                        if ((otherGovernoratesShipping.dataset.minimum_order_amount && parseFloat(document
                                 .getElementById(
                                     'subtotal').dataset.value) >= parseFloat(otherGovernoratesShipping.dataset
-                                .minimum_order_amount)) {
+                                .minimum_order_amount)) || freeShipping == "true") {
                             updateShippingCost(0);
                         } else {
                             updateShippingCost(otherGovernoratesShipping.dataset.cost);
