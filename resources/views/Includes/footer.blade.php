@@ -49,8 +49,8 @@
         </div>
 
         <div class="footer-bottom">
-            <p dir="ltr">&copy; 2025 Happiness Perfume. All Rights Reserved. Designed & Developed by <a
-                    target="_blank" rel="noopener noreferrer" href="https://wa.me/+201144435326">Samir Hussein</a> .</p>
+            <p dir="ltr">Happiness Perfume &copy; 2025, Designed & Developed by <a
+                    target="_blank" rel="noopener noreferrer" href="https://wa.me/+201144435326">Samir Hussein</a>.</p>
         </div>
     </div>
 </footer>
